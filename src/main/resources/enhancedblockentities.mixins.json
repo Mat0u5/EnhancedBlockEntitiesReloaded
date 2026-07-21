@@ -1,5 +1,5 @@
 {
-  "package": "net.mat0u5.enhancedblockentities.mixin",
+  "package": "foundationgames.enhancedblockentities.mixin",
   "required": true,
   "minVersion": "0.8",
   "refmap": "${id}.mixins.refmap.json",
@@ -8,7 +8,23 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "ExampleMixin"
   ],
-  "client": []
+  "client": [
+    "AbstractBlockStateMixin",
+    "AbstractSignBlockEntityRenderAccessor",
+    "BellBlockEntityMixin",
+    "BlockEntityRenderDispatcherMixin",
+    "BuiltChunkMixin",
+    "ChestBlockEntityMixin",
+    "DecoratedPotBlockEntityMixin",
+    "EnderChestBlockEntityMixin",
+    "LifecycledResourceManagerImplMixin",
+    "MinecraftClientMixin",
+    "ShulkerBoxBlockEntityMixin",
+    "SignEditScreenMixin",
+    "VideoOptionsScreenMixin",
+    "WorldRendererMixin",
+    "compat.sodium.RenderSectionManagerMixin",
+    "compat.sodium.RenderSectionMixin"
+  ]
 }

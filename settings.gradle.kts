@@ -138,6 +138,7 @@ stonecutter {
 		}
 		else {
 			// All versions
+			/*
 			match("26.2", "fabric", "forge", "neoforge")
 			match("26.1", "fabric", "forge", "neoforge")
 
@@ -162,6 +163,8 @@ stonecutter {
 			match("1.16", "fabric", "forge")
 			match("1.15", "fabric", "forge")
 			match("1.14", "fabric")
+			*/
+			match("1.21.4", "fabric")
 		}
 
 		if (env("GRADLE_TEST") == "true") {
@@ -174,7 +177,7 @@ stonecutter {
 			vcsVersion = "26.2-neoforge"
 		}
 		else {
-			vcsVersion = "26.2-fabric"
+			vcsVersion = "1.21.4-fabric"
 		}
 	}
 }
