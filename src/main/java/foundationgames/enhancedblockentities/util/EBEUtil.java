@@ -1,27 +1,27 @@
 package foundationgames.enhancedblockentities.util;
 
-import foundationgames.enhancedblockentities;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.resource.DefaultResourcePack;
-import net.minecraft.resource.ResourcePack;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.VanillaPackResources;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.io.IOException;
 import java.nio.file.Files;
 
 public enum EBEUtil {;
-    private static final Random dummy = Random.create();
+    private static final RandomSource dummy = RandomSource.create();
 
     // Contains all dye colors, and null
     public static final DyeColor[] DEFAULTED_DYE_COLORS;
@@ -37,27 +37,27 @@ public enum EBEUtil {;
     }
 
     public static int angle(Direction dir) {
-        int h = dir.getHorizontalQuarterTurns();
+        int h = dir.get2DDataValue();
         return h >= 0 ? h * 90 : 0;
     }
 
-    public static void renderBakedModel(VertexConsumerProvider vertexConsumers, BlockState state, MatrixStack matrices, BakedModel model, int light, int overlay) {
-        VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayers.getEntityBlockLayer(state));
+    public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BakedModel model, int light, int overlay) {
+        VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));
         for (int i = 0; i <= 6; i++) {
             for (BakedQuad q : model.getQuads(null, ModelHelper.faceFromIndex(i), dummy)) {
-                vertices.quad(matrices.peek(), q, 1, 1, 1, 1, light, overlay);
+                vertices.putBulkData(matrices.last(), q, 1, 1, 1, 1, light, overlay);
             }
         }
     }
 
-    public static boolean isVanillaResourcePack(ResourcePack pack) {
-        return (pack instanceof DefaultResourcePack) ||
+    public static boolean isVanillaResourcePack(PackResources pack) {
+        return (pack instanceof VanillaPackResources) ||
                 // Terrible quilt compat hack
                 ("org.quiltmc.qsl.resource.loader.api.GroupResourcePack$Wrapped".equals(pack.getClass().getName()));
     }
 
-    public static Identifier id(String path) {
-        return Identifier.of(EnhancedBlockEntities.NAMESPACE, path);
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(EnhancedBlockEntities.NAMESPACE, path);
     }
 
     public static final String DUMP_FOLDER_NAME = "enhanced_bes_dump";

@@ -1,6 +1,6 @@
 package foundationgames.enhancedblockentities.util.hacks;
 
-import net.minecraft.client.texture.NativeImage;
+import com.mojang.blaze3d.platform.NativeImage;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.ByteArrayOutputStream;
@@ -23,17 +23,17 @@ public enum TextureHacks {;
                 int y = (int)Math.floor(v0 * h);
                 int sw = (int)Math.floor((u1 - u0) * w);
                 int sh = (int)Math.floor((v1 - v0) * h);
-                NativeImage prod = new NativeImage(src.getFormat(), sw, sh, false);
+                NativeImage prod = new NativeImage(src.format(), sw, sh, false);
                 for (int u = 0; u < sw; u++) {
                     for (int v = 0; v < sh; v++) {
-                        prod.setColorArgb(u, v, src.getColorArgb(x + u, y + v));
+                        prod.setPixel(u, v, src.getPixel(x + u, y + v));
                     }
                 }
                 src.close();
                 try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                      WritableByteChannel writableByteChannel = Channels.newChannel(byteArrayOutputStream)) {
 
-                    if (!prod.write(writableByteChannel)) {
+                    if (!prod.writeToChannel(writableByteChannel)) {
                         throw new IOException("Could not write cropped image to byte array");
                     }
 

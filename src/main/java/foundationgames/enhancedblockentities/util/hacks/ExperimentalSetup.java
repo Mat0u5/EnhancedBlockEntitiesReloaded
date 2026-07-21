@@ -1,11 +1,11 @@
 package foundationgames.enhancedblockentities.util.hacks;
 
-import foundationgames.enhancedblockentities;
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.DyeColor;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.item.DyeColor;
 
 import java.io.IOException;
 

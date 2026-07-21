@@ -1,12 +1,12 @@
 package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
-import net.minecraft.client.render.chunk.ChunkBuilder;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(ChunkBuilder.BuiltChunk.class)
+@Mixin(SectionRenderDispatcher.RenderSection.class)
 public class BuiltChunkMixin implements ChunkRebuildTaskAccess {
     private @Unique
     @Nullable Runnable enhanced_bes$taskAfterRebuild = null;

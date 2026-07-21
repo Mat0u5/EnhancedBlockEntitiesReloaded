@@ -1,54 +1,54 @@
 package foundationgames.enhancedblockentities.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import net.minecraft.block.entity.BellBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.entity.BellBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride {
     private BakedModel bellModel = null;
 
     @Override
-    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
         if (bellModel == null) bellModel = getBellModel();
         if (bellModel != null && blockEntity instanceof BellBlockEntity self) {
-            float ringTicks = (float)self.ringTicks + tickDelta;
+            float ringTicks = (float)self.ticks + tickDelta;
             float bellPitch = 0.0F;
             float bellRoll = 0.0F;
-            if (self.ringing) {
-                float swingAngle = MathHelper.sin(ringTicks / (float)Math.PI) / (4.0F + ringTicks / 3.0F);
-                if (self.lastSideHit == Direction.NORTH) {
+            if (self.shaking) {
+                float swingAngle = Mth.sin(ringTicks / (float)Math.PI) / (4.0F + ringTicks / 3.0F);
+                if (self.clickDirection == Direction.NORTH) {
                     bellPitch = -swingAngle;
-                } else if (self.lastSideHit == Direction.SOUTH) {
+                } else if (self.clickDirection == Direction.SOUTH) {
                     bellPitch = swingAngle;
-                } else if (self.lastSideHit == Direction.EAST) {
+                } else if (self.clickDirection == Direction.EAST) {
                     bellRoll = -swingAngle;
-                } else if (self.lastSideHit == Direction.WEST) {
+                } else if (self.clickDirection == Direction.WEST) {
                     bellRoll = swingAngle;
                 }
             }
-            matrices.push();
+            matrices.pushPose();
             matrices.translate(8f/16, 12f/16, 8f/16);
-            matrices.multiply(RotationAxis.POSITIVE_X.rotation(bellPitch));
-            matrices.multiply(RotationAxis.POSITIVE_Z.rotation(bellRoll));
+            matrices.mulPose(Axis.XP.rotation(bellPitch));
+            matrices.mulPose(Axis.ZP.rotation(bellRoll));
             matrices.translate(-8f/16, -12f/16, -8f/16);
-            EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, bellModel, light, overlay);
+            EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getBlockState(), matrices, bellModel, light, overlay);
 
-            matrices.pop();
+            matrices.popPose();
         }
     }
 
     private BakedModel getBellModel() {
-        return MinecraftClient.getInstance().getBakedModelManager().getModel(ModelIdentifiers.BELL_BODY);
+        return Minecraft.getInstance().getModelManager().getModel(ModelIdentifiers.BELL_BODY);
     }
 
     @Override

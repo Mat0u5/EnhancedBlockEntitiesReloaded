@@ -1,6 +1,6 @@
 package foundationgames.enhancedblockentities.client.model;
 
-import foundationgames.enhancedblockentities;
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 
 import java.util.ArrayList;
 import java.util.List;

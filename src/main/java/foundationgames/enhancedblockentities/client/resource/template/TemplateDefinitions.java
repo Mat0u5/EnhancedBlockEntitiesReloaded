@@ -2,11 +2,7 @@ package foundationgames.enhancedblockentities.client.resource.template;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public interface TemplateDefinitions {
     default TemplateDefinitions def(String k, Object v) {
