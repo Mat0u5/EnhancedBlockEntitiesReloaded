@@ -1,3 +1,7 @@
+# UNOFFICIAL PORT
+
+This is an unofficial port of the original [Enhanced Block Entities mod](https://modrinth.com/mod/ebe), adding support for newer minecraft versions and perhaps Forge and NeoForge in the future.
+
 ## Enhanced Block Entities
 
 EBE is a **100% client side** Minecraft mod for the **[Fabric](https://fabricmc.net/use/)** mod loader which aims to increase the performance of block entity rendering, as well as offer customizability via resource packs. <br/><br/>

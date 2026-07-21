@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 public class Main {
 
 	public static final String MOD_ID = "enhancedblockentities";
-	public static final String MOD_VERSION = "1.0.0";
+	public static final String MOD_VERSION = "0.12.0";
 	public static final String MOD_FRIENDLY_NAME = "Enhanced Block Entities Reloaded";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
