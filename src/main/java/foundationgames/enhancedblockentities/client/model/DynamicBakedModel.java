@@ -43,7 +43,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     }
 
     @Override
-    public void emitBlockQuads(QuadEmitter emitter, BlockAndTintGetter view, BlockState state, BlockPos pos, Supplier<RandomSource> rng, Predicate<@Nullable Direction> cullTest) {
+    public void emitBlockQuads(QuadEmitter emitter, BlockAndTintGetter view, BlockState state, BlockPos pos, Supplier<RandomSource> rng, Predicate<Direction> cullTest) {
         RenderMaterial mat = null;
 
         var indices = this.activeModelIndices.get();

@@ -16,8 +16,11 @@
   "environment": "*",
   "accessWidener": "aw/${sc_version}.accesswidener",
   "entrypoints": {
-    "main": [
-      "${group}.${id}.platform.fabric.FabricEntrypoint"
+    "client": [
+      "foundationgames.enhancedblockentities.EnhancedBlockEntities"
+    ],
+    "modmenu": [
+      "foundationgames.enhancedblockentities.config.gui.EBEModMenuPlugin"
     ]
   },
   "mixins": [

@@ -61,6 +61,9 @@ dependencies {
 		})
 	modImplementation(libs.fabric.loader)
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
+
+	modApi("maven.modrinth:modmenu:${prop("deps.modmenu_version")}")
+	modCompileOnlyApi("maven.modrinth:sodium:${prop("deps.sodium_version")}")
 }
 
 project.afterEvaluate {
