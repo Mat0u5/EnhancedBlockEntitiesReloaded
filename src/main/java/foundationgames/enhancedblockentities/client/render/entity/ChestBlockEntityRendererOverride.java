@@ -6,7 +6,11 @@ import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOv
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.resources.model.BakedModel;
+//? if <= 1.21.4 {
+/*import net.minecraft.client.resources.model.BakedModel;
+*///?} else {
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?}
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.ChestBlock;
@@ -19,11 +23,19 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverride {
-    private BakedModel[] models = null;
+    //? if <= 1.21.4 {
+    /*private BakedModel[] models = null;
     private final Supplier<BakedModel[]> modelGetter;
     private final Function<BlockEntity, Integer> modelSelector;
 
     public ChestBlockEntityRendererOverride(Supplier<BakedModel[]> modelGetter, Function<BlockEntity, Integer> modelSelector) {
+    *///?} else {
+    private BlockStateModel[] models = null;
+    private final Supplier<BlockStateModel[]> modelGetter;
+    private final Function<BlockEntity, Integer> modelSelector;
+
+    public ChestBlockEntityRendererOverride(Supplier<BlockStateModel[]> modelGetter, Function<BlockEntity, Integer> modelSelector) {
+    //?}
         this.modelGetter = modelGetter;
         this.modelSelector = modelSelector;
     }

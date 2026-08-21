@@ -6,7 +6,11 @@ import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOv
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.resources.model.BakedModel;
+//? if <= 1.21.4 {
+/*import net.minecraft.client.resources.model.BakedModel;
+*///?} else {
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?}
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
@@ -19,10 +23,17 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOverride {
-    private final Map<DyeColor, BakedModel> models = new HashMap<>();
+    //? if <= 1.21.4 {
+    /*private final Map<DyeColor, BakedModel> models = new HashMap<>();
     private final Consumer<Map<DyeColor, BakedModel>> modelMapFiller;
 
     public ShulkerBoxBlockEntityRendererOverride(Consumer<Map<DyeColor, BakedModel>> modelMapFiller) {
+    *///?} else {
+    private final Map<DyeColor, BlockStateModel> models = new HashMap<>();
+    private final Consumer<Map<DyeColor, BlockStateModel>> modelMapFiller;
+
+    public ShulkerBoxBlockEntityRendererOverride(Consumer<Map<DyeColor, BlockStateModel>> modelMapFiller) {
+    //?}
         this.modelMapFiller = modelMapFiller;
     }
 

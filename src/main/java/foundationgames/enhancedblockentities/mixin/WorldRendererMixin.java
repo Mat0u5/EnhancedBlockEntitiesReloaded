@@ -19,7 +19,11 @@ public class WorldRendererMixin {
             index = 7)
     private SectionRenderDispatcher.RenderSection enhanced_bes$addPostRebuildTask(SectionRenderDispatcher.RenderSection chunk) {
         if (WorldUtil.CHUNK_UPDATE_TASKS.size() > 0) {
-            var pos = SectionPos.of(chunk.getOrigin());
+            //? if <= 1.21.4 {
+            /*var pos = SectionPos.of(chunk.getOrigin());
+            *///?} else {
+            var pos = SectionPos.of(chunk.getRenderOrigin());
+            //?}
 
             if (WorldUtil.CHUNK_UPDATE_TASKS.containsKey(pos)) {
                 var task = WorldUtil.CHUNK_UPDATE_TASKS.remove(pos);

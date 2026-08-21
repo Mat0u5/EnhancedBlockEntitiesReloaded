@@ -4,12 +4,21 @@ import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+//? if <= 1.21.4 {
+/*import net.minecraft.client.resources.model.BakedModel;
+*///?} else {
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
+import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?}
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +28,9 @@ import java.util.function.Predicate;
 
 public final class ModelIdentifiers implements ModelLoadingPlugin {
     private static final Map<Predicate<EBEConfig>, Set<ResourceLocation>> modelLoaders = new HashMap<>();
+    //? if >= 1.21.5 {
+    private static final Map<ResourceLocation, ExtraModelKey<BlockStateModel>> extraModelKeys = new HashMap<>();
+    //?}
 
     public static final Predicate<EBEConfig> CHEST_PREDICATE = c -> c.renderEnhancedChests;
     public static final Predicate<EBEConfig> BELL_PREDICATE = c -> c.renderEnhancedBells;
@@ -115,8 +127,22 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
     private static ResourceLocation of(String id, Predicate<EBEConfig> condition) {
         ResourceLocation idf = ResourceLocation.parse(id);
         modelLoaders.computeIfAbsent(condition, k -> new HashSet<>()).add(idf);
+        //? if >= 1.21.5 {
+        extraModelKeys.computeIfAbsent(idf, key -> ExtraModelKey.create(key::toString));
+        //?}
         return idf;
     }
+
+    //? if <= 1.21.4 {
+    /*public static @Nullable BakedModel getBakedModel(ResourceLocation id) {
+        return Minecraft.getInstance().getModelManager().getModel(id);
+    }
+    *///?} else {
+    public static @Nullable BlockStateModel getBakedModel(ResourceLocation id) {
+        var key = extraModelKeys.get(id);
+        return key != null ? Minecraft.getInstance().getModelManager().getModel(key) : null;
+    }
+    //?}
 
     @Override
     public void initialize(Context ctx) {
@@ -124,7 +150,13 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
 
         for (var entry : modelLoaders.entrySet()) {
             if (entry.getKey().test(config)) {
-                ctx.addModels(entry.getValue());
+                //? if <= 1.21.4 {
+                /*ctx.addModels(entry.getValue());
+                *///?} else {
+                for (var id : entry.getValue()) {
+                    ctx.addModel(extraModelKeys.get(id), SimpleUnbakedExtraModel.blockStateModel(id));
+                }
+                //?}
             }
         }
     }

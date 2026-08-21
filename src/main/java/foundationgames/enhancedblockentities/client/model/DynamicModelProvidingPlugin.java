@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.client.model;
 
-import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+//? if <= 1.21.4 {
+/*import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelModifier;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +18,10 @@ public class DynamicModelProvidingPlugin implements ModelLoadingPlugin, ModelMod
         this.id = id;
     }
 
+    public static void register(ResourceLocation id, Supplier<DynamicUnbakedModel> model) {
+        ModelLoadingPlugin.register(new DynamicModelProvidingPlugin(id, model));
+    }
+
     @Override
     public void initialize(ModelLoadingPlugin.Context ctx) {
         ctx.modifyModelOnLoad().register(this);
@@ -28,3 +33,32 @@ public class DynamicModelProvidingPlugin implements ModelLoadingPlugin, ModelMod
         return model;
     }
 }
+*///?} else {
+import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+public final class DynamicModelProvidingPlugin {
+    private static final Map<ResourceLocation, Supplier<DynamicUnbakedModel>> PROVIDERS = new HashMap<>();
+
+    static {
+        CustomUnbakedBlockStateModel.register(DynamicUnbakedModel.Unbaked.TYPE_ID, DynamicUnbakedModel.Unbaked.CODEC);
+    }
+
+    private DynamicModelProvidingPlugin() {
+    }
+
+    public static void register(ResourceLocation id, Supplier<DynamicUnbakedModel> model) {
+        PROVIDERS.put(id, model);
+    }
+
+    public static @Nullable DynamicUnbakedModel get(ResourceLocation id) {
+        var provider = PROVIDERS.get(id);
+        return provider != null ? provider.get() : null;
+    }
+}
+//?}

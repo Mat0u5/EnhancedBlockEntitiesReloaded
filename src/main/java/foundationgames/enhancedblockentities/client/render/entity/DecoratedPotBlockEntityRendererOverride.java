@@ -6,10 +6,13 @@ import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.resources.model.BakedModel;
+//? if <= 1.21.4 {
+/*import net.minecraft.client.resources.model.BakedModel;
+*///?} else {
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?}
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -23,14 +26,13 @@ import java.util.Map;
 public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRendererOverride {
     public static final float WOBBLE_STRENGTH = 1f / 64;
 
-    private BakedModel baseModel = null;
+    //? if <= 1.21.4 {
+    /*private BakedModel baseModel = null;
     private Map<ResourceKey<DecoratedPotPattern>, BakedModel[]> potPatternModels = null;
 
     private void tryGetModels() {
-        var models = Minecraft.getInstance().getModelManager();
-
         if (this.baseModel == null) {
-            this.baseModel = models.getModel(ModelIdentifiers.DECORATED_POT_BASE);
+            this.baseModel = ModelIdentifiers.getBakedModel(ModelIdentifiers.DECORATED_POT_BASE);
         }
 
         if (this.potPatternModels == null) {
@@ -41,7 +43,7 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
                 BakedModel[] patternPerFaceModels = new BakedModel[patternModelIDs.length];
 
                 for (int i = 0; i < patternModelIDs.length; i++) {
-                    patternPerFaceModels[i] = models.getModel(patternModelIDs[i]);
+                    patternPerFaceModels[i] = ModelIdentifiers.getBakedModel(patternModelIDs[i]);
                 }
 
                 builder.put(k, patternPerFaceModels);
@@ -50,6 +52,33 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
             this.potPatternModels = builder.build();
         }
     }
+    *///?} else {
+    private BlockStateModel baseModel = null;
+    private Map<ResourceKey<DecoratedPotPattern>, BlockStateModel[]> potPatternModels = null;
+
+    private void tryGetModels() {
+        if (this.baseModel == null) {
+            this.baseModel = ModelIdentifiers.getBakedModel(ModelIdentifiers.DECORATED_POT_BASE);
+        }
+
+        if (this.potPatternModels == null) {
+            var builder = ImmutableMap.<ResourceKey<DecoratedPotPattern>, BlockStateModel[]>builder();
+
+            BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet().forEach(k -> {
+                var patternModelIDs = ModelIdentifiers.POTTERY_PATTERNS.get(k);
+                BlockStateModel[] patternPerFaceModels = new BlockStateModel[patternModelIDs.length];
+
+                for (int i = 0; i < patternModelIDs.length; i++) {
+                    patternPerFaceModels[i] = ModelIdentifiers.getBakedModel(patternModelIDs[i]);
+                }
+
+                builder.put(k, patternPerFaceModels);
+            });
+
+            this.potPatternModels = builder.build();
+        }
+    }
+    //?}
 
     @Override
     public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {

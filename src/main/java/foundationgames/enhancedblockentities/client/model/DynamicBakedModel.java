@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.client.model;
 
-import net.fabricmc.fabric.api.renderer.v1.Renderer;
+//? if <= 1.21.4 {
+/*import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
@@ -118,3 +119,94 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
         return effects;
     }
 }
+*///?} else {
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.model.FabricBlockStateModel;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.function.Predicate;
+
+public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel {
+    private final BlockModelPart[] models;
+    private final ModelSelector selector;
+    private final DynamicModelEffects effects;
+
+    private final ThreadLocal<int[]> activeModelIndices;
+
+    public DynamicBakedModel(BlockModelPart[] models, ModelSelector selector, DynamicModelEffects effects) {
+        this.models = new BlockModelPart[models.length];
+        for (int i = 0; i < models.length; i++) {
+            this.models[i] = models[i] != null ? new EffectPart(models[i], effects) : null;
+        }
+
+        this.selector = selector;
+        this.effects = effects;
+
+        this.activeModelIndices = ThreadLocal.withInitial(() -> new int[selector.displayedModelCount]);
+    }
+
+    @Override
+    public void emitQuads(QuadEmitter emitter, BlockAndTintGetter view, BlockPos pos, BlockState state, RandomSource random, Predicate<Direction> cullTest) {
+        var indices = this.activeModelIndices.get();
+
+        getSelector().writeModelIndices(view, state, pos, () -> random, indices);
+
+        for (int modelIndex : indices) {
+            if (modelIndex < 0 || modelIndex >= this.models.length) continue;
+
+            var model = this.models[modelIndex];
+            if (model != null) model.emitQuads(emitter, cullTest);
+        }
+    }
+
+    @Override
+    public void collectParts(RandomSource random, List<BlockModelPart> parts) {
+        var model = this.models[getSelector().getParticleModelIndex()];
+        if (model != null) parts.add(model);
+    }
+
+    @Override
+    public TextureAtlasSprite particleIcon() {
+        return this.models[getSelector().getParticleModelIndex()].particleIcon();
+    }
+
+    public BlockModelPart[] getModels() {
+        return models;
+    }
+
+    public ModelSelector getSelector() {
+        return selector;
+    }
+
+    public DynamicModelEffects getEffects() {
+        return effects;
+    }
+
+    private record EffectPart(BlockModelPart delegate, DynamicModelEffects effects) implements BlockModelPart {
+        @Override
+        public List<BakedQuad> getQuads(@Nullable Direction face) {
+            return delegate.getQuads(face);
+        }
+
+        @Override
+        public boolean useAmbientOcclusion() {
+            return effects.ambientOcclusion();
+        }
+
+        @Override
+        public TextureAtlasSprite particleIcon() {
+            return delegate.particleIcon();
+        }
+    }
+}
+//?}

@@ -8,7 +8,12 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.resources.model.BakedModel;
+//? if <= 1.21.4 {
+/*import net.minecraft.client.resources.model.BakedModel;
+*///?} else {
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?}
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
@@ -41,7 +46,9 @@ public enum EBEUtil {;
         return h >= 0 ? h * 90 : 0;
     }
 
-    public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BakedModel model, int light, int overlay) {
+    //? if <= 1.21.4 {
+    /*public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BakedModel model, int light, int overlay) {
+        if (model == null) return;
         VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));
         for (int i = 0; i <= 6; i++) {
             for (BakedQuad q : model.getQuads(null, ModelHelper.faceFromIndex(i), dummy)) {
@@ -49,6 +56,19 @@ public enum EBEUtil {;
             }
         }
     }
+    *///?} else {
+    public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
+        if (model == null) return;
+        VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));
+        for (BlockModelPart part : model.collectParts(dummy)) {
+            for (int i = 0; i <= 6; i++) {
+                for (BakedQuad q : part.getQuads(ModelHelper.faceFromIndex(i))) {
+                    vertices.putBulkData(matrices.last(), q, 1, 1, 1, 1, light, overlay);
+                }
+            }
+        }
+    }
+    //?}
 
     public static boolean isVanillaResourcePack(PackResources pack) {
         return (pack instanceof VanillaPackResources) ||

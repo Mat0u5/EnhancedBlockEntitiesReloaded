@@ -5,17 +5,24 @@ import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.resources.model.BakedModel;
+//? if <= 1.21.4 {
+/*import net.minecraft.client.resources.model.BakedModel;
+*///?} else {
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+//?}
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride {
-    private BakedModel bellModel = null;
+    //? if <= 1.21.4 {
+    /*private BakedModel bellModel = null;
+    *///?} else {
+    private BlockStateModel bellModel = null;
+    //?}
 
     @Override
     public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
@@ -47,9 +54,15 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
         }
     }
 
-    private BakedModel getBellModel() {
-        return Minecraft.getInstance().getModelManager().getModel(ModelIdentifiers.BELL_BODY);
+    //? if <= 1.21.4 {
+    /*private BakedModel getBellModel() {
+        return ModelIdentifiers.getBakedModel(ModelIdentifiers.BELL_BODY);
     }
+    *///?} else {
+    private BlockStateModel getBellModel() {
+        return ModelIdentifiers.getBakedModel(ModelIdentifiers.BELL_BODY);
+    }
+    //?}
 
     @Override
     public void onModelsReload() {

@@ -55,25 +55,33 @@ public enum ResourceUtil {;
         return String.format("\""+k+"\":"+v+"");
     }
 
+    private static String dynamicTypeKey(String model) {
+        //? if <= 1.21.4 {
+        /*return "";
+        *///?} else {
+        return model.startsWith("builtin:") ? kv("fabric:type", EBEUtil.id("dynamic").toString()) + "," : "";
+        //?}
+    }
+
     private static String variant(TemplateProvider t, String state, String model) throws IOException {
         return t.load("blockstate/var.json", d -> d
                 .def("state", state)
                 .def("model", model)
-                .def("extra", ""));
+                .def("extra", dynamicTypeKey(model)));
     }
 
     private static String variantY(TemplateProvider t, String state, String model, int y) throws IOException {
         return t.load("blockstate/var.json", d -> d
                 .def("state", state)
                 .def("model", model)
-                .def("extra", kv("y", y) + ","));
+                .def("extra", dynamicTypeKey(model) + kv("y", y) + ","));
     }
 
     private static String variantXY(TemplateProvider t, String state, String model, int x, int y) throws IOException {
         return t.load("blockstate/var.json", d -> d
                 .def("state", state)
                 .def("model", model)
-                .def("extra", list(
+                .def("extra", dynamicTypeKey(model) + list(
                         kv("x", x),
                         kv("y", y)
                 ) + ","));
