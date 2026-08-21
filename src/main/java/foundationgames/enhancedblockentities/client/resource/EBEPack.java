@@ -147,7 +147,7 @@ public class EBEPack implements PackResources {
     }
 
     @Override
-    public PackLocationInfo identifier() {
+    public PackLocationInfo location() {
         return this.packInfo;
     }
 

@@ -3,6 +3,9 @@ package foundationgames.enhancedblockentities.config.gui.widget;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractStringWidget;
+//? if >= 1.21.11 {
+import net.minecraft.client.gui.ActiveTextCollector;
+//?}
 import net.minecraft.network.chat.Component;
 
 public class SectionTextWidget extends AbstractStringWidget {
@@ -14,6 +17,12 @@ public class SectionTextWidget extends AbstractStringWidget {
         super(x, y, width, height, message, textRenderer);
         this.active = false;
     }
+
+    //? if >= 1.21.11 {
+    @Override
+    public void visitLines(ActiveTextCollector collector) {
+    }
+    //?}
 
     @Override
     public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {

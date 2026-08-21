@@ -11,11 +11,11 @@ import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 //? if <= 1.21.5 {
 /*import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.minecraft.client.renderer.RenderType;
 *///?} else {
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 //?}
-import net.minecraft.client.renderer.RenderType;
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
 *///?} else {
@@ -318,7 +318,11 @@ public enum EBESetup {;
         //? if <= 1.21.5 {
         /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
         *///?} else {
-        BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT_MIPPED);
+        //? if <= 1.21.9 {
+        /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT_MIPPED);
+        *///?} else {
+        BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
+        //?}
         //?}
     }
 

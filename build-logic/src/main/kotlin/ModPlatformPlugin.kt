@@ -535,7 +535,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, ">=1.21.11"), "!renames_1_21_11") {
 			replace("ModelIdentifiers", "ModelIdentifiers")
 			replace("ResourceLocation", "Identifier")
-			replace("location()", "identifier()")
+			replace(".location()", ".identifier()")
 		}
 	}
 }
