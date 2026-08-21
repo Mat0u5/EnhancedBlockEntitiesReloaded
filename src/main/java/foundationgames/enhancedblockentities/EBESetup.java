@@ -35,6 +35,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+//? if >= 26.2 {
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
+//?}
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
@@ -354,7 +357,7 @@ public enum EBESetup {;
             ChestType type = entity.getBlockState().getValue(BlockStateProperties.CHEST_TYPE);
             return type == ChestType.RIGHT ? 2 + os : type == ChestType.LEFT ? 1 + os : os;
         };
-        EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityType.CHEST, BlockEntityRenderCondition.CHEST,
+        EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityTypes.CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     //? if <= 1.21.4 {
                     /*return new BakedModel[] {
@@ -370,7 +373,7 @@ public enum EBESetup {;
                     };
                 }, christmasChestSelector)
         );
-        EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityType.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
+        EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityTypes.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     //? if <= 1.21.4 {
                     /*return new BakedModel[] {
@@ -386,7 +389,7 @@ public enum EBESetup {;
                     };
                 }, christmasChestSelector)
         );
-        EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
+        EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityTypes.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     //? if <= 1.21.4 {
                     /*return new BakedModel[] { ModelIdentifiers.getBakedModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
@@ -412,7 +415,7 @@ public enum EBESetup {;
                 Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN,
                 Blocks.PALE_OAK_SIGN, Blocks.PALE_OAK_WALL_SIGN
         }) {
-            EnhancedBlockEntityRegistry.register(sign, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
+            EnhancedBlockEntityRegistry.register(sign, BlockEntityTypes.SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
             );
         }
@@ -431,7 +434,7 @@ public enum EBESetup {;
                 Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN,
                 Blocks.PALE_OAK_HANGING_SIGN, Blocks.PALE_OAK_WALL_HANGING_SIGN
         }) {
-            EnhancedBlockEntityRegistry.register(sign, BlockEntityType.HANGING_SIGN, BlockEntityRenderCondition.SIGN,
+            EnhancedBlockEntityRegistry.register(sign, BlockEntityTypes.HANGING_SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
             );
             putCutout(sign);
@@ -439,35 +442,42 @@ public enum EBESetup {;
     }
 
     public static void setupBells() {
-        EnhancedBlockEntityRegistry.register(Blocks.BELL, BlockEntityType.BELL, BlockEntityRenderCondition.BELL,
+        EnhancedBlockEntityRegistry.register(Blocks.BELL, BlockEntityTypes.BELL, BlockEntityRenderCondition.BELL,
                 new BellBlockEntityRendererOverride()
         );
     }
 
     public static void setupBeds() {
-        EnhancedBlockEntityRegistry.register(Blocks.BLACK_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.BLUE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.BROWN_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.CYAN_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.GRAY_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.GREEN_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.LIGHT_BLUE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.LIGHT_GRAY_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.LIME_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.MAGENTA_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.ORANGE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.PINK_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.PURPLE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.RED_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.WHITE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.YELLOW_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        //? if <= 26.1 {
+        /*EnhancedBlockEntityRegistry.register(Blocks.BLACK_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.BLUE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.BROWN_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.CYAN_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.GRAY_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.GREEN_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.LIGHT_BLUE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.LIGHT_GRAY_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.LIME_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.MAGENTA_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.ORANGE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.PINK_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.PURPLE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.RED_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.WHITE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.YELLOW_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        *///?}
     }
 
     //? if >= 26.1 {
     private static Block shulkerBoxByColor(DyeColor color) {
         if (color == null) return Blocks.SHULKER_BOX;
 
-        return switch (color) {
+        //? if >= 26.2 {
+        return Blocks.DYED_SHULKER_BOX.pick(color);
+        //?}
+
+        //? if <= 26.1 {
+        /*return switch (color) {
             case WHITE -> Blocks.WHITE_SHULKER_BOX;
             case ORANGE -> Blocks.ORANGE_SHULKER_BOX;
             case MAGENTA -> Blocks.MAGENTA_SHULKER_BOX;
@@ -485,6 +495,7 @@ public enum EBESetup {;
             case RED -> Blocks.RED_SHULKER_BOX;
             case BLACK -> Blocks.BLACK_SHULKER_BOX;
         };
+        *///?}
     }
     //?}
 
@@ -496,7 +507,7 @@ public enum EBESetup {;
             var block = shulkerBoxByColor(color);
             //?}
             putCutoutMipped(block);
-            EnhancedBlockEntityRegistry.register(block, BlockEntityType.SHULKER_BOX, BlockEntityRenderCondition.SHULKER_BOX,
+            EnhancedBlockEntityRegistry.register(block, BlockEntityTypes.SHULKER_BOX, BlockEntityRenderCondition.SHULKER_BOX,
                     new ShulkerBoxBlockEntityRendererOverride((map) -> {
                         for (DyeColor dc : EBEUtil.DEFAULTED_DYE_COLORS) {
                             map.put(dc, ModelIdentifiers.getBakedModel(ModelIdentifiers.SHULKER_BOX_LIDS.get(dc)));
@@ -507,7 +518,7 @@ public enum EBESetup {;
     }
 
     public static void setupDecoratedPots() {
-        EnhancedBlockEntityRegistry.register(Blocks.DECORATED_POT, BlockEntityType.DECORATED_POT,
+        EnhancedBlockEntityRegistry.register(Blocks.DECORATED_POT, BlockEntityTypes.DECORATED_POT,
                 BlockEntityRenderCondition.DECORATED_POT, new DecoratedPotBlockEntityRendererOverride());
     }
 }

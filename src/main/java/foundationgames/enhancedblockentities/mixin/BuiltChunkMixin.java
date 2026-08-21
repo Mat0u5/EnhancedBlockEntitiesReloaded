@@ -2,7 +2,12 @@ package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.util.WorldUtil;
 import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
-import net.minecraft.client.renderer.chunk.RenderRegionCache;
+//? if <= 26.1 {
+/*import net.minecraft.client.renderer.chunk.RenderRegionCache;
+*///?} else {
+import net.minecraft.client.renderer.chunk.RenderSectionRegion;
+import net.minecraft.client.renderer.chunk.SectionMesh;
+//?}
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.core.SectionPos;
 import org.jetbrains.annotations.Nullable;
@@ -17,8 +22,13 @@ public class BuiltChunkMixin implements ChunkRebuildTaskAccess {
     private @Unique
     @Nullable Runnable enhanced_bes$taskAfterRebuild = null;
 
-    @Inject(method = "createCompileTask", at = @At("HEAD"))
+    //? if <= 26.1 {
+    /*@Inject(method = "createCompileTask", at = @At("HEAD"))
     private void enhanced_bes$addPostRebuildTask(RenderRegionCache cache, CallbackInfoReturnable<SectionRenderDispatcher.RenderSection.CompileTask> cir) {
+    *///?} else {
+    @Inject(method = "createCompileTask", at = @At("HEAD"))
+    private void enhanced_bes$addPostRebuildTask(RenderSectionRegion region, CallbackInfoReturnable<?> cir) {
+    //?}
         if (WorldUtil.CHUNK_UPDATE_TASKS.isEmpty()) return;
 
         var self = (SectionRenderDispatcher.RenderSection) (Object) this;
@@ -32,6 +42,13 @@ public class BuiltChunkMixin implements ChunkRebuildTaskAccess {
             this.enhanced_bes$setTaskAfterRebuild(WorldUtil.CHUNK_UPDATE_TASKS.remove(pos));
         }
     }
+
+    //? if >= 26.2 {
+    @Inject(method = "setSectionMesh", at = @At("HEAD"))
+    private void enhanced_bes$runPostRebuildTask(SectionMesh mesh, CallbackInfoReturnable<SectionMesh> cir) {
+        this.enhanced_bes$runAfterRebuildTask();
+    }
+    //?}
 
     @Override
     public Runnable enhanced_bes$getTaskAfterRebuild() {

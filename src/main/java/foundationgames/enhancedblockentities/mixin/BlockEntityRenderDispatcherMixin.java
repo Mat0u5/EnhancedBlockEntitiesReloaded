@@ -7,7 +7,6 @@ import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOv
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.level.block.entity.BlockEntity;
 //? if <= 1.21.6 {
 /*import net.minecraft.client.renderer.LevelRenderer;
@@ -44,9 +43,9 @@ public class BlockEntityRenderDispatcherMixin {
     )
     private static void enhanced_bes$renderOverrides(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, CallbackInfo ci) {
         if (EnhancedBlockEntityRegistry.ENTITIES.containsKey(blockEntity.getType()) && EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) {
-            Tuple<BlockEntityRenderCondition, BlockEntityRendererOverride> entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
-            if (entry.getA().shouldRender(blockEntity)) {
-                entry.getB().render(renderer, blockEntity, tickDelta, matrices, output, LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
+            EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
+            if (entry.condition().shouldRender(blockEntity)) {
+                entry.renderer().render(renderer, blockEntity, tickDelta, matrices, output, LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
             }
             ci.cancel();
         }
@@ -60,9 +59,9 @@ public class BlockEntityRenderDispatcherMixin {
     )
     private static void enhanced_bes$renderOverrides(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, Vec3 cameraPos, CallbackInfo ci) {
         if (EnhancedBlockEntityRegistry.ENTITIES.containsKey(blockEntity.getType()) && EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) {
-            Tuple<BlockEntityRenderCondition, BlockEntityRendererOverride> entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
-            if (entry.getA().shouldRender(blockEntity)) {
-                entry.getB().render(renderer, blockEntity, tickDelta, matrices, output, LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
+            EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
+            if (entry.condition().shouldRender(blockEntity)) {
+                entry.renderer().render(renderer, blockEntity, tickDelta, matrices, output, LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
             }
             ci.cancel();
         }
@@ -70,20 +69,25 @@ public class BlockEntityRenderDispatcherMixin {
     *///?}
     //? if >= 1.21.9 {
     @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true)
-    private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
+    //? if <= 26.1 {
+    /*private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
             ModelFeatureRenderer.CrumblingOverlay crumbling, CallbackInfoReturnable<BlockEntityRenderState> cir) {
-        Tuple<BlockEntityRenderCondition, BlockEntityRendererOverride> entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
+    *///?} else {
+    private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
+            ModelFeatureRenderer.CrumblingOverlay crumbling, boolean globalRender, CallbackInfoReturnable<BlockEntityRenderState> cir) {
+    //?}
+        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
 
         if (entry == null || !EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) return;
 
-        if (!entry.getA().shouldRender(blockEntity)) {
+        if (!entry.condition().shouldRender(blockEntity)) {
             cir.setReturnValue(null);
         }
     }
 
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     private void enhanced_bes$renderOverrides(BlockEntityRenderState renderState, PoseStack matrices, SubmitNodeCollector output, CameraRenderState cameraState, CallbackInfo ci) {
-        Tuple<BlockEntityRenderCondition, BlockEntityRendererOverride> entry = EnhancedBlockEntityRegistry.ENTITIES.get(renderState.blockEntityType);
+        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(renderState.blockEntityType);
 
         if (entry == null || !EnhancedBlockEntityRegistry.BLOCKS.contains(renderState.blockState.getBlock())) return;
 
@@ -96,7 +100,7 @@ public class BlockEntityRenderDispatcherMixin {
         BlockEntityRenderer<BlockEntity, ?> renderer = ((BlockEntityRenderDispatcher) (Object) this).getRenderer(renderState);
         float tickDelta = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
 
-        entry.getB().render(renderer, renderState, blockEntity, tickDelta, matrices, output, renderState.lightCoords, OverlayTexture.NO_OVERLAY);
+        entry.renderer().render(renderer, renderState, blockEntity, tickDelta, matrices, output, renderState.lightCoords, OverlayTexture.NO_OVERLAY);
     }
     //?}
 }

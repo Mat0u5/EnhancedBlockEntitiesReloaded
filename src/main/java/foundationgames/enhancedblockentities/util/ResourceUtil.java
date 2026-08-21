@@ -7,6 +7,9 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.Direction;
+//? if >= 26.2 {
+import net.minecraft.core.registries.BuiltInRegistries;
+//?}
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
@@ -331,7 +334,12 @@ public enum ResourceUtil {;
                     //? if <= 1.21.11 {
                     /*kv("pattern", Sheets.getDecoratedPotMaterial(patternKey).texture().toString()),
                     *///?} else {
-                    kv("pattern", Sheets.DECORATED_POT_SPRITES.get(patternKey).texture().toString()),
+                    //? if <= 26.1 {
+                    /*kv("pattern", Sheets.DECORATED_POT_SPRITES.get(patternKey).texture().toString()),
+                    *///?} else {
+                    kv("pattern", Sheets.DECORATED_POT_MAPPER.apply(
+                            BuiltInRegistries.DECORATED_POT_PATTERN.getValueOrThrow(patternKey).assetId()).texture().toString()),
+                    //?}
                     //?}
                     Identifier.parse("block/" + patternKey.identifier().getPath() + "_" + dir.getName()),
                     pack);

@@ -547,5 +547,8 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, ">=26.1"), "!renames_26_1") {
 			replace("BlockModelPart", "BlockStateModelPart")
 		}
+		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, ">=26.2"), "!renames_26_2") {
+			replace("BlockEntityType.", "BlockEntityTypes.")
+		}
 	}
 }

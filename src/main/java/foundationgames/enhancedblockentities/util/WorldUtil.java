@@ -25,7 +25,11 @@ public enum WorldUtil implements ClientTickEvents.EndLevelTick {
 
     public static void rebuildChunk(Level world, BlockPos pos) {
         var state = world.getBlockState(pos);
-        Minecraft.getInstance().levelRenderer.blockChanged(world, pos, state, state, 8);
+        //? if <= 26.1 {
+        /*Minecraft.getInstance().levelRenderer.blockChanged(world, pos, state, state, 8);
+        *///?} else {
+        world.setBlocksDirty(pos, state, state);
+        //?}
     }
 
     public static void rebuildChunkAndThen(Level world, BlockPos pos, Runnable action) {

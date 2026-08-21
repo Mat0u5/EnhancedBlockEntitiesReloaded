@@ -29,9 +29,17 @@ public class ConfigButtonOption {
 
     private record ConfigButtonCallbacks<T>(Screen parent) implements OptionInstance.ValueSet<T> {
         @Override
-        public Function<OptionInstance<T>, AbstractWidget> createButton(OptionInstance.TooltipSupplier<T> tooltipFactory, Options gameOptions, int x, int y, int width, Consumer<T> changed) {
+        //? if <= 26.1 {
+        /*public Function<OptionInstance<T>, AbstractWidget> createButton(OptionInstance.TooltipSupplier<T> tooltipFactory, Options gameOptions, int x, int y, int width, Consumer<T> changed) {
+        *///?} else {
+        public Function<OptionInstance<T>, AbstractWidget> createButton(OptionInstance.TooltipSupplier<T> tooltipFactory, Options gameOptions, int x, int y, int width, OptionInstance.ValueUpdateListener<? super T> changed) {
+        //?}
             return (option) -> Button.builder(Component.translatable("option.ebe.config"), b -> {
-                Minecraft.getInstance().setScreen(new EBEConfigScreen(parent));
+                //? if <= 26.1 {
+                /*Minecraft.getInstance().setScreen(new EBEConfigScreen(parent));
+                *///?} else {
+                Minecraft.getInstance().setScreenAndShow(new EBEConfigScreen(parent));
+                //?}
             }).bounds(x, y, width, 20).build();
         }
 

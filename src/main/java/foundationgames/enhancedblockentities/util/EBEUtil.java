@@ -17,7 +17,9 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
 //?}
-import net.minecraft.client.renderer.MultiBufferSource;
+//? if <= 26.1 {
+/*import net.minecraft.client.renderer.MultiBufferSource;
+*///?}
 //? if >= 1.21.9 {
 import net.minecraft.client.renderer.SubmitNodeCollector;
 //?}
@@ -38,6 +40,13 @@ import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 //?}
 //?}
 import net.minecraft.core.Direction;
+//? if >= 26.2 {
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
+//?}
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.VanillaPackResources;
@@ -47,6 +56,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.io.IOException;
 import java.nio.file.Files;
+//? if >= 26.2 {
+import java.util.HashMap;
+import java.util.Map;
+//?}
 
 public enum EBEUtil {;
     private static final RandomSource dummy = RandomSource.create();
@@ -63,6 +76,21 @@ public enum EBEUtil {;
 
         HORIZONTAL_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
     }
+
+    //? if >= 26.2 {
+    private static final Map<ResourceKey<Item>, ResourceKey<DecoratedPotPattern>> POT_PATTERNS_BY_ITEM = new HashMap<>();
+
+    static {
+        DecoratedPotPatterns.itemToPatternMappings(POT_PATTERNS_BY_ITEM::put);
+    }
+
+    public static ResourceKey<DecoratedPotPattern> potPatternFromItem(Item item) {
+        var itemKey = BuiltInRegistries.ITEM.getResourceKey(item).orElse(null);
+        var pattern = itemKey != null ? POT_PATTERNS_BY_ITEM.get(itemKey) : null;
+
+        return pattern != null ? pattern : DecoratedPotPatterns.BLANK;
+    }
+    //?}
 
     public static int angle(Direction dir) {
         int h = dir.get2DDataValue();
@@ -83,8 +111,13 @@ public enum EBEUtil {;
         model.collectParts(dummy, parts);
         if (parts.isEmpty()) return;
 
-        output.submitBlockModel(matrices, Sheets.cutoutBlockSheet(), parts,
+        //? if <= 26.1 {
+        /*output.submitBlockModel(matrices, Sheets.cutoutBlockSheet(), parts,
                 BlockModelRenderState.EMPTY_TINTS, light, overlay, 0);
+        *///?} else {
+        output.submitBlockModel(matrices, Sheets.cutoutBlockItemSheet(), parts,
+                BlockModelRenderState.EMPTY_TINTS, light, overlay, 0);
+        //?}
     }
     //?}
     //?}
@@ -113,7 +146,8 @@ public enum EBEUtil {;
         }
     }
     *///?} else {
-    public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
+    //? if <= 26.1 {
+    /*public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
         if (model == null) return;
 
         var parts = new ObjectArrayList<BlockStateModelPart>();
@@ -132,6 +166,7 @@ public enum EBEUtil {;
             }
         }
     }
+    *///?}
     //?}
     //?}
 

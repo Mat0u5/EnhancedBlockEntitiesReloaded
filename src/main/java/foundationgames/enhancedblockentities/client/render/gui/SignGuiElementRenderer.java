@@ -14,7 +14,11 @@ import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
 //?}
-import net.minecraft.client.renderer.MultiBufferSource;
+//? if <= 26.1 {
+/*import net.minecraft.client.renderer.MultiBufferSource;
+*///?} else {
+import net.minecraft.client.renderer.SubmitNodeCollector;
+//?}
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -22,9 +26,14 @@ import org.jetbrains.annotations.Nullable;
 public class SignGuiElementRenderer extends PictureInPictureRenderer<SignGuiElementRenderer.State> {
     public static final int FULL_BRIGHT = 15728880;
 
-    public SignGuiElementRenderer(MultiBufferSource.BufferSource bufferSource) {
+    //? if <= 26.1 {
+    /*public SignGuiElementRenderer(MultiBufferSource.BufferSource bufferSource) {
         super(bufferSource);
     }
+    *///?} else {
+    public SignGuiElementRenderer() {
+    }
+    //?}
 
     @Override
     public Class<State> getRenderStateClass() {
@@ -36,7 +45,8 @@ public class SignGuiElementRenderer extends PictureInPictureRenderer<SignGuiElem
         return "ebe sign";
     }
 
-    @Override
+    //? if <= 26.1 {
+    /*@Override
     protected void renderToTexture(State state, PoseStack matrices) {
         Minecraft.getInstance().gameRenderer.getLighting().setupFor(Lighting.Entry.ITEMS_FLAT);
 
@@ -48,6 +58,20 @@ public class SignGuiElementRenderer extends PictureInPictureRenderer<SignGuiElem
         EBEUtil.renderBakedModel(this.bufferSource, state.blockState(), matrices, state.model(),
                 FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
     }
+    *///?} else {
+    @Override
+    protected void renderToTexture(State state, PoseStack matrices, SubmitNodeCollector output) {
+        Minecraft.getInstance().gameRenderer.lighting().setupFor(Lighting.Entry.ITEMS_FLAT);
+
+        matrices.scale(1, -1, 1);
+
+        float areaHeight = (state.y1() - state.y0()) / state.scale();
+        matrices.translate(-0.5f, (areaHeight * 0.5f) - 0.5f + state.up(), 0);
+
+        EBEUtil.renderBakedModel(output, state.blockState(), matrices, state.model(),
+                FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+    }
+    //?}
 
     public record State(BlockStateModel model, BlockState blockState, float up, int x0, int y0, int x1, int y1,
                         float scale, @Nullable ScreenRectangle scissorArea, ScreenRectangle bounds)

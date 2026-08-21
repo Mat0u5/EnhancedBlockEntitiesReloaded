@@ -70,7 +70,11 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         //? if <= 1.21.11 {
         /*SpecialGuiElementRegistry.register(ctx -> new SignGuiElementRenderer(ctx.vertexConsumers()));
         *///?} else {
-        PictureInPictureRendererRegistry.register(ctx -> new SignGuiElementRenderer(ctx.bufferSource()));
+        //? if <= 26.1 {
+        /*PictureInPictureRendererRegistry.register(ctx -> new SignGuiElementRenderer(ctx.bufferSource()));
+        *///?} else {
+        PictureInPictureRendererRegistry.register(ctx -> new SignGuiElementRenderer());
+        //?}
         //?}
         //?}
 
@@ -83,7 +87,11 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
     public static void reload(ReloadType type) {
         load();
         if (type == ReloadType.WORLD) {
-            Minecraft.getInstance().levelRenderer.allChanged();
+            //? if <= 26.1 {
+            /*Minecraft.getInstance().levelRenderer.allChanged();
+            *///?} else {
+            Minecraft.getInstance().levelExtractor.allChanged();
+            //?}
         } else if (type == ReloadType.RESOURCES) {
             Minecraft.getInstance().reloadResourcePacks();
         }

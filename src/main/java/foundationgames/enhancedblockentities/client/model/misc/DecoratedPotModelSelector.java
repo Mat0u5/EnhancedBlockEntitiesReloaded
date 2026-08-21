@@ -2,6 +2,7 @@ package foundationgames.enhancedblockentities.client.model.misc;
 
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.model.ModelSelector;
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -86,6 +87,10 @@ public class DecoratedPotModelSelector extends ModelSelector {
     }
 
     private int getPatternIndex(Optional<Item> sherd, int max) {
-        return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
+        //? if <= 26.1 {
+        /*return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
+        *///?} else {
+        return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(EBEUtil::potPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
+        //?}
     }
 }

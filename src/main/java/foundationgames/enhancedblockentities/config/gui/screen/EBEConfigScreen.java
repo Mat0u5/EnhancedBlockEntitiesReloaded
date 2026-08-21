@@ -123,7 +123,11 @@ public class EBEConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        //? if <= 26.1 {
+        /*this.minecraft.setScreen(parent);
+        *///?} else {
+        this.minecraft.setScreenAndShow(parent);
+        //?}
     }
 
     public void applyChanges() {
