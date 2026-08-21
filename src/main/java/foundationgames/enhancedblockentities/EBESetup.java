@@ -9,7 +9,12 @@ import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+//? if <= 1.21.5 {
+/*import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+*///?} else {
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+//?}
 import net.minecraft.client.renderer.RenderType;
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
@@ -309,10 +314,26 @@ public enum EBESetup {;
         );
     }
 
+    private static void putCutoutMipped(Block block) {
+        //? if <= 1.21.5 {
+        /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
+        *///?} else {
+        BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT_MIPPED);
+        //?}
+    }
+
+    private static void putCutout(Block block) {
+        //? if <= 1.21.5 {
+        /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout());
+        *///?} else {
+        BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
+        //?}
+    }
+
     public static void setupChests() {
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.CHEST, RenderType.cutoutMipped());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.TRAPPED_CHEST, RenderType.cutoutMipped());
-        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ENDER_CHEST, RenderType.cutoutMipped());
+        putCutoutMipped(Blocks.CHEST);
+        putCutoutMipped(Blocks.TRAPPED_CHEST);
+        putCutoutMipped(Blocks.ENDER_CHEST);
 
         Function<BlockEntity, Integer> christmasChestSelector = entity -> {
             int os = DateUtil.isChristmas() ? 3 : 0;
@@ -399,7 +420,7 @@ public enum EBESetup {;
             EnhancedBlockEntityRegistry.register(sign, BlockEntityType.HANGING_SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
             );
-            BlockRenderLayerMap.INSTANCE.putBlock(sign, RenderType.cutout());
+            putCutout(sign);
         }
     }
 
@@ -431,7 +452,7 @@ public enum EBESetup {;
     public static void setupShulkerBoxes() {
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
             var block = ShulkerBoxBlock.getBlockByColor(color);
-            BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
+            putCutoutMipped(block);
             EnhancedBlockEntityRegistry.register(block, BlockEntityType.SHULKER_BOX, BlockEntityRenderCondition.SHULKER_BOX,
                     new ShulkerBoxBlockEntityRendererOverride((map) -> {
                         for (DyeColor dc : EBEUtil.DEFAULTED_DYE_COLORS) {

@@ -43,7 +43,11 @@ public class EBEPack implements PackResources {
 
         this.packMeta = new PackMetadataSection(
                 Component.literal("Enhanced Block Entities Resources"),
-                SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
+                //? if <= 1.21.5 {
+                /*SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
+                *///?} else {
+                SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES),
+                //?}
                 Optional.empty());
 
         this.packInfo = new PackLocationInfo(id.toString(), Component.literal(id.toString()), PackSource.BUILT_IN, Optional.empty());

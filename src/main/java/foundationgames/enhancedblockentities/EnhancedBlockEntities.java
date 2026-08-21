@@ -11,6 +11,10 @@ import foundationgames.enhancedblockentities.util.WorldUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+//? if >= 1.21.6 {
+import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
+import foundationgames.enhancedblockentities.client.render.gui.SignGuiElementRenderer;
+//?}
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
@@ -49,6 +53,10 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
 
         WorldRenderEvents.END.register(SignRenderManager::endFrame);
         ClientTickEvents.END_WORLD_TICK.register(WorldUtil.EVENT_LISTENER);
+
+        //? if >= 1.21.6 {
+        SpecialGuiElementRegistry.register(ctx -> new SignGuiElementRenderer(ctx.vertexConsumers()));
+        //?}
 
         ModelIdentifiers.init();
         EBESetup.setupResourceProviders();

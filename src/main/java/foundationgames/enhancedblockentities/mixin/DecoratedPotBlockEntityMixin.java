@@ -2,8 +2,12 @@ package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.util.WorldUtil;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
-import net.minecraft.core.HolderLookup;
+//? if <= 1.21.5 {
+/*import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+*///?} else {
+import net.minecraft.world.level.storage.ValueInput;
+//?}
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,7 +22,11 @@ public class DecoratedPotBlockEntityMixin implements AppearanceStateHolder {
     @Unique private int enhanced_bes$renderState = 0;
 
     @Inject(method = "loadAdditional", at = @At("TAIL"))
-    private void enhanced_bes$updateChunkOnPatternsLoaded(CompoundTag nbt, HolderLookup.Provider rwl, CallbackInfo ci) {
+    //? if <= 1.21.5 {
+    /*private void enhanced_bes$updateChunkOnPatternsLoaded(CompoundTag nbt, HolderLookup.Provider rwl, CallbackInfo ci) {
+    *///?} else {
+    private void enhanced_bes$updateChunkOnPatternsLoaded(ValueInput input, CallbackInfo ci) {
+    //?}
         var self = (DecoratedPotBlockEntity)(Object)this;
 
         if (self.getLevel() != null && self.getLevel().isClientSide()) {
