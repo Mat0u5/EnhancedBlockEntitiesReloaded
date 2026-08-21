@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 //?}
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.util.RandomSource;
@@ -86,8 +86,8 @@ public enum EBEUtil {;
                 ("org.quiltmc.qsl.resource.loader.api.GroupResourcePack$Wrapped".equals(pack.getClass().getName()));
     }
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(EnhancedBlockEntities.NAMESPACE, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(EnhancedBlockEntities.NAMESPACE, path);
     }
 
     public static final String DUMP_FOLDER_NAME = "enhanced_bes_dump";

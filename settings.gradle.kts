@@ -168,8 +168,7 @@ stonecutter {
 			//match("26.2", "fabric")
 			//match("26.1", "fabric")
 
-			//match("1.21.11", "fabric")
-
+			match("1.21.11", "fabric")
 			match("1.21.9", "fabric")
 			match("1.21.6", "fabric")
 			match("1.21.5", "fabric")

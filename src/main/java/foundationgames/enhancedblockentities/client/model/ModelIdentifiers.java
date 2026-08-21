@@ -15,7 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
 import org.jetbrains.annotations.Nullable;
@@ -27,9 +27,9 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public final class ModelIdentifiers implements ModelLoadingPlugin {
-    private static final Map<Predicate<EBEConfig>, Set<ResourceLocation>> modelLoaders = new HashMap<>();
+    private static final Map<Predicate<EBEConfig>, Set<Identifier>> modelLoaders = new HashMap<>();
     //? if >= 1.21.5 {
-    private static final Map<ResourceLocation, ExtraModelKey<BlockStateModel>> extraModelKeys = new HashMap<>();
+    private static final Map<Identifier, ExtraModelKey<BlockStateModel>> extraModelKeys = new HashMap<>();
     //?}
 
     public static final Predicate<EBEConfig> CHEST_PREDICATE = c -> c.renderEnhancedChests;
@@ -37,58 +37,58 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
     public static final Predicate<EBEConfig> SHULKER_BOX_PREDICATE = c -> c.renderEnhancedShulkerBoxes;
     public static final Predicate<EBEConfig> DECORATED_POT_PREDICATE = c -> c.renderEnhancedDecoratedPots;
 
-    public static final ResourceLocation CHEST_CENTER = of("block/chest_center", CHEST_PREDICATE);
-    public static final ResourceLocation CHEST_CENTER_TRUNK = of("block/chest_center_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation CHEST_CENTER_LID = of("block/chest_center_lid", CHEST_PREDICATE);
-    public static final ResourceLocation CHEST_LEFT = of("block/chest_left", CHEST_PREDICATE);
-    public static final ResourceLocation CHEST_LEFT_TRUNK = of("block/chest_left_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation CHEST_LEFT_LID = of("block/chest_left_lid", CHEST_PREDICATE);
-    public static final ResourceLocation CHEST_RIGHT = of("block/chest_right", CHEST_PREDICATE);
-    public static final ResourceLocation CHEST_RIGHT_TRUNK = of("block/chest_right_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation CHEST_RIGHT_LID = of("block/chest_right_lid", CHEST_PREDICATE);
+    public static final Identifier CHEST_CENTER = of("block/chest_center", CHEST_PREDICATE);
+    public static final Identifier CHEST_CENTER_TRUNK = of("block/chest_center_trunk", CHEST_PREDICATE);
+    public static final Identifier CHEST_CENTER_LID = of("block/chest_center_lid", CHEST_PREDICATE);
+    public static final Identifier CHEST_LEFT = of("block/chest_left", CHEST_PREDICATE);
+    public static final Identifier CHEST_LEFT_TRUNK = of("block/chest_left_trunk", CHEST_PREDICATE);
+    public static final Identifier CHEST_LEFT_LID = of("block/chest_left_lid", CHEST_PREDICATE);
+    public static final Identifier CHEST_RIGHT = of("block/chest_right", CHEST_PREDICATE);
+    public static final Identifier CHEST_RIGHT_TRUNK = of("block/chest_right_trunk", CHEST_PREDICATE);
+    public static final Identifier CHEST_RIGHT_LID = of("block/chest_right_lid", CHEST_PREDICATE);
 
-    public static final ResourceLocation TRAPPED_CHEST_CENTER = of("block/trapped_chest_center", CHEST_PREDICATE);
-    public static final ResourceLocation TRAPPED_CHEST_CENTER_TRUNK = of("block/trapped_chest_center_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation TRAPPED_CHEST_CENTER_LID = of("block/trapped_chest_center_lid", CHEST_PREDICATE);
-    public static final ResourceLocation TRAPPED_CHEST_LEFT = of("block/trapped_chest_left", CHEST_PREDICATE);
-    public static final ResourceLocation TRAPPED_CHEST_LEFT_TRUNK = of("block/trapped_chest_left_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation TRAPPED_CHEST_LEFT_LID = of("block/trapped_chest_left_lid", CHEST_PREDICATE);
-    public static final ResourceLocation TRAPPED_CHEST_RIGHT = of("block/trapped_chest_right", CHEST_PREDICATE);
-    public static final ResourceLocation TRAPPED_CHEST_RIGHT_TRUNK = of("block/trapped_chest_right_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation TRAPPED_CHEST_RIGHT_LID = of("block/trapped_chest_right_lid", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_CENTER = of("block/trapped_chest_center", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_CENTER_TRUNK = of("block/trapped_chest_center_trunk", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_CENTER_LID = of("block/trapped_chest_center_lid", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_LEFT = of("block/trapped_chest_left", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_LEFT_TRUNK = of("block/trapped_chest_left_trunk", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_LEFT_LID = of("block/trapped_chest_left_lid", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_RIGHT = of("block/trapped_chest_right", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_RIGHT_TRUNK = of("block/trapped_chest_right_trunk", CHEST_PREDICATE);
+    public static final Identifier TRAPPED_CHEST_RIGHT_LID = of("block/trapped_chest_right_lid", CHEST_PREDICATE);
 
-    public static final ResourceLocation CHRISTMAS_CHEST_CENTER = of("block/christmas_chest_center", CHEST_PREDICATE);
-    public static final ResourceLocation CHRISTMAS_CHEST_CENTER_TRUNK = of("block/christmas_chest_center_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation CHRISTMAS_CHEST_CENTER_LID = of("block/christmas_chest_center_lid", CHEST_PREDICATE);
-    public static final ResourceLocation CHRISTMAS_CHEST_LEFT = of("block/christmas_chest_left", CHEST_PREDICATE);
-    public static final ResourceLocation CHRISTMAS_CHEST_LEFT_TRUNK = of("block/christmas_chest_left_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation CHRISTMAS_CHEST_LEFT_LID = of("block/christmas_chest_left_lid", CHEST_PREDICATE);
-    public static final ResourceLocation CHRISTMAS_CHEST_RIGHT = of("block/christmas_chest_right", CHEST_PREDICATE);
-    public static final ResourceLocation CHRISTMAS_CHEST_RIGHT_TRUNK = of("block/christmas_chest_right_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation CHRISTMAS_CHEST_RIGHT_LID = of("block/christmas_chest_right_lid", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_CENTER = of("block/christmas_chest_center", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_CENTER_TRUNK = of("block/christmas_chest_center_trunk", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_CENTER_LID = of("block/christmas_chest_center_lid", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_LEFT = of("block/christmas_chest_left", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_LEFT_TRUNK = of("block/christmas_chest_left_trunk", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_LEFT_LID = of("block/christmas_chest_left_lid", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_RIGHT = of("block/christmas_chest_right", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_RIGHT_TRUNK = of("block/christmas_chest_right_trunk", CHEST_PREDICATE);
+    public static final Identifier CHRISTMAS_CHEST_RIGHT_LID = of("block/christmas_chest_right_lid", CHEST_PREDICATE);
 
-    public static final ResourceLocation ENDER_CHEST_CENTER = of("block/ender_chest_center", CHEST_PREDICATE);
-    public static final ResourceLocation ENDER_CHEST_CENTER_TRUNK = of("block/ender_chest_center_trunk", CHEST_PREDICATE);
-    public static final ResourceLocation ENDER_CHEST_CENTER_LID = of("block/ender_chest_center_lid", CHEST_PREDICATE);
+    public static final Identifier ENDER_CHEST_CENTER = of("block/ender_chest_center", CHEST_PREDICATE);
+    public static final Identifier ENDER_CHEST_CENTER_TRUNK = of("block/ender_chest_center_trunk", CHEST_PREDICATE);
+    public static final Identifier ENDER_CHEST_CENTER_LID = of("block/ender_chest_center_lid", CHEST_PREDICATE);
 
-    public static final ResourceLocation BELL_BETWEEN_WALLS = of("block/bell_between_walls", BELL_PREDICATE);
-    public static final ResourceLocation BELL_CEILING = of("block/bell_ceiling", BELL_PREDICATE);
-    public static final ResourceLocation BELL_FLOOR = of("block/bell_floor", BELL_PREDICATE);
-    public static final ResourceLocation BELL_WALL = of("block/bell_wall", BELL_PREDICATE);
-    public static final ResourceLocation BELL_BETWEEN_WALLS_WITH_BELL = of("block/bell_between_walls_with_bell", BELL_PREDICATE);
-    public static final ResourceLocation BELL_CEILING_WITH_BELL = of("block/bell_ceiling_with_bell", BELL_PREDICATE);
-    public static final ResourceLocation BELL_FLOOR_WITH_BELL = of("block/bell_floor_with_bell", BELL_PREDICATE);
-    public static final ResourceLocation BELL_WALL_WITH_BELL = of("block/bell_wall_with_bell", BELL_PREDICATE);
-    public static final ResourceLocation BELL_BODY = of("block/bell_body", BELL_PREDICATE);
+    public static final Identifier BELL_BETWEEN_WALLS = of("block/bell_between_walls", BELL_PREDICATE);
+    public static final Identifier BELL_CEILING = of("block/bell_ceiling", BELL_PREDICATE);
+    public static final Identifier BELL_FLOOR = of("block/bell_floor", BELL_PREDICATE);
+    public static final Identifier BELL_WALL = of("block/bell_wall", BELL_PREDICATE);
+    public static final Identifier BELL_BETWEEN_WALLS_WITH_BELL = of("block/bell_between_walls_with_bell", BELL_PREDICATE);
+    public static final Identifier BELL_CEILING_WITH_BELL = of("block/bell_ceiling_with_bell", BELL_PREDICATE);
+    public static final Identifier BELL_FLOOR_WITH_BELL = of("block/bell_floor_with_bell", BELL_PREDICATE);
+    public static final Identifier BELL_WALL_WITH_BELL = of("block/bell_wall_with_bell", BELL_PREDICATE);
+    public static final Identifier BELL_BODY = of("block/bell_body", BELL_PREDICATE);
 
-    public static final ResourceLocation DECORATED_POT_BASE = of("block/decorated_pot_base", DECORATED_POT_PREDICATE);
-    public static final ResourceLocation DECORATED_POT_SHAKING = of("block/decorated_pot_shaking", DECORATED_POT_PREDICATE);
+    public static final Identifier DECORATED_POT_BASE = of("block/decorated_pot_base", DECORATED_POT_PREDICATE);
+    public static final Identifier DECORATED_POT_SHAKING = of("block/decorated_pot_shaking", DECORATED_POT_PREDICATE);
 
-    public static final Map<DyeColor, ResourceLocation> SHULKER_BOXES = new HashMap<>();
-    public static final Map<DyeColor, ResourceLocation> SHULKER_BOX_BOTTOMS = new HashMap<>();
-    public static final Map<DyeColor, ResourceLocation> SHULKER_BOX_LIDS = new HashMap<>();
+    public static final Map<DyeColor, Identifier> SHULKER_BOXES = new HashMap<>();
+    public static final Map<DyeColor, Identifier> SHULKER_BOX_BOTTOMS = new HashMap<>();
+    public static final Map<DyeColor, Identifier> SHULKER_BOX_LIDS = new HashMap<>();
 
-    public static final Map<ResourceKey<DecoratedPotPattern>, ResourceLocation[]> POTTERY_PATTERNS = new HashMap<>();
+    public static final Map<ResourceKey<DecoratedPotPattern>, Identifier[]> POTTERY_PATTERNS = new HashMap<>();
 
     static {
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
@@ -112,8 +112,8 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
         Direction[] orderedHorizontalDirs = new Direction[] {Direction.NORTH, Direction.WEST, Direction.EAST, Direction.SOUTH};
 
         for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
-            var pattern = patternKey.location().getPath();
-            var ids = new ResourceLocation[orderedHorizontalDirs.length];;
+            var pattern = patternKey.identifier().getPath();
+            var ids = new Identifier[orderedHorizontalDirs.length];;
 
             for (int i = 0; i < 4; i++) {
                 ids[i] = of("block/" + pattern + "_" + orderedHorizontalDirs[i].getName(),
@@ -124,8 +124,8 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
         }
     }
 
-    private static ResourceLocation of(String id, Predicate<EBEConfig> condition) {
-        ResourceLocation idf = ResourceLocation.parse(id);
+    private static Identifier of(String id, Predicate<EBEConfig> condition) {
+        Identifier idf = Identifier.parse(id);
         modelLoaders.computeIfAbsent(condition, k -> new HashSet<>()).add(idf);
         //? if >= 1.21.5 {
         extraModelKeys.computeIfAbsent(idf, key -> ExtraModelKey.create(key::toString));
@@ -134,11 +134,11 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
     }
 
     //? if <= 1.21.4 {
-    /*public static @Nullable BakedModel getBakedModel(ResourceLocation id) {
+    /*public static @Nullable BakedModel getBakedModel(Identifier id) {
         return Minecraft.getInstance().getModelManager().getModel(id);
     }
     *///?} else {
-    public static @Nullable BlockStateModel getBakedModel(ResourceLocation id) {
+    public static @Nullable BlockStateModel getBakedModel(Identifier id) {
         var key = extraModelKeys.get(id);
         return key != null ? Minecraft.getInstance().getModelManager().getModel(key) : null;
     }

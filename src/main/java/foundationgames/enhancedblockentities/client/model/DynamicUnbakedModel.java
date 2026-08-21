@@ -7,15 +7,15 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public class DynamicUnbakedModel implements UnbakedModel {
-    private final ResourceLocation[] models;
+    private final Identifier[] models;
     private final ModelSelector selector;
     private final DynamicModelEffects effects;
 
-    public DynamicUnbakedModel(ResourceLocation[] models, ModelSelector selector, DynamicModelEffects effects) {
+    public DynamicUnbakedModel(Identifier[] models, ModelSelector selector, DynamicModelEffects effects) {
         this.models = models;
         this.selector = selector;
         this.effects = effects;
@@ -23,7 +23,7 @@ public class DynamicUnbakedModel implements UnbakedModel {
 
     @Override
     public void resolveDependencies(Resolver resolver) {
-        for (ResourceLocation modelId : models) {
+        for (Identifier modelId : models) {
             if(modelId == null) continue;
             resolver.resolve(modelId);
         }
@@ -51,21 +51,21 @@ import net.minecraft.client.resources.model.MissingBlockModel;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.ResolvableModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class DynamicUnbakedModel {
-    private final ResourceLocation[] models;
+    private final Identifier[] models;
     private final ModelSelector selector;
     private final DynamicModelEffects effects;
 
-    public DynamicUnbakedModel(ResourceLocation[] models, ModelSelector selector, DynamicModelEffects effects) {
+    public DynamicUnbakedModel(Identifier[] models, ModelSelector selector, DynamicModelEffects effects) {
         this.models = models;
         this.selector = selector;
         this.effects = effects;
     }
 
     public void resolveDependencies(ResolvableModel.Resolver resolver) {
-        for (ResourceLocation modelId : models) {
+        for (Identifier modelId : models) {
             if (modelId == null) continue;
             resolver.markDependency(modelId);
         }
@@ -80,7 +80,7 @@ public class DynamicUnbakedModel {
     }
 
     public record Unbaked(Variant variant) implements CustomUnbakedBlockStateModel {
-        public static final ResourceLocation TYPE_ID = EBEUtil.id("dynamic");
+        public static final Identifier TYPE_ID = EBEUtil.id("dynamic");
         public static final MapCodec<Unbaked> CODEC = Variant.MAP_CODEC.xmap(Unbaked::new, Unbaked::variant);
 
         @Override

@@ -6,7 +6,7 @@ import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
@@ -36,10 +36,10 @@ public class DecoratedPotModelSelector extends ModelSelector {
         this.potteryPatterns = new ArrayList<>(BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet());
     }
 
-    public ResourceLocation[] createModelIDs() {
+    public Identifier[] createModelIDs() {
         ModelIdentifiers.refreshPotteryPatterns();
 
-        var ids = new ResourceLocation[BUILTIN_MODEL_COUNT + potteryPatterns.size() * 4];
+        var ids = new Identifier[BUILTIN_MODEL_COUNT + potteryPatterns.size() * 4];
         ids[IDX_EMPTY] = ModelIdentifiers.DECORATED_POT_SHAKING;
         ids[IDX_BASE_POT] = ModelIdentifiers.DECORATED_POT_BASE;
 

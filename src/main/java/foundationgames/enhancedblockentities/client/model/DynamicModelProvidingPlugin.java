@@ -4,21 +4,21 @@ package foundationgames.enhancedblockentities.client.model;
 /*import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelModifier;
 import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
 public class DynamicModelProvidingPlugin implements ModelLoadingPlugin, ModelModifier.OnLoad {
     private final Supplier<DynamicUnbakedModel> model;
-    private final ResourceLocation id;
+    private final Identifier id;
 
-    public DynamicModelProvidingPlugin(ResourceLocation id, Supplier<DynamicUnbakedModel> model) {
+    public DynamicModelProvidingPlugin(Identifier id, Supplier<DynamicUnbakedModel> model) {
         this.model = model;
         this.id = id;
     }
 
-    public static void register(ResourceLocation id, Supplier<DynamicUnbakedModel> model) {
+    public static void register(Identifier id, Supplier<DynamicUnbakedModel> model) {
         ModelLoadingPlugin.register(new DynamicModelProvidingPlugin(id, model));
     }
 
@@ -35,7 +35,7 @@ public class DynamicModelProvidingPlugin implements ModelLoadingPlugin, ModelMod
 }
 *///?} else {
 import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public final class DynamicModelProvidingPlugin {
-    private static final Map<ResourceLocation, Supplier<DynamicUnbakedModel>> PROVIDERS = new HashMap<>();
+    private static final Map<Identifier, Supplier<DynamicUnbakedModel>> PROVIDERS = new HashMap<>();
 
     static {
         CustomUnbakedBlockStateModel.register(DynamicUnbakedModel.Unbaked.TYPE_ID, DynamicUnbakedModel.Unbaked.CODEC);
@@ -52,11 +52,11 @@ public final class DynamicModelProvidingPlugin {
     private DynamicModelProvidingPlugin() {
     }
 
-    public static void register(ResourceLocation id, Supplier<DynamicUnbakedModel> model) {
+    public static void register(Identifier id, Supplier<DynamicUnbakedModel> model) {
         PROVIDERS.put(id, model);
     }
 
-    public static @Nullable DynamicUnbakedModel get(ResourceLocation id) {
+    public static @Nullable DynamicUnbakedModel get(Identifier id) {
         var provider = PROVIDERS.get(id);
         return provider != null ? provider.get() : null;
     }
