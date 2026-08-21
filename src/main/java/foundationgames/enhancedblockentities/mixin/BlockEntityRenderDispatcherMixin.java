@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 //?}
 //? if >= 1.21.5 <= 1.21.6 {
@@ -25,6 +26,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//? if >= 1.21.9 {
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//?}
 
 @Mixin(BlockEntityRenderDispatcher.class)
 public class BlockEntityRenderDispatcherMixin {
@@ -61,6 +65,18 @@ public class BlockEntityRenderDispatcherMixin {
     }
     *///?}
     //? if >= 1.21.9 {
+    @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true)
+    private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
+            ModelFeatureRenderer.CrumblingOverlay crumbling, CallbackInfoReturnable<BlockEntityRenderState> cir) {
+        Tuple<BlockEntityRenderCondition, BlockEntityRendererOverride> entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
+
+        if (entry == null || !EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) return;
+
+        if (!entry.getA().shouldRender(blockEntity)) {
+            cir.setReturnValue(null);
+        }
+    }
+
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     private void enhanced_bes$renderOverrides(BlockEntityRenderState renderState, PoseStack matrices, SubmitNodeCollector output, CameraRenderState cameraState, CallbackInfo ci) {
         Tuple<BlockEntityRenderCondition, BlockEntityRendererOverride> entry = EnhancedBlockEntityRegistry.ENTITIES.get(renderState.blockEntityType);
@@ -73,12 +89,10 @@ public class BlockEntityRenderDispatcherMixin {
         BlockEntity blockEntity = level != null ? level.getBlockEntity(renderState.blockPos) : null;
         if (blockEntity == null) return;
 
-        if (entry.getA().shouldRender(blockEntity)) {
-            BlockEntityRenderer<BlockEntity, ?> renderer = ((BlockEntityRenderDispatcher) (Object) this).getRenderer(renderState);
-            float tickDelta = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+        BlockEntityRenderer<BlockEntity, ?> renderer = ((BlockEntityRenderDispatcher) (Object) this).getRenderer(renderState);
+        float tickDelta = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
 
-            entry.getB().render(renderer, renderState, blockEntity, tickDelta, matrices, output, renderState.lightCoords, OverlayTexture.NO_OVERLAY);
-        }
+        entry.getB().render(renderer, renderState, blockEntity, tickDelta, matrices, output, renderState.lightCoords, OverlayTexture.NO_OVERLAY);
     }
     //?}
 }
