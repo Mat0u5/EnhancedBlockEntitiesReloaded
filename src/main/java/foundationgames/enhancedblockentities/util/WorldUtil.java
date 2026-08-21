@@ -13,7 +13,11 @@ import net.minecraft.world.level.Level;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum WorldUtil implements ClientTickEvents.EndWorldTick {
+//? if <= 1.21.11 {
+/*public enum WorldUtil implements ClientTickEvents.EndWorldTick {
+*///?} else {
+public enum WorldUtil implements ClientTickEvents.EndLevelTick {
+//?}
     EVENT_LISTENER;
 
     public static final Map<SectionPos, ExecutableRunnableHashSet> CHUNK_UPDATE_TASKS = new HashMap<>();

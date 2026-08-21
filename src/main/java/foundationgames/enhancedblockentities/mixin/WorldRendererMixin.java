@@ -4,7 +4,11 @@ package foundationgames.enhancedblockentities.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import foundationgames.enhancedblockentities.client.render.SignRenderManager;
 import net.minecraft.client.renderer.SubmitNodeStorage;
-import net.minecraft.client.renderer.state.LevelRenderState;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.state.LevelRenderState;
+*///?} else {
+import net.minecraft.client.renderer.state.level.LevelRenderState;
+//?}
 //?}
 import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
 import net.minecraft.client.renderer.LevelRenderer;

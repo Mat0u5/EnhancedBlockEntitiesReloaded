@@ -1,7 +1,11 @@
 package foundationgames.enhancedblockentities.config.gui.widget;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.gui.GuiGraphics;
+*///?} else {
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+//?}
 import net.minecraft.client.gui.components.AbstractStringWidget;
 //? if >= 1.21.11 {
 import net.minecraft.client.gui.ActiveTextCollector;
@@ -25,7 +29,11 @@ public class SectionTextWidget extends AbstractStringWidget {
     //?}
 
     @Override
-    public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    //? if <= 1.21.11 {
+    /*public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    *///?} else {
+    public void extractWidgetRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    //?}
         final int white = 0xFFFFFFFF;
         var font = this.getFont();
         var msg = this.getMessage();
@@ -48,6 +56,10 @@ public class SectionTextWidget extends AbstractStringWidget {
         context.fill(l, y, ml, y + 2, white);
         context.fill(mr, y, r, y + 2, white);
 
-        context.drawCenteredString(font, msg, tx, ty, 0xFFFFFF);
+        //? if <= 1.21.11 {
+        /*context.drawCenteredString(font, msg, tx, ty, 0xFFFFFFFF);
+        *///?} else {
+        context.centeredText(font, msg, tx, ty, 0xFFFFFFFF);
+        //?}
     }
 }

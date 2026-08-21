@@ -8,7 +8,9 @@ import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.BuiltInMetadata;
+//? if <= 1.21.11 {
+/*import net.minecraft.server.packs.BuiltInMetadata;
+*///?}
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
@@ -142,7 +144,11 @@ public class EBEPack implements PackResources {
         //? if <= 1.21.6 {
         /*return BuiltInMetadata.of(PackMetadataSection.TYPE, this.packMeta).get(meta);
         *///?} else {
-        return BuiltInMetadata.of(PackMetadataSection.CLIENT_TYPE, this.packMeta).get(meta);
+        //? if <= 1.21.11 {
+        /*return BuiltInMetadata.of(PackMetadataSection.CLIENT_TYPE, this.packMeta).get(meta);
+        *///?} else {
+        return PackMetadataSection.CLIENT_TYPE.withValue(this.packMeta).unwrapToType(meta).orElse(null);
+        //?}
         //?}
     }
 

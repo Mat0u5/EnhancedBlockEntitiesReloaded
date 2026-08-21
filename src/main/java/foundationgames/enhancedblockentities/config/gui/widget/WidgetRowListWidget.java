@@ -1,7 +1,11 @@
 package foundationgames.enhancedblockentities.config.gui.widget;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.gui.GuiGraphics;
+*///?} else {
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+//?}
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -53,7 +57,11 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
     }
 
     @Override
-    protected void renderListBackground(GuiGraphics context) {
+    //? if <= 1.21.11 {
+    /*protected void renderListBackground(GuiGraphics context) {
+    *///?} else {
+    protected void extractListBackground(GuiGraphicsExtractor context) {
+    //?}
     }
 
     public static class Entry extends ContainerObjectSelectionList.Entry<Entry> {
@@ -80,12 +88,20 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
         /*public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             this.widget.setPosition(x - 3, y);
         *///?} else {
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        //? if <= 1.21.11 {
+        /*public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        *///?} else {
+        public void extractContent(GuiGraphicsExtractor context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        //?}
             this.widget.setPosition(this.getContentX() - 3, this.getContentY());
         //?}
             this.widget.arrangeElements();
 
-            this.widget.visitWidgets(c -> c.render(context, mouseX, mouseY, tickDelta));
+            //? if <= 1.21.11 {
+            /*this.widget.visitWidgets(c -> c.render(context, mouseX, mouseY, tickDelta));
+            *///?} else {
+            this.widget.visitWidgets(c -> c.extractRenderState(context, mouseX, mouseY, tickDelta));
+            //?}
         }
     }
 }

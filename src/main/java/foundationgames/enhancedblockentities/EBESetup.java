@@ -13,13 +13,19 @@ import foundationgames.enhancedblockentities.util.ResourceUtil;
 /*import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.RenderType;
 *///?} else {
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+//? if <= 1.21.11 {
+/*import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+*///?}
 //?}
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
 *///?} else {
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.block.model.BlockStateModel;
+*///?} else {
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+//?}
 //?}
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -321,7 +327,9 @@ public enum EBESetup {;
         //? if <= 1.21.9 {
         /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT_MIPPED);
         *///?} else {
-        BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
+        //? if <= 1.21.11 {
+        /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
+        *///?}
         //?}
         //?}
     }
@@ -330,7 +338,9 @@ public enum EBESetup {;
         //? if <= 1.21.5 {
         /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout());
         *///?} else {
-        BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
+        //? if <= 1.21.11 {
+        /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
+        *///?}
         //?}
     }
 
@@ -453,9 +463,38 @@ public enum EBESetup {;
         EnhancedBlockEntityRegistry.register(Blocks.YELLOW_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
     }
 
+    //? if >= 26.1 {
+    private static Block shulkerBoxByColor(DyeColor color) {
+        if (color == null) return Blocks.SHULKER_BOX;
+
+        return switch (color) {
+            case WHITE -> Blocks.WHITE_SHULKER_BOX;
+            case ORANGE -> Blocks.ORANGE_SHULKER_BOX;
+            case MAGENTA -> Blocks.MAGENTA_SHULKER_BOX;
+            case LIGHT_BLUE -> Blocks.LIGHT_BLUE_SHULKER_BOX;
+            case YELLOW -> Blocks.YELLOW_SHULKER_BOX;
+            case LIME -> Blocks.LIME_SHULKER_BOX;
+            case PINK -> Blocks.PINK_SHULKER_BOX;
+            case GRAY -> Blocks.GRAY_SHULKER_BOX;
+            case LIGHT_GRAY -> Blocks.LIGHT_GRAY_SHULKER_BOX;
+            case CYAN -> Blocks.CYAN_SHULKER_BOX;
+            case PURPLE -> Blocks.PURPLE_SHULKER_BOX;
+            case BLUE -> Blocks.BLUE_SHULKER_BOX;
+            case BROWN -> Blocks.BROWN_SHULKER_BOX;
+            case GREEN -> Blocks.GREEN_SHULKER_BOX;
+            case RED -> Blocks.RED_SHULKER_BOX;
+            case BLACK -> Blocks.BLACK_SHULKER_BOX;
+        };
+    }
+    //?}
+
     public static void setupShulkerBoxes() {
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
-            var block = ShulkerBoxBlock.getBlockByColor(color);
+            //? if <= 1.21.11 {
+            /*var block = ShulkerBoxBlock.getBlockByColor(color);
+            *///?} else {
+            var block = shulkerBoxByColor(color);
+            //?}
             putCutoutMipped(block);
             EnhancedBlockEntityRegistry.register(block, BlockEntityType.SHULKER_BOX, BlockEntityRenderCondition.SHULKER_BOX,
                     new ShulkerBoxBlockEntityRendererOverride((map) -> {

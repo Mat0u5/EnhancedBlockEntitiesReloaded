@@ -9,7 +9,11 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 *///?} else {
 import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.block.model.BlockStateModel;
+*///?} else {
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+//?}
 //?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;

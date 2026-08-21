@@ -4,6 +4,7 @@ import dev.kikugie.fletching_table.extension.FletchingTableExtension
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import me.modmuss50.mpp.ModPublishExtension
 import me.modmuss50.mpp.ReleaseType
+import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
 import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
@@ -505,6 +506,8 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		projectId = project.prop("publish.modrinth.id")
 		this.accessToken = accessToken
 		minecraftVersions.addAll(listOf(currentVersion) + additionalVersions)
+		// Environment
+		environment = ModrinthEnvironment.SERVER_ONLY_CLIENT_OPTIONAL
 
 		if (!staging) {
 			deps.required.forEach { dep -> whenNotNull(dep.modrinth) { requires(it) } }
@@ -525,6 +528,10 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		this.accessToken = accessToken
 		minecraftVersions.addAll(listOf(currentVersion) + additionalVersions)
 
+		// Environment
+		server = true
+		client = false
+
 		deps.required.forEach { dep -> whenNotNull(dep.curseforge) { requires(it) } }
 		deps.optional.forEach { dep -> whenNotNull(dep.curseforge) { optional(it) } }
 		deps.incompatible.forEach { dep -> whenNotNull(dep.curseforge) { incompatible(it) } }
@@ -536,6 +543,9 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			replace("ModelIdentifiers", "ModelIdentifiers")
 			replace("ResourceLocation", "Identifier")
 			replace(".location()", ".identifier()")
+		}
+		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, ">=26.1"), "!renames_26_1") {
+			replace("BlockModelPart", "BlockStateModelPart")
 		}
 	}
 }

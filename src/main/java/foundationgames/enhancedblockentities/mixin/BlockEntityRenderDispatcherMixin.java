@@ -17,7 +17,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.CameraRenderState;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.state.CameraRenderState;
+*///?} else {
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+//?}
 //?}
 //? if >= 1.21.5 <= 1.21.6 {
 /*import net.minecraft.world.phys.Vec3;

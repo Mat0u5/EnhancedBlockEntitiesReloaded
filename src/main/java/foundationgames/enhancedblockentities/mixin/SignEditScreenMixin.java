@@ -9,7 +9,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import foundationgames.enhancedblockentities.client.render.gui.SignGuiElementRenderer;
 //?}
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.gui.GuiGraphics;
+*///?} else {
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+//?}
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,8 +27,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SignEditScreenMixin {
     private static final float SIGN_SCALE = 93.75f;
 
-    @Inject(method = "renderSignBackground", at = @At("HEAD"), cancellable = true)
-    private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
+    //? if <= 1.21.11 {
+    /*@Inject(method = "renderSignBackground", at = @At("HEAD"), cancellable = true)
+    *///?} else {
+    @Inject(method = "extractSignBackground", at = @At("HEAD"), cancellable = true)
+    //?}
+    //? if <= 1.21.11 {
+    /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
+    *///?} else {
+    private void enhanced_bes$renderBakedModelSign(GuiGraphicsExtractor context, CallbackInfo ci) {
+    //?}
         BlockState state = ((SignEditScreen) (Object) this).sign.getBlockState();
 
         boolean enhanceSigns = EnhancedBlockEntities.CONFIG.renderEnhancedSigns;
@@ -32,7 +44,11 @@ public class SignEditScreenMixin {
         if (!EnhancedBlockEntityRegistry.BLOCKS.contains(state.getBlock())) return;
 
         if (enhanceSigns) {
-            var models = Minecraft.getInstance().getModelManager().getBlockModelShaper();
+            //? if <= 1.21.11 {
+            /*var models = Minecraft.getInstance().getModelManager().getBlockModelShaper();
+            *///?} else {
+            var models = Minecraft.getInstance().getModelManager().getBlockStateModelSet();
+            //?}
             float up = 0;
             if (state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
                 state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH);
@@ -41,7 +57,11 @@ public class SignEditScreenMixin {
                 state = state.setValue(BlockStateProperties.ROTATION_16, 0);
             }
 
-            var signModel = models.getBlockModel(state);
+            //? if <= 1.21.11 {
+            /*var signModel = models.getBlockModel(state);
+            *///?} else {
+            var signModel = models.get(state);
+            //?}
 
             //? if <= 1.21.5 {
             /*var buffers = Minecraft.getInstance().renderBuffers().bufferSource();
@@ -58,8 +78,13 @@ public class SignEditScreenMixin {
             *///?} else {
             int centerX = ((SignEditScreen) (Object) this).width / 2;
 
-            context.guiRenderState.submitPicturesInPictureState(new SignGuiElementRenderer.State(
+            //? if <= 1.21.11 {
+            /*context.guiRenderState.submitPicturesInPictureState(new SignGuiElementRenderer.State(
                     signModel, state, up, centerX - 48, 66, centerX + 48, 168, SIGN_SCALE, null));
+            *///?} else {
+            context.guiRenderState.addPicturesInPictureState(new SignGuiElementRenderer.State(
+                    signModel, state, up, centerX - 48, 66, centerX + 48, 168, SIGN_SCALE, null));
+            //?}
             //?}
 
             ci.cancel();

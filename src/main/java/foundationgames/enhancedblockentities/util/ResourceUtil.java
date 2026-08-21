@@ -328,7 +328,11 @@ public enum ResourceUtil {;
     public static void addDecoratedPotPatternModels(ResourceKey<DecoratedPotPattern> patternKey, EBEPack pack) {
         for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
             addParentTexModel("block/template_pottery_pattern_" + dir.getName(),
-                    kv("pattern", Sheets.getDecoratedPotMaterial(patternKey).texture().toString()),
+                    //? if <= 1.21.11 {
+                    /*kv("pattern", Sheets.getDecoratedPotMaterial(patternKey).texture().toString()),
+                    *///?} else {
+                    kv("pattern", Sheets.DECORATED_POT_SPRITES.get(patternKey).texture().toString()),
+                    //?}
                     Identifier.parse("block/" + patternKey.identifier().getPath() + "_" + dir.getName()),
                     pack);
         }

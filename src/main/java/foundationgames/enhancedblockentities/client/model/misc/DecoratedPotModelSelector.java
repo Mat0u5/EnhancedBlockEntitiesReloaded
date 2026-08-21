@@ -10,7 +10,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.BlockAndTintGetter;
+//? if <= 1.21.11 {
+/*import net.minecraft.world.level.BlockAndTintGetter;
+*///?} else {
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+//?}
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;

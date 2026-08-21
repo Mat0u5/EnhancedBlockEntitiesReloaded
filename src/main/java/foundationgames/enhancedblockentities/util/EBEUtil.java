@@ -3,19 +3,39 @@ package foundationgames.enhancedblockentities.util;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
-import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
+//? if <= 1.21.11 {
+/*import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
+*///?} else {
+import net.fabricmc.fabric.api.client.renderer.v1.model.ModelHelper;
+//?}
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.ItemBlockRenderTypes;
+*///?} else {
+import com.mojang.blaze3d.vertex.QuadInstance;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
+//?}
 import net.minecraft.client.renderer.MultiBufferSource;
 //? if >= 1.21.9 {
 import net.minecraft.client.renderer.SubmitNodeCollector;
 //?}
-import net.minecraft.client.renderer.block.model.BakedQuad;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.block.model.BakedQuad;
+*///?} else {
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+//?}
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
 *///?} else {
-import net.minecraft.client.renderer.block.model.BlockModelPart;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.block.model.BlockStateModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
+*///?} else {
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+//?}
 //?}
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -50,10 +70,23 @@ public enum EBEUtil {;
     }
 
     //? if >= 1.21.9 {
-    public static void renderBakedModel(SubmitNodeCollector output, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
+    //? if <= 1.21.11 {
+    /*public static void renderBakedModel(SubmitNodeCollector output, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
         if (model == null) return;
         output.submitBlockModel(matrices, ItemBlockRenderTypes.getRenderType(state), model, 1, 1, 1, light, overlay, 0);
     }
+    *///?} else {
+    public static void renderBakedModel(SubmitNodeCollector output, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
+        if (model == null) return;
+
+        var parts = new ObjectArrayList<BlockStateModelPart>();
+        model.collectParts(dummy, parts);
+        if (parts.isEmpty()) return;
+
+        output.submitBlockModel(matrices, Sheets.cutoutBlockSheet(), parts,
+                BlockModelRenderState.EMPTY_TINTS, light, overlay, 0);
+    }
+    //?}
     //?}
 
     //? if <= 1.21.4 {
@@ -67,10 +100,11 @@ public enum EBEUtil {;
         }
     }
     *///?} else {
-    public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
+    //? if <= 1.21.11 {
+    /*public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
         if (model == null) return;
         VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));
-        for (BlockModelPart part : model.collectParts(dummy)) {
+        for (BlockStateModelPart part : model.collectParts(dummy)) {
             for (int i = 0; i <= 6; i++) {
                 for (BakedQuad q : part.getQuads(ModelHelper.faceFromIndex(i))) {
                     vertices.putBulkData(matrices.last(), q, 1, 1, 1, 1, light, overlay);
@@ -78,6 +112,27 @@ public enum EBEUtil {;
             }
         }
     }
+    *///?} else {
+    public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
+        if (model == null) return;
+
+        var parts = new ObjectArrayList<BlockStateModelPart>();
+        model.collectParts(dummy, parts);
+
+        var quadInstance = new QuadInstance();
+        quadInstance.setLightCoords(light);
+        quadInstance.setOverlayCoords(overlay);
+
+        VertexConsumer vertices = vertexConsumers.getBuffer(Sheets.cutoutBlockSheet());
+        for (BlockStateModelPart part : parts) {
+            for (int i = 0; i <= 6; i++) {
+                for (BakedQuad q : part.getQuads(ModelHelper.faceFromIndex(i))) {
+                    vertices.putBakedQuad(matrices.last(), q, quadInstance);
+                }
+            }
+        }
+    }
+    //?}
     //?}
 
     public static boolean isVanillaResourcePack(PackResources pack) {

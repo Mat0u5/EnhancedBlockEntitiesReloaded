@@ -14,7 +14,11 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
 *///?} else {
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.block.model.BlockStateModel;
+*///?} else {
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+//?}
 //?}
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;

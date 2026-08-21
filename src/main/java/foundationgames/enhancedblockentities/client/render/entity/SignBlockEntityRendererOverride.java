@@ -28,13 +28,33 @@ public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride
             var state = entity.getBlockState();
             SignBlock block = (SignBlock) state.getBlock();
             var sign = (AbstractSignBlockEntityRenderAccessor) renderer;
-            sign.enhanced_bes$applyTransforms(matrices, -block.getYRotationDegrees(state), state);
+            //? if <= 1.21.11 {
+            /*sign.enhanced_bes$applyTransforms(matrices, -block.getYRotationDegrees(state), state);
+            *///?}
             //? if <= 1.21.6 {
             /*sign.enhanced_bes$renderText(entity.getBlockPos(), entity.getFrontText(), matrices, output, light, entity.getTextLineHeight(), entity.getMaxTextLineWidth(), true);
             sign.enhanced_bes$renderText(entity.getBlockPos(), entity.getBackText(), matrices, output, light, entity.getTextLineHeight(), entity.getMaxTextLineWidth(), false);
             *///?} else {
-            sign.enhanced_bes$submitSignText((SignRenderState) renderState, matrices, output, true);
+            //? if <= 1.21.11 {
+            /*sign.enhanced_bes$submitSignText((SignRenderState) renderState, matrices, output, true);
             sign.enhanced_bes$submitSignText((SignRenderState) renderState, matrices, output, false);
+            *///?} else {
+            var signState = (SignRenderState) renderState;
+
+            if (signState.frontText != null) {
+                matrices.pushPose();
+                matrices.mulPose(signState.transformations.frontText());
+                sign.enhanced_bes$submitSignText(signState, matrices, output, signState.frontText);
+                matrices.popPose();
+            }
+
+            if (signState.backText != null) {
+                matrices.pushPose();
+                matrices.mulPose(signState.transformations.backText());
+                sign.enhanced_bes$submitSignText(signState, matrices, output, signState.backText);
+                matrices.popPose();
+            }
+            //?}
             //?}
         }
     }

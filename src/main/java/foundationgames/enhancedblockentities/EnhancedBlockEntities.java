@@ -14,7 +14,11 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 /*import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 *///?}
 //? if >= 1.21.6 {
-import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
+//? if <= 1.21.11 {
+/*import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
+*///?} else {
+import net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry;
+//?}
 import foundationgames.enhancedblockentities.client.render.gui.SignGuiElementRenderer;
 //?}
 import net.fabricmc.loader.api.FabricLoader;
@@ -56,10 +60,18 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         //? if <= 1.21.6 {
         /*WorldRenderEvents.END.register(ctx -> SignRenderManager.endFrame());
         *///?}
-        ClientTickEvents.END_WORLD_TICK.register(WorldUtil.EVENT_LISTENER);
+        //? if <= 1.21.11 {
+        /*ClientTickEvents.END_WORLD_TICK.register(WorldUtil.EVENT_LISTENER);
+        *///?} else {
+        ClientTickEvents.END_LEVEL_TICK.register(WorldUtil.EVENT_LISTENER);
+        //?}
 
         //? if >= 1.21.6 {
-        SpecialGuiElementRegistry.register(ctx -> new SignGuiElementRenderer(ctx.vertexConsumers()));
+        //? if <= 1.21.11 {
+        /*SpecialGuiElementRegistry.register(ctx -> new SignGuiElementRenderer(ctx.vertexConsumers()));
+        *///?} else {
+        PictureInPictureRendererRegistry.register(ctx -> new SignGuiElementRenderer(ctx.bufferSource()));
+        //?}
         //?}
 
         ModelIdentifiers.init();
