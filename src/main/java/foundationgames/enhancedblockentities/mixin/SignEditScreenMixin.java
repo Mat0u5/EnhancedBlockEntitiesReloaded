@@ -3,7 +3,8 @@ package foundationgames.enhancedblockentities.mixin;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.EnhancedBlockEntityRegistry;
 //? if <= 1.21.5 {
-/*import foundationgames.enhancedblockentities.util.EBEUtil;
+/*import com.mojang.blaze3d.platform.Lighting;
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 *///?} else {
 import foundationgames.enhancedblockentities.client.render.gui.SignGuiElementRenderer;
@@ -72,7 +73,10 @@ public class SignEditScreenMixin {
             matrices.scale(SIGN_SCALE, -SIGN_SCALE, SIGN_SCALE);
             matrices.translate(-0.5, up - 0.5, 0);
 
+            Lighting.setupFor3DItems();
             EBEUtil.renderBakedModel(buffers, state, matrices, signModel, 15728880, OverlayTexture.NO_OVERLAY);
+            buffers.endBatch();
+            Lighting.setupForFlatItems();
 
             matrices.popPose();
             *///?} else {

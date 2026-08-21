@@ -207,9 +207,9 @@ public enum ResourceUtil {;
         addRotation16Models(hangingTexDef, "block/template_hanging_sign_attached", "block/"+signType+"_hanging_sign_attached",
                 ResourceUtil::signAOSuffix, pack);
 
-        addParentTexModel(signAOSuffix("block/template_wall_sign"),
+        addParentTexModel(signAOSuffix("block/ebe_template_wall_sign"),
                 signParticle(signName) + kv("sign", signTex), Identifier.parse("block/"+signType+"_wall_sign"), pack);
-        addParentTexModel(signAOSuffix("block/template_wall_hanging_sign"),
+        addParentTexModel(signAOSuffix("block/ebe_template_wall_hanging_sign"),
                 hangingTexDef, Identifier.parse("block/"+signType+"_wall_hanging_sign"), pack);
     }
 
@@ -262,10 +262,10 @@ public enum ResourceUtil {;
     public static void addBedModels(DyeColor bedColor, EBEPack pack) {
         String color = bedColor.getName();
 
-        addParentTexModel(bedAOSuffix("block/template_bed_head"),
+        addParentTexModel(bedAOSuffix("block/ebe_template_bed_head"),
                 bedParticle(color) + kv("bed", "entity/bed/" + color),
                 Identifier.parse("block/" + color + "_bed_head"), pack);
-        addParentTexModel(bedAOSuffix("block/template_bed_foot"),
+        addParentTexModel(bedAOSuffix("block/ebe_template_bed_foot"),
                 bedParticle(color) + kv("bed", "entity/bed/" + color),
                 Identifier.parse("block/" + color + "_bed_foot"), pack);
 

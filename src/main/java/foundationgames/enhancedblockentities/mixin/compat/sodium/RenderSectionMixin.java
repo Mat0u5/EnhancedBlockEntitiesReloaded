@@ -20,7 +20,7 @@ public class RenderSectionMixin implements ChunkRebuildTaskAccess {
 
     //? if >= 1.21.6 {
     @Inject(method = "setInfo", at = @At("HEAD"), require = 0)
-    private void enhanced_bes$compat_sodium$runPostRebuildTask(BuiltSectionInfo info, CallbackInfoReturnable<Boolean> cir) {
+    private void enhanced_bes$compat_sodium$runPostRebuildTask(BuiltSectionInfo info, CallbackInfoReturnable<?> cir) {
         this.enhanced_bes$runAfterRebuildTask();
     }
     //?}

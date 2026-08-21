@@ -70,7 +70,8 @@ public enum EBESetup {;
     }
 
     public static void setupRRPSigns() {
-        EBEPack p = ResourceUtil.getPackForCompat();
+        //? if <= 26.1 {
+        /*EBEPack p = ResourceUtil.getPackForCompat();
 
         ResourceUtil.addSignBlockStates("oak_sign", "oak_wall_sign", p);
         ResourceUtil.addSignBlockStates("birch_sign", "birch_wall_sign", p);
@@ -116,6 +117,7 @@ public enum EBESetup {;
         p.addDirBlockSprites("entity/signs", "entity/signs/");
         p.addDirBlockSprites("entity/signs/hanging", "entity/signs/hanging/");
         p.addDirBlockSprites("gui/hanging_signs", "block/particle_hanging_sign_");
+        *///?}
     }
 
     public static void setupRRPBells() {
@@ -125,7 +127,8 @@ public enum EBESetup {;
     }
 
     public static void setupRRPBeds() {
-        EBEPack p = ResourceUtil.getBasePack();
+        //? if <= 26.1 {
+        /*EBEPack p = ResourceUtil.getBasePack();
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         for (DyeColor color : DyeColor.values()) {
@@ -134,6 +137,7 @@ public enum EBESetup {;
         }
 
         p.addDirBlockSprites("entity/bed", "entity/bed/");
+        *///?}
     }
 
     public static void setupRRPShulkerBoxes() {

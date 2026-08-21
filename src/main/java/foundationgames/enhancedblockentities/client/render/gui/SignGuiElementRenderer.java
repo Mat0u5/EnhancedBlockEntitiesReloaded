@@ -48,7 +48,7 @@ public class SignGuiElementRenderer extends PictureInPictureRenderer<SignGuiElem
     //? if <= 26.1 {
     /*@Override
     protected void renderToTexture(State state, PoseStack matrices) {
-        Minecraft.getInstance().gameRenderer.getLighting().setupFor(Lighting.Entry.ITEMS_FLAT);
+        Minecraft.getInstance().gameRenderer.getLighting().setupFor(Lighting.Entry.ITEMS_3D);
 
         matrices.scale(1, -1, 1);
 
@@ -61,7 +61,7 @@ public class SignGuiElementRenderer extends PictureInPictureRenderer<SignGuiElem
     *///?} else {
     @Override
     protected void renderToTexture(State state, PoseStack matrices, SubmitNodeCollector output) {
-        Minecraft.getInstance().gameRenderer.lighting().setupFor(Lighting.Entry.ITEMS_FLAT);
+        Minecraft.getInstance().gameRenderer.lighting().setupFor(Lighting.Entry.ITEMS_3D);
 
         matrices.scale(1, -1, 1);
 

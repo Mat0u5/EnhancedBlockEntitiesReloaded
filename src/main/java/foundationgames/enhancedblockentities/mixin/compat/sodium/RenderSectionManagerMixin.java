@@ -44,7 +44,8 @@ public class RenderSectionManagerMixin {
         return output;
     }
     *///?} else {
-    @Inject(method = "submitSectionTask", at = @At("HEAD"), require = 0)
+    @Inject(method = "submitSectionTask(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/executor/ChunkJobCollector;Lnet/caffeinemc/mods/sodium/client/render/chunk/RenderSection;ILnet/caffeinemc/mods/sodium/client/render/chunk/compile/estimation/UploadResourceBudget;Z)V",
+            at = @At("HEAD"), require = 0)
     private void enhanced_bes$compat_sodium$cacheUpdatingChunk(ChunkJobCollector collector, RenderSection section,
             int updateType, UploadResourceBudget budget, boolean deferred, CallbackInfo ci) {
         enhanced_bes$compat_sodium$cacheUpdatingChunk0(section);
