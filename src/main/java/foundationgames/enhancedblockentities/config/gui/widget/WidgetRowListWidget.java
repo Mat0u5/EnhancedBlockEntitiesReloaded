@@ -76,8 +76,13 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
         }
 
         @Override
-        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        //? if <= 1.21.6 {
+        /*public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             this.widget.setPosition(x - 3, y);
+        *///?} else {
+        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            this.widget.setPosition(this.getContentX() - 3, this.getContentY());
+        //?}
             this.widget.arrangeElements();
 
             this.widget.visitWidgets(c -> c.render(context, mouseX, mouseY, tickDelta));

@@ -10,7 +10,9 @@ import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.WorldUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+//? if <= 1.21.6 {
+/*import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+*///?}
 //? if >= 1.21.6 {
 import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
 import foundationgames.enhancedblockentities.client.render.gui.SignGuiElementRenderer;
@@ -51,7 +53,9 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
 
         ConditionalItemModelProperties.ID_MAPPER.put(EBEUtil.id("ebe_is_christmas"), EBEIsChristmasProperty.CODEC);
 
-        WorldRenderEvents.END.register(SignRenderManager::endFrame);
+        //? if <= 1.21.6 {
+        /*WorldRenderEvents.END.register(ctx -> SignRenderManager.endFrame());
+        *///?}
         ClientTickEvents.END_WORLD_TICK.register(WorldUtil.EVENT_LISTENER);
 
         //? if >= 1.21.6 {

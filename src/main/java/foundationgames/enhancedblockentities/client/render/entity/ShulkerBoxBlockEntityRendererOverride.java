@@ -4,7 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import net.minecraft.client.renderer.MultiBufferSource;
+//? if <= 1.21.6 {
+/*import net.minecraft.client.renderer.MultiBufferSource;
+*///?} else {
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+//?}
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
@@ -38,7 +43,11 @@ public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOv
     }
 
     @Override
-    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
+    //? if <= 1.21.6 {
+    /*public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, int light, int overlay) {
+    *///?} else {
+    public void render(BlockEntityRenderer<BlockEntity, ?> renderer, BlockEntityRenderState renderState, BlockEntity blockEntity, float tickDelta, PoseStack matrices, SubmitNodeCollector output, int light, int overlay) {
+    //?}
         if (models.isEmpty()) modelMapFiller.accept(models);
         if (blockEntity instanceof ShulkerBoxBlockEntity entity) {
             Direction dir = Direction.UP;
@@ -59,7 +68,7 @@ public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOv
 
             var lidModel = models.get(entity.getColor());
             if (lidModel != null) {
-                EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getBlockState(), matrices, lidModel, light, overlay);
+                EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, lidModel, light, overlay);
             }
 
             matrices.popPose();

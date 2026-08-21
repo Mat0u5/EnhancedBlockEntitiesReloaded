@@ -7,6 +7,9 @@ import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
+//? if >= 1.21.9 {
+import net.minecraft.client.renderer.SubmitNodeCollector;
+//?}
 import net.minecraft.client.renderer.block.model.BakedQuad;
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
@@ -45,6 +48,13 @@ public enum EBEUtil {;
         int h = dir.get2DDataValue();
         return h >= 0 ? h * 90 : 0;
     }
+
+    //? if >= 1.21.9 {
+    public static void renderBakedModel(SubmitNodeCollector output, BlockState state, PoseStack matrices, BlockStateModel model, int light, int overlay) {
+        if (model == null) return;
+        output.submitBlockModel(matrices, ItemBlockRenderTypes.getRenderType(state), model, 1, 1, 1, light, overlay, 0);
+    }
+    //?}
 
     //? if <= 1.21.4 {
     /*public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BakedModel model, int light, int overlay) {

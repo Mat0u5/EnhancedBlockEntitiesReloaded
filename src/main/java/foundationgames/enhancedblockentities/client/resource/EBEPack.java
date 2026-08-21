@@ -12,6 +12,9 @@ import net.minecraft.server.packs.BuiltInMetadata;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
+//? if >= 1.21.9 {
+import net.minecraft.util.InclusiveRange;
+//?}
 import net.minecraft.server.packs.metadata.MetadataSectionType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.PackSource;
@@ -41,14 +44,23 @@ public class EBEPack implements PackResources {
     public EBEPack(ResourceLocation id, TemplateLoader templates) {
         this.templates = templates;
 
+        //? if <= 1.21.5 {
+        /*this.packMeta = new PackMetadataSection(
+                Component.literal("Enhanced Block Entities Resources"),
+                SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
+                Optional.empty());
+        *///?}
+        //? if >= 1.21.6 < 1.21.9 {
+        /*this.packMeta = new PackMetadataSection(
+                Component.literal("Enhanced Block Entities Resources"),
+                SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES),
+                Optional.empty());
+        *///?}
+        //? if >= 1.21.9 {
         this.packMeta = new PackMetadataSection(
                 Component.literal("Enhanced Block Entities Resources"),
-                //? if <= 1.21.5 {
-                /*SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
-                *///?} else {
-                SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES),
-                //?}
-                Optional.empty());
+                new InclusiveRange<>(SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES)));
+        //?}
 
         this.packInfo = new PackLocationInfo(id.toString(), Component.literal(id.toString()), PackSource.BUILT_IN, Optional.empty());
     }
@@ -127,7 +139,11 @@ public class EBEPack implements PackResources {
     @Nullable
     @Override
     public <T> T getMetadataSection(MetadataSectionType<T> meta) {
-        return BuiltInMetadata.of(PackMetadataSection.TYPE, this.packMeta).get(meta);
+        //? if <= 1.21.6 {
+        /*return BuiltInMetadata.of(PackMetadataSection.TYPE, this.packMeta).get(meta);
+        *///?} else {
+        return BuiltInMetadata.of(PackMetadataSection.CLIENT_TYPE, this.packMeta).get(meta);
+        //?}
     }
 
     @Override

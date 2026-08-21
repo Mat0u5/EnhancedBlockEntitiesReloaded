@@ -4,7 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import net.minecraft.client.renderer.MultiBufferSource;
+//? if <= 1.21.6 {
+/*import net.minecraft.client.renderer.MultiBufferSource;
+*///?} else {
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+//?}
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
@@ -41,7 +46,11 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
     }
 
     @Override
-    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
+    //? if <= 1.21.6 {
+    /*public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, int light, int overlay) {
+    *///?} else {
+    public void render(BlockEntityRenderer<BlockEntity, ?> renderer, BlockEntityRenderState renderState, BlockEntity blockEntity, float tickDelta, PoseStack matrices, SubmitNodeCollector output, int light, int overlay) {
+    //?}
         if (models == null) models = modelGetter.get();
         if (blockEntity instanceof LidBlockEntity) {
             matrices.pushPose();
@@ -59,7 +68,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             rot = 1f - (rot * rot * rot);
             matrices.mulPose(Axis.XP.rotationDegrees(rot * 90));
             matrices.translate(0, -yPiv, -zPiv);
-            EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getBlockState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
+            EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
 
             matrices.popPose();
         }

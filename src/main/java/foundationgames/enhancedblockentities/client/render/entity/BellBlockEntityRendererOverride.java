@@ -5,7 +5,12 @@ import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import net.minecraft.client.renderer.MultiBufferSource;
+//? if <= 1.21.6 {
+/*import net.minecraft.client.renderer.MultiBufferSource;
+*///?} else {
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+//?}
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
@@ -25,7 +30,11 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
     //?}
 
     @Override
-    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
+    //? if <= 1.21.6 {
+    /*public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, int light, int overlay) {
+    *///?} else {
+    public void render(BlockEntityRenderer<BlockEntity, ?> renderer, BlockEntityRenderState renderState, BlockEntity blockEntity, float tickDelta, PoseStack matrices, SubmitNodeCollector output, int light, int overlay) {
+    //?}
         if (bellModel == null) bellModel = getBellModel();
         if (bellModel != null && blockEntity instanceof BellBlockEntity self) {
             float ringTicks = (float)self.ticks + tickDelta;
@@ -48,7 +57,7 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
             matrices.mulPose(Axis.XP.rotation(bellPitch));
             matrices.mulPose(Axis.ZP.rotation(bellRoll));
             matrices.translate(-8f/16, -12f/16, -8f/16);
-            EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getBlockState(), matrices, bellModel, light, overlay);
+            EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, bellModel, light, overlay);
 
             matrices.popPose();
         }
