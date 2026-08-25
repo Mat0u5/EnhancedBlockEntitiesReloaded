@@ -23,8 +23,6 @@
     "ShulkerBoxBlockEntityMixin",
     "SignEditScreenMixin",
     "VideoOptionsScreenMixin",
-    "WorldRendererMixin",
-    "compat.sodium.RenderSectionManagerMixin",
-    "compat.sodium.RenderSectionMixin"
+    "WorldRendererMixin"
   ]
 }

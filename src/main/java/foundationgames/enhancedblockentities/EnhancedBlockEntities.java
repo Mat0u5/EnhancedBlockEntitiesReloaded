@@ -8,20 +8,23 @@ import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.WorldUtil;
+//? if fabric {
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-//? if <= 1.21.6 {
+//?}
+//? if fabric && <= 1.21.6 {
 /*import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 *///?}
-//? if >= 1.21.6 {
-//? if <= 1.21.11 {
+//? if fabric && >= 1.21.6 && <= 1.21.11 {
 /*import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
-*///?} else {
+*///?}
+//? if fabric && >= 26.1 {
 import net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry;
 //?}
+//? if >= 1.21.6 {
 import foundationgames.enhancedblockentities.client.render.gui.SignGuiElementRenderer;
 //?}
-import net.fabricmc.loader.api.FabricLoader;
+import foundationgames.enhancedblockentities.platform.Platform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +32,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.function.Consumer;
 
+//? if fabric {
 public final class EnhancedBlockEntities implements ClientModInitializer {
+//?} else if neoforge {
+/*public final class EnhancedBlockEntities {
+*///?}
     public static final String ID = "enhancedblockentities";
     public static final String NAMESPACE = "ebe";
     public static final Logger LOG = LogManager.getLogger("Enhanced Block Entities");
@@ -39,49 +46,51 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
 
     public static final String API_V1 = "ebe_v1";
 
+    //? if fabric {
     @Override
-    @SuppressWarnings("unchecked")
     public void onInitializeClient() {
-        FabricLoader.getInstance().getModContainer(ID).ifPresent(mod -> {
-            var roots = mod.getRootPaths();
+        initClient();
+        registerLoaderEvents();
+    }
+    //?}
 
-            if (!roots.isEmpty()) {
-                TEMPLATE_LOADER.setRoot(roots.getFirst().resolve("templates"));
-            }
-        });
-
-        var ebeCompatInitializers = FabricLoader.getInstance().getEntrypointContainers(API_V1, Consumer.class);
-        for (var init : ebeCompatInitializers) {
-            init.getEntrypoint().accept((Runnable) EnhancedBlockEntities::load);
+    @SuppressWarnings("unchecked")
+    public static void initClient() {
+        var roots = Platform.getModRootPaths(ID);
+        if (!roots.isEmpty()) {
+            TEMPLATE_LOADER.setRoot(roots.getFirst().resolve("templates"));
         }
 
+        Platform.forEachApiEntrypoint(API_V1, Consumer.class,
+                (modId, init) -> init.accept((Runnable) EnhancedBlockEntities::load));
+
         ConditionalItemModelProperties.ID_MAPPER.put(EBEUtil.id("ebe_is_christmas"), EBEIsChristmasProperty.CODEC);
-
-        //? if <= 1.21.6 {
-        /*WorldRenderEvents.END.register(ctx -> SignRenderManager.endFrame());
-        *///?}
-        //? if <= 1.21.11 {
-        /*ClientTickEvents.END_WORLD_TICK.register(WorldUtil.EVENT_LISTENER);
-        *///?} else {
-        ClientTickEvents.END_LEVEL_TICK.register(WorldUtil.EVENT_LISTENER);
-        //?}
-
-        //? if >= 1.21.6 {
-        //? if <= 1.21.11 {
-        /*SpecialGuiElementRegistry.register(ctx -> new SignGuiElementRenderer(ctx.vertexConsumers()));
-        *///?} else {
-        //? if <= 26.1 {
-        /*PictureInPictureRendererRegistry.register(ctx -> new SignGuiElementRenderer(ctx.bufferSource()));
-        *///?} else {
-        PictureInPictureRendererRegistry.register(ctx -> new SignGuiElementRenderer());
-        //?}
-        //?}
-        //?}
 
         ModelIdentifiers.init();
         EBESetup.setupResourceProviders();
 
         load();
+    }
+
+    private static void registerLoaderEvents() {
+        //? if fabric && <= 1.21.6 {
+        /*WorldRenderEvents.END.register(ctx -> SignRenderManager.endFrame());
+        *///?}
+        //? if fabric && <= 1.21.11 {
+        /*ClientTickEvents.END_WORLD_TICK.register(WorldUtil.EVENT_LISTENER::onEndTick);
+        *///?}
+        //? if fabric && >= 26.1 {
+        ClientTickEvents.END_LEVEL_TICK.register(WorldUtil.EVENT_LISTENER::onEndTick);
+        //?}
+        //? if fabric && >= 1.21.6 && <= 1.21.11 {
+        /*SpecialGuiElementRegistry.register(ctx -> new SignGuiElementRenderer(ctx.vertexConsumers()));
+        *///?}
+        //? if fabric && >= 26.1 && <= 26.1 {
+        /*PictureInPictureRendererRegistry.register(ctx -> new SignGuiElementRenderer(ctx.bufferSource()));
+        *///?}
+        //? if fabric && >= 26.2 {
+        PictureInPictureRendererRegistry.register(ctx -> new SignGuiElementRenderer());
+        //?}
     }
 
     public static void reload(ReloadType type) {

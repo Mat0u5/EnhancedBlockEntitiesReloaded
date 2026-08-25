@@ -1,6 +1,6 @@
 package foundationgames.enhancedblockentities.client.model;
 
-//? if <= 1.21.4 {
+//? if fabric && <= 1.21.4 {
 /*import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
@@ -119,18 +119,122 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
         return effects;
     }
 }
-*///?} else {
-//? if <= 1.21.11 {
+*///?}
+//? if neoforge && <= 1.21.4 {
+/*import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.IDynamicBakedModel;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelProperty;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DynamicBakedModel implements IDynamicBakedModel {
+    public static final ModelProperty<int[]> MODEL_INDICES = new ModelProperty<>();
+
+    private static final ThreadLocal<RandomSource> RANDOM = ThreadLocal.withInitial(RandomSource::create);
+
+    private final BakedModel[] models;
+    private final ModelSelector selector;
+    private final DynamicModelEffects effects;
+
+    public DynamicBakedModel(BakedModel[] models, ModelSelector selector, DynamicModelEffects effects) {
+        this.models = models;
+        this.selector = selector;
+        this.effects = effects;
+    }
+
+    @Override
+    public ModelData getModelData(BlockAndTintGetter view, BlockPos pos, BlockState state, ModelData modelData) {
+        var indices = new int[this.selector.displayedModelCount];
+        this.selector.writeModelIndices(view, state, pos, RANDOM::get, indices);
+
+        return modelData.derive().with(MODEL_INDICES, indices).build();
+    }
+
+    @Override
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, RandomSource random, ModelData data, @Nullable RenderType renderType) {
+        var indices = data.get(MODEL_INDICES);
+        if (indices == null) return this.models[0].getQuads(state, face, random);
+
+        var quads = new ArrayList<BakedQuad>();
+        for (int modelIndex : indices) {
+            if (modelIndex < 0 || modelIndex >= this.models.length) continue;
+
+            var model = this.models[modelIndex];
+            if (model != null) quads.addAll(model.getQuads(state, face, random, data, renderType));
+        }
+
+        return quads;
+    }
+
+    @Override
+    public boolean useAmbientOcclusion() {
+        return getEffects().ambientOcclusion();
+    }
+
+    @Override
+    public boolean isGui3d() {
+        return false;
+    }
+
+    @Override
+    public boolean usesBlockLight() {
+        return false;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleIcon() {
+        return models[getSelector().getParticleModelIndex()].getParticleIcon();
+    }
+
+    @Override
+    public ItemTransforms getTransforms() {
+        return null;
+    }
+
+    public BakedModel[] getModels() {
+        return models;
+    }
+
+    public ModelSelector getSelector() {
+        return selector;
+    }
+
+    public DynamicModelEffects getEffects() {
+        return effects;
+    }
+}
+*///?}
+//? if >= 1.21.5 {
+//? if fabric && <= 1.21.11 {
 /*import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBlockStateModel;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+*///?}
+//? if fabric && >= 26.1 {
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.client.renderer.v1.model.FabricBlockStateModel;
+//?}
+//? if neoforge && >= 1.21.5 {
+/*import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
+*///?}
+//? if <= 1.21.11 {
+/*import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockStateModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.level.BlockAndTintGetter;
 *///?} else {
-import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.client.renderer.v1.model.FabricBlockStateModel;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -146,7 +250,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
+//? if fabric {
 public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel {
+//?} else if neoforge {
+/*public class DynamicBakedModel implements DynamicBlockStateModel {
+*///?}
     private final BlockStateModelPart[] models;
     private final ModelSelector selector;
     private final DynamicModelEffects effects;
@@ -177,6 +285,7 @@ public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel
         //?}
     }
 
+    //? if fabric {
     @Override
     public void emitQuads(QuadEmitter emitter, BlockAndTintGetter view, BlockPos pos, BlockState state, RandomSource random, Predicate<Direction> cullTest) {
         var indices = this.activeModelIndices.get();
@@ -190,6 +299,21 @@ public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel
             if (model != null) model.emitQuads(emitter, cullTest);
         }
     }
+    //?} else if neoforge {
+    /*@Override
+    public void collectParts(BlockAndTintGetter view, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
+        var indices = this.activeModelIndices.get();
+
+        getSelector().writeModelIndices(view, state, pos, () -> random, indices);
+
+        for (int modelIndex : indices) {
+            if (modelIndex < 0 || modelIndex >= this.models.length) continue;
+
+            var model = this.models[modelIndex];
+            if (model != null) parts.add(model);
+        }
+    }
+    *///?}
 
     @Override
     public void collectParts(RandomSource random, List<BlockStateModelPart> parts) {

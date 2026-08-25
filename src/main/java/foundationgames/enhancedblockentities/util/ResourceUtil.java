@@ -3,8 +3,7 @@ package foundationgames.enhancedblockentities.util;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.client.resource.template.TemplateProvider;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
+import foundationgames.enhancedblockentities.platform.Platform;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.Direction;
 //? if >= 26.2 {
@@ -61,9 +60,13 @@ public enum ResourceUtil {;
     private static String dynamicTypeKey(String model) {
         //? if <= 1.21.4 {
         /*return "";
-        *///?} else {
+        *///?}
+        //? if fabric && >= 1.21.5 {
         return model.startsWith("builtin:") ? kv("fabric:type", EBEUtil.id("dynamic").toString()) + "," : "";
         //?}
+        //? if neoforge && >= 1.21.5 {
+        /*return model.startsWith("builtin:") ? kv("type", EBEUtil.id("dynamic").toString()) + "," : "";
+        *///?}
     }
 
     private static String variant(TemplateProvider t, String state, String model) throws IOException {
@@ -348,6 +351,9 @@ public enum ResourceUtil {;
 
     public static void resetBasePack() {
         BASE_PACK = new EBEPack(EBEUtil.id("base_resources"), EnhancedBlockEntities.TEMPLATE_LOADER);
+        //? if neoforge && <= 1.21.4 {
+        /*foundationgames.enhancedblockentities.client.model.DynamicModelProvidingPlugin.emitModels(BASE_PACK);
+        *///?}
     }
 
     public static void resetTopLevelPack() {
@@ -374,8 +380,7 @@ public enum ResourceUtil {;
     }
 
     public static void dumpModAssets(Path dest) throws IOException {
-        var roots = FabricLoader.getInstance().getModContainer(EnhancedBlockEntities.ID)
-                .map(ModContainer::getRootPaths).orElse(List.of());
+        var roots = Platform.getModRootPaths(EnhancedBlockEntities.ID);
 
         for (var root : roots) {
             var sourceAssets = Files.walk(root.resolve("assets"));

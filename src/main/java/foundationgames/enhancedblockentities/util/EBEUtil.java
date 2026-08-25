@@ -3,12 +3,7 @@ package foundationgames.enhancedblockentities.util;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
-//? if <= 1.21.11 {
-/*import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
-*///?} else {
-import net.fabricmc.fabric.api.client.renderer.v1.model.ModelHelper;
-//?}
-import net.fabricmc.loader.api.FabricLoader;
+import foundationgames.enhancedblockentities.platform.Platform;
 //? if <= 1.21.11 {
 /*import net.minecraft.client.renderer.ItemBlockRenderTypes;
 *///?} else {
@@ -62,6 +57,12 @@ import java.util.Map;
 //?}
 
 public enum EBEUtil {;
+    private static final Direction[] FACES = java.util.Arrays.copyOf(Direction.values(), 7);
+
+    public static Direction faceFromIndex(int index) {
+        return FACES[index];
+    }
+
     private static final RandomSource dummy = RandomSource.create();
 
     // Contains all dye colors, and null
@@ -127,7 +128,7 @@ public enum EBEUtil {;
         if (model == null) return;
         VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));
         for (int i = 0; i <= 6; i++) {
-            for (BakedQuad q : model.getQuads(null, ModelHelper.faceFromIndex(i), dummy)) {
+            for (BakedQuad q : model.getQuads(null, faceFromIndex(i), dummy)) {
                 vertices.putBulkData(matrices.last(), q, 1, 1, 1, 1, light, overlay);
             }
         }
@@ -139,7 +140,7 @@ public enum EBEUtil {;
         VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));
         for (BlockStateModelPart part : model.collectParts(dummy)) {
             for (int i = 0; i <= 6; i++) {
-                for (BakedQuad q : part.getQuads(ModelHelper.faceFromIndex(i))) {
+                for (BakedQuad q : part.getQuads(faceFromIndex(i))) {
                     vertices.putBulkData(matrices.last(), q, 1, 1, 1, 1, light, overlay);
                 }
             }
@@ -160,7 +161,7 @@ public enum EBEUtil {;
         VertexConsumer vertices = vertexConsumers.getBuffer(Sheets.cutoutBlockSheet());
         for (BlockStateModelPart part : parts) {
             for (int i = 0; i <= 6; i++) {
-                for (BakedQuad q : part.getQuads(ModelHelper.faceFromIndex(i))) {
+                for (BakedQuad q : part.getQuads(faceFromIndex(i))) {
                     vertices.putBakedQuad(matrices.last(), q, quadInstance);
                 }
             }
@@ -183,7 +184,7 @@ public enum EBEUtil {;
     public static final String DUMP_FOLDER_NAME = "enhanced_bes_dump";
 
     public static void dumpResources() throws IOException {
-        var path = FabricLoader.getInstance().getGameDir().resolve(DUMP_FOLDER_NAME);
+        var path = Platform.getGameDir().resolve(DUMP_FOLDER_NAME);
 
         if (!Files.exists(path)) {
             Files.createDirectory(path);

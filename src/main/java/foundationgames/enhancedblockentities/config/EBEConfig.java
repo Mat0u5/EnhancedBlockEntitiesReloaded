@@ -2,8 +2,7 @@ package foundationgames.enhancedblockentities.config;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.util.ConvUtil;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
+import foundationgames.enhancedblockentities.platform.Platform;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -113,7 +112,7 @@ public class EBEConfig {
     public void save() {
         Properties properties = new Properties();
         writeTo(properties);
-        Path configPath = FabricLoader.getInstance().getConfigDir().resolve("enhanced_bes.properties");
+        Path configPath = Platform.getConfigDir().resolve("enhanced_bes.properties");
         if (!Files.exists(configPath)) {
             try {
                 Files.createFile(configPath);
@@ -131,7 +130,7 @@ public class EBEConfig {
 
     public void load() {
         Properties properties = new Properties();
-        Path configPath = FabricLoader.getInstance().getConfigDir().resolve("enhanced_bes.properties");
+        Path configPath = Platform.getConfigDir().resolve("enhanced_bes.properties");
         if (!Files.exists(configPath)) {
             try {
                 Files.createFile(configPath);
@@ -157,22 +156,19 @@ public class EBEConfig {
     private void applyCompatConfigModifiers(Properties properties) {
         this.overrides.clear();
 
-        var ebeCompatCfgModifiers = FabricLoader.getInstance()
-                .getEntrypointContainers(EnhancedBlockEntities.API_V1, BiConsumer.class);
-        for (var modifier : ebeCompatCfgModifiers) {
-            var mod = modifier.getProvider();
+        Platform.forEachApiEntrypoint(EnhancedBlockEntities.API_V1, BiConsumer.class, (modId, modifier) -> {
             var overrides = new Properties();
             var reasons = new HashMap<String, Component>();
-            modifier.getEntrypoint().accept(overrides, reasons);
+            modifier.accept(overrides, reasons);
 
             for (var key : overrides.stringPropertyNames()) {
                 @Nullable Component reason = reasons.get(key);
-                this.overrides.put(key, new Override(mod, reason));
+                this.overrides.put(key, new Override(modId, reason));
             }
 
             properties.putAll(overrides);
-        }
+        });
     }
 
-    public record Override(ModContainer modResponsible, @Nullable Component reason) {}
+    public record Override(String modResponsible, @Nullable Component reason) {}
 }

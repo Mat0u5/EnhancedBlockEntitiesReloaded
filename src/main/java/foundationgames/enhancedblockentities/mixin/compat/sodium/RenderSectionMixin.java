@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.mixin.compat.sodium;
 
+//? if fabric {
 import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSection;
 import org.jetbrains.annotations.Nullable;
@@ -35,3 +36,4 @@ public class RenderSectionMixin implements ChunkRebuildTaskAccess {
         enhanced_bes$taskAfterRebuild = task;
     }
 }
+//?}

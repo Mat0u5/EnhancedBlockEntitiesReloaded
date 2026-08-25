@@ -41,7 +41,11 @@ public class DynamicUnbakedModel implements UnbakedModel {
 *///?} else {
 import com.mojang.serialization.MapCodec;
 import foundationgames.enhancedblockentities.util.EBEUtil;
+//? if fabric {
 import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
+//?} else if neoforge {
+/*import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
+*///?}
 //? if <= 1.21.11 {
 /*import net.minecraft.client.renderer.block.model.BlockStateModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;

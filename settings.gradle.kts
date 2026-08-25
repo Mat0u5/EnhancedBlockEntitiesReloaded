@@ -52,7 +52,18 @@ stonecutter {
 			return null
 		}
 
-		if (env("GRADLE_TEST") == "true") {
+		if (env("GRADLE_MULTILOADER") == "true") {
+			// Ported range, all three loaders
+			match("26.2", "fabric", "forge", "neoforge")
+			match("26.1", "fabric", "forge", "neoforge")
+
+			match("1.21.11", "fabric", "forge", "neoforge")
+			match("1.21.9", "fabric", "forge", "neoforge")
+			match("1.21.6", "fabric", "forge", "neoforge")
+			match("1.21.5", "fabric", "forge", "neoforge")
+			match("1.21.4", "fabric", "forge", "neoforge")
+		}
+		else if (env("GRADLE_TEST") == "true") {
 			match("26.1", "forge")
 			match("1.21", "forge")
 			match("1.20.5", "forge")
@@ -107,18 +118,6 @@ stonecutter {
 			match("1.21.6", "forge")
 			match("1.21.5", "forge")
 			match("1.21.4", "forge")
-			match("1.21.2", "forge")
-			match("1.21", "forge")
-
-			match("1.20.5", "forge")
-			match("1.20", "forge")
-
-			match("1.19.4", "forge")
-			match("1.19.2", "forge")
-			match("1.18", "forge")
-			match("1.17", "forge")
-			match("1.16", "forge")
-			match("1.15", "forge")
 		}
 		else if (env("GRADLE_ONLY_NEOFORGE") == "true") {
 			match("26.2", "neoforge")
@@ -129,12 +128,6 @@ stonecutter {
 			match("1.21.6", "neoforge")
 			match("1.21.5", "neoforge")
 			match("1.21.4", "neoforge")
-			match("1.21.2", "neoforge")
-			match("1.21", "neoforge")
-
-			match("1.20.5", "neoforge")
-			match("1.20.3", "neoforge")
-			match("1.20", "forge")
 		}
 		else {
 			// All versions
@@ -165,17 +158,20 @@ stonecutter {
 			match("1.14", "fabric")
 			*/
 
-			match("26.2", "fabric")
-			match("26.1", "fabric")
+			match("26.2", "fabric", "forge", "neoforge")
+			match("26.1", "fabric", "forge", "neoforge")
 
-			match("1.21.11", "fabric")
-			match("1.21.9", "fabric")
-			match("1.21.6", "fabric")
-			match("1.21.5", "fabric")
-			match("1.21.4", "fabric")
+			match("1.21.11", "fabric", "forge", "neoforge")
+			match("1.21.9", "fabric", "forge", "neoforge")
+			match("1.21.6", "fabric", "forge", "neoforge")
+			match("1.21.5", "fabric", "forge", "neoforge")
+			match("1.21.4", "fabric", "forge", "neoforge")
 		}
 
-		if (env("GRADLE_TEST") == "true") {
+		if (env("GRADLE_MULTILOADER") == "true") {
+			vcsVersion = "1.21.4-fabric"
+		}
+		else if (env("GRADLE_TEST") == "true") {
 			vcsVersion = "1.21-forge"
 		}
 		else if (env("GRADLE_ONLY_FORGE") == "true") {

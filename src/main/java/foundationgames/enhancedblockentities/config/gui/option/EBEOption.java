@@ -71,7 +71,7 @@ public final class EBEOption {
     public Tooltip getTooltip() {
         if (tooltip == null) {
             if (override != null) {
-                var text = Component.translatable(OVERRIDDEN, override.modResponsible().getMetadata().getId())
+                var text = Component.translatable(OVERRIDDEN, override.modResponsible())
                         .withStyle(ChatFormatting.RED, ChatFormatting.UNDERLINE);
                 if (override.reason() != null) {
                     text.append(NEWLINE).append(override.reason());

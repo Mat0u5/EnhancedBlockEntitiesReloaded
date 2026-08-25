@@ -9,15 +9,21 @@ import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
-//? if <= 1.21.5 {
+//? if fabric && <= 1.21.5 {
 /*import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.minecraft.client.renderer.RenderType;
-*///?} else {
-//? if <= 1.21.11 {
-/*import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 *///?}
-//?}
+//? if fabric && >= 1.21.6 && <= 1.21.11 {
+/*import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+*///?}
+//? if neoforge && <= 1.21.11 {
+/*import net.minecraft.client.renderer.ItemBlockRenderTypes;
+*///?}
+//? if <= 1.21.5 {
+/*import net.minecraft.client.renderer.RenderType;
+*///?}
+//? if >= 1.21.6 && <= 1.21.11 {
+/*import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+*///?}
 //? if <= 1.21.4 {
 /*import net.minecraft.client.resources.model.BakedModel;
 *///?} else {
@@ -328,27 +334,39 @@ public enum EBESetup {;
     }
 
     private static void putCutoutMipped(Block block) {
-        //? if <= 1.21.5 {
+        //? if fabric && <= 1.21.5 {
         /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
-        *///?} else {
-        //? if <= 1.21.9 {
+        *///?}
+        //? if neoforge && <= 1.21.5 {
+        /*ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped());
+        *///?}
+        //? if fabric && >= 1.21.6 && <= 1.21.9 {
         /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT_MIPPED);
-        *///?} else {
-        //? if <= 1.21.11 {
+        *///?}
+        //? if neoforge && >= 1.21.6 && <= 1.21.9 {
+        /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT_MIPPED);
+        *///?}
+        //? if fabric && >= 1.21.11 && <= 1.21.11 {
         /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
         *///?}
-        //?}
-        //?}
+        //? if neoforge && >= 1.21.11 && <= 1.21.11 {
+        /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT);
+        *///?}
     }
 
     private static void putCutout(Block block) {
-        //? if <= 1.21.5 {
+        //? if fabric && <= 1.21.5 {
         /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout());
-        *///?} else {
-        //? if <= 1.21.11 {
+        *///?}
+        //? if neoforge && <= 1.21.5 {
+        /*ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
+        *///?}
+        //? if fabric && >= 1.21.6 && <= 1.21.11 {
         /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
         *///?}
-        //?}
+        //? if neoforge && >= 1.21.6 && <= 1.21.11 {
+        /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT);
+        *///?}
     }
 
     public static void setupChests() {

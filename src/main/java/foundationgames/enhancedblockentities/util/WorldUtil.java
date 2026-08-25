@@ -2,7 +2,6 @@ package foundationgames.enhancedblockentities.util;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -13,11 +12,7 @@ import net.minecraft.world.level.Level;
 import java.util.HashMap;
 import java.util.Map;
 
-//? if <= 1.21.11 {
-/*public enum WorldUtil implements ClientTickEvents.EndWorldTick {
-*///?} else {
-public enum WorldUtil implements ClientTickEvents.EndLevelTick {
-//?}
+public enum WorldUtil {
     EVENT_LISTENER;
 
     public static final Map<SectionPos, ExecutableRunnableHashSet> CHUNK_UPDATE_TASKS = new HashMap<>();
@@ -41,7 +36,6 @@ public enum WorldUtil implements ClientTickEvents.EndLevelTick {
         TIMED_TASKS.computeIfAbsent(world.dimension(), k -> new Long2ObjectOpenHashMap<>()).put(time, action);
     }
 
-    @Override
     public void onEndTick(ClientLevel world) {
         var key = world.dimension();
 

@@ -319,16 +319,16 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 					if (usesLegacyToml) {
 						filesMatching("META-INF/mods.toml") { expand(props) }
 						filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
-						exclude("fabric.mod.json", "aw/*.accesswidener", "aw/*.classtweaker", ".cache", "pack.mcmeta")
+						exclude("fabric.mod.json", "*.sodium.mixins.json", "aw/*.accesswidener", "aw/*.classtweaker", ".cache", "pack.mcmeta")
 					} else {
 						filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
-						exclude("META-INF/mods.toml", "fabric.mod.json", "aw/*.accesswidener", "aw/*.classtweaker", ".cache", "pack.mcmeta")
+						exclude("META-INF/mods.toml", "fabric.mod.json", "*.sodium.mixins.json", "aw/*.accesswidener", "aw/*.classtweaker", ".cache", "pack.mcmeta")
 					}
 				}
 
 				isForge -> {
 					filesMatching("META-INF/mods.toml") { expand(props) }
-					exclude("META-INF/neoforge.mods.toml", "fabric.mod.json", "aw/*.accesswidener", "aw/*.classtweaker", ".cache")
+					exclude("META-INF/neoforge.mods.toml", "fabric.mod.json", "*.sodium.mixins.json", "aw/*.accesswidener", "aw/*.classtweaker", ".cache")
 				}
 			}
 		}

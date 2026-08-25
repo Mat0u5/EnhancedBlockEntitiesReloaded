@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.mixin.compat.sodium;
 
+//? if fabric {
 import foundationgames.enhancedblockentities.util.WorldUtil;
 import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSection;
@@ -64,3 +65,4 @@ public class RenderSectionManagerMixin {
         }
     }
 }
+//?}
