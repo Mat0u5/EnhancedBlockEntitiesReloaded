@@ -11,11 +11,9 @@ import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 //? if fabric && <= 1.21.5 {
 /*import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-*///?}
-//? if fabric && >= 1.21.6 && <= 1.21.11 {
+*///?} else if fabric && >= 1.21.6 && <= 1.21.11 {
 /*import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-*///?}
-//? if neoforge && <= 1.21.11 {
+*///?} else if <= 1.21.11 {
 /*import net.minecraft.client.renderer.ItemBlockRenderTypes;
 *///?}
 //? if <= 1.21.5 {
@@ -47,9 +45,13 @@ import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 
 public enum EBESetup {;
+    private static final Set<Block> RENDER_LAYERS = new HashSet<>();
+
     public static void setupRRPChests() {
         EBEPack p = ResourceUtil.getPackForCompat();
 
@@ -334,37 +336,36 @@ public enum EBESetup {;
     }
 
     private static void putCutoutMipped(Block block) {
+        if (!RENDER_LAYERS.add(block)) return;
+
         //? if fabric && <= 1.21.5 {
         /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
-        *///?}
-        //? if neoforge && <= 1.21.5 {
+        *///?} else if <= 1.21.5 {
         /*ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped());
         *///?}
         //? if fabric && >= 1.21.6 && <= 1.21.9 {
         /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT_MIPPED);
-        *///?}
-        //? if neoforge && >= 1.21.6 && <= 1.21.9 {
+        *///?} else if >= 1.21.6 && <= 1.21.9 {
         /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT_MIPPED);
         *///?}
         //? if fabric && >= 1.21.11 && <= 1.21.11 {
         /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
-        *///?}
-        //? if neoforge && >= 1.21.11 && <= 1.21.11 {
+        *///?} else if >= 1.21.11 && <= 1.21.11 {
         /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT);
         *///?}
     }
 
     private static void putCutout(Block block) {
+        if (!RENDER_LAYERS.add(block)) return;
+
         //? if fabric && <= 1.21.5 {
         /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout());
-        *///?}
-        //? if neoforge && <= 1.21.5 {
+        *///?} else if <= 1.21.5 {
         /*ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
         *///?}
         //? if fabric && >= 1.21.6 && <= 1.21.11 {
         /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
-        *///?}
-        //? if neoforge && >= 1.21.6 && <= 1.21.11 {
+        *///?} else if >= 1.21.6 && <= 1.21.11 {
         /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT);
         *///?}
     }

@@ -34,7 +34,7 @@ import java.util.function.Consumer;
 
 //? if fabric {
 public final class EnhancedBlockEntities implements ClientModInitializer {
-//?} else if neoforge {
+//?} else {
 /*public final class EnhancedBlockEntities {
 *///?}
     public static final String ID = "enhancedblockentities";
@@ -56,11 +56,6 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
 
     @SuppressWarnings("unchecked")
     public static void initClient() {
-        var roots = Platform.getModRootPaths(ID);
-        if (!roots.isEmpty()) {
-            TEMPLATE_LOADER.setRoot(roots.getFirst().resolve("templates"));
-        }
-
         Platform.forEachApiEntrypoint(API_V1, Consumer.class,
                 (modId, init) -> init.accept((Runnable) EnhancedBlockEntities::load));
 
@@ -70,6 +65,8 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         EBESetup.setupResourceProviders();
 
         load();
+
+        //foundationgames.enhancedblockentities.util.AutoTest.start();
     }
 
     private static void registerLoaderEvents() {

@@ -32,6 +32,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //? if >= 1.21.9 {
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //?}
+//? if neoforge && >= 1.21.9 {
+/*import net.minecraft.client.renderer.culling.Frustum;
+*///?}
 
 @Mixin(BlockEntityRenderDispatcher.class)
 public class BlockEntityRenderDispatcherMixin {
@@ -68,19 +71,39 @@ public class BlockEntityRenderDispatcherMixin {
     }
     *///?}
     //? if >= 1.21.9 {
-    @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true)
-    //? if <= 26.1 {
-    /*private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
-            ModelFeatureRenderer.CrumblingOverlay crumbling, CallbackInfoReturnable<BlockEntityRenderState> cir) {
-    *///?} else {
-    private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
-            ModelFeatureRenderer.CrumblingOverlay crumbling, boolean globalRender, CallbackInfoReturnable<BlockEntityRenderState> cir) {
-    //?}
+    private static boolean enhanced_bes$isOverridden(BlockEntity blockEntity) {
         EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
 
-        if (entry == null || !EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) return;
+        if (entry == null || !EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) {
+            return false;
+        }
 
-        if (!entry.condition().shouldRender(blockEntity)) {
+        return !entry.condition().shouldRender(blockEntity);
+    }
+
+    //? if neoforge && <= 26.1 {
+    /*@Inject(method = "tryExtractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;FLnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;Lnet/minecraft/client/renderer/culling/Frustum;)Lnet/minecraft/client/renderer/blockentity/state/BlockEntityRenderState;",
+            at = @At("HEAD"), cancellable = true)
+    private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
+            ModelFeatureRenderer.CrumblingOverlay crumbling, Frustum frustum,
+            CallbackInfoReturnable<BlockEntityRenderState> cir) {
+    *///?} else if neoforge {
+    /*@Inject(method = "tryExtractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;FLnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;ZLnet/minecraft/client/renderer/culling/Frustum;)Lnet/minecraft/client/renderer/blockentity/state/BlockEntityRenderState;",
+            at = @At("HEAD"), cancellable = true)
+    private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
+            ModelFeatureRenderer.CrumblingOverlay crumbling, boolean globalRender, Frustum frustum,
+            CallbackInfoReturnable<BlockEntityRenderState> cir) {
+    *///?} else if <= 26.1 {
+    /*@Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true)
+    private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
+            ModelFeatureRenderer.CrumblingOverlay crumbling, CallbackInfoReturnable<BlockEntityRenderState> cir) {
+    *///?} else {
+    @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true)
+    private void enhanced_bes$skipOverriddenExtraction(BlockEntity blockEntity, float partialTick,
+            ModelFeatureRenderer.CrumblingOverlay crumbling, boolean globalRender,
+            CallbackInfoReturnable<BlockEntityRenderState> cir) {
+    //?}
+        if (enhanced_bes$isOverridden(blockEntity)) {
             cir.setReturnValue(null);
         }
     }

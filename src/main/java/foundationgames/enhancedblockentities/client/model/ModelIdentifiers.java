@@ -29,6 +29,17 @@ import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 //? if neoforge && >= 1.21.6 {
 /*import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 *///?}
+//? if forge && <= 1.21.4 {
+/*import net.minecraft.client.resources.model.ModelIdentifier;
+*///?}
+//? if forge {
+/*import foundationgames.enhancedblockentities.client.resource.EBEPack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraftforge.client.event.ModelEvent;
+*///?}
 //? if >= 1.21.5 && <= 1.21.11 {
 /*import net.minecraft.client.renderer.block.model.BlockStateModel;
 *///?}
@@ -52,7 +63,7 @@ import java.util.function.Predicate;
 
 //? if fabric {
 public final class ModelIdentifiers implements ModelLoadingPlugin {
-//?} else if neoforge {
+//?} else {
 /*public final class ModelIdentifiers {
 *///?}
     private static final Map<Predicate<EBEConfig>, Set<Identifier>> modelLoaders = new HashMap<>();
@@ -64,6 +75,13 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
     //?}
     //? if neoforge && >= 1.21.5 {
     /*private static final Map<Identifier, StandaloneModelKey<BlockStateModel>> extraModelKeys = new HashMap<>();
+    *///?}
+    //? if forge && <= 1.21.4 {
+    /*private static final Map<Identifier, BakedModel> extraModels = new HashMap<>();
+    *///?}
+    //? if forge && >= 1.21.5 {
+    /*private static final Map<Identifier, BlockState> extraModelStates = new HashMap<>();
+    private static final Map<Identifier, BlockStateModel> extraModels = new HashMap<>();
     *///?}
 
     public static final Predicate<EBEConfig> CHEST_PREDICATE = c -> c.renderEnhancedChests;
@@ -202,16 +220,123 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
         extraModels.putAll(event.getBakingResult().standaloneModels());
     }
     *///?}
-    //? if >= 1.21.5 {
+    //? if forge && <= 1.21.4 {
+    /*public static @Nullable BakedModel getBakedModel(Identifier id) {
+        return extraModels.get(id);
+    }
+
+    private static Identifier extraModelStateId(Identifier id) {
+        return EBEUtil.id("extra/" + id.getNamespace() + "/" + id.getPath());
+    }
+
+    public static void emitExtraModelBlockStates(EBEPack pack) {
+        var config = EnhancedBlockEntities.CONFIG;
+
+        for (var entry : modelLoaders.entrySet()) {
+            if (!entry.getKey().test(config)) continue;
+
+            for (var id : entry.getValue()) {
+                var stateId = extraModelStateId(id);
+
+                pack.addPlainTextResource(
+                        Identifier.fromNamespaceAndPath(stateId.getNamespace(), "blockstates/" + stateId.getPath() + ".json"),
+                        "{\"variants\":{\"\":{\"model\":\"" + id + "\"}}}");
+            }
+        }
+    }
+
+    public static void registerModelStateDefinitions(ModelEvent.RegisterModelStateDefinitions event) {
+        var config = EnhancedBlockEntities.CONFIG;
+
+        for (var entry : modelLoaders.entrySet()) {
+            if (!entry.getKey().test(config)) continue;
+
+            for (var id : entry.getValue()) {
+                event.register(extraModelStateId(id),
+                        new StateDefinition.Builder<Block, BlockState>(Blocks.AIR)
+                                .create(Block::defaultBlockState, BlockState::new));
+            }
+        }
+    }
+
+    public static void captureExtraModels(ModelEvent.ModifyBakingResult event) {
+        extraModels.clear();
+
+        var config = EnhancedBlockEntities.CONFIG;
+        var models = event.getResults().blockStateModels();
+
+        for (var entry : modelLoaders.entrySet()) {
+            if (!entry.getKey().test(config)) continue;
+
+            for (var id : entry.getValue()) {
+                var model = models.get(new ModelIdentifier(extraModelStateId(id), ""));
+                if (model != null) extraModels.put(id, model);
+            }
+        }
+    }
+    *///?} else if forge && >= 1.21.5 {
+    /*public static @Nullable BlockStateModel getBakedModel(Identifier id) {
+        return extraModels.get(id);
+    }
+
+    private static Identifier extraModelStateId(Identifier id) {
+        return EBEUtil.id("extra/" + id.getNamespace() + "/" + id.getPath());
+    }
+
+    public static void emitExtraModelBlockStates(EBEPack pack) {
+        var config = EnhancedBlockEntities.CONFIG;
+
+        for (var entry : modelLoaders.entrySet()) {
+            if (!entry.getKey().test(config)) continue;
+
+            for (var id : entry.getValue()) {
+                var stateId = extraModelStateId(id);
+
+                pack.addPlainTextResource(
+                        Identifier.fromNamespaceAndPath(stateId.getNamespace(), "blockstates/" + stateId.getPath() + ".json"),
+                        "{\"variants\":{\"\":{\"model\":\"" + id + "\"}}}");
+            }
+        }
+    }
+
+    public static void registerModelStateDefinitions(ModelEvent.RegisterModelStateDefinitions event) {
+        var config = EnhancedBlockEntities.CONFIG;
+
+        extraModelStates.clear();
+
+        for (var entry : modelLoaders.entrySet()) {
+            if (!entry.getKey().test(config)) continue;
+
+            for (var id : entry.getValue()) {
+                var definition = new StateDefinition.Builder<Block, BlockState>(Blocks.AIR)
+                        .create(Block::defaultBlockState, BlockState::new);
+
+                event.register(extraModelStateId(id), definition);
+                extraModelStates.put(id, definition.any());
+            }
+        }
+    }
+
+    public static void captureExtraModels(ModelEvent.ModifyBakingResult event) {
+        extraModels.clear();
+
+        var models = event.getResults().blockStateModels();
+        for (var entry : extraModelStates.entrySet()) {
+            var model = models.get(entry.getValue());
+            if (model != null) extraModels.put(entry.getKey(), model);
+        }
+    }
+    *///?} else if fabric && >= 1.21.5 {
     public static @Nullable BlockStateModel getBakedModel(Identifier id) {
         var key = extraModelKeys.get(id);
-        //? if fabric {
         return key != null ? Minecraft.getInstance().getModelManager().getModel(key) : null;
-        //?} else if neoforge {
-        /*return key != null ? Minecraft.getInstance().getModelManager().getStandaloneModel(key) : null;
-        *///?}
     }
-    //?}
+    //?} else if neoforge && >= 1.21.5 {
+    /*public static @Nullable BlockStateModel getBakedModel(Identifier id) {
+        var key = extraModelKeys.get(id);
+        return key != null ? Minecraft.getInstance().getModelManager().getStandaloneModel(key) : null;
+    }
+    *///?}
 
     //? if fabric && <= 1.21.4 {
     /*@Override

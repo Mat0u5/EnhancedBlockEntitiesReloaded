@@ -52,3 +52,4 @@ bin/
 .idea/
 !.idea/icon.png
 !.idea/icon.svg
+/src/main/java/foundationgames/enhancedblockentities/util/AutoTest.java

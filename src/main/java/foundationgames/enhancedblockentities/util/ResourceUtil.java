@@ -58,13 +58,13 @@ public enum ResourceUtil {;
     }
 
     private static String dynamicTypeKey(String model) {
-        //? if <= 1.21.4 {
+        //? if forge {
         /*return "";
-        *///?}
-        //? if fabric && >= 1.21.5 {
+        *///?} else if <= 1.21.4 {
+        /*return "";
+        *///?} else if fabric {
         return model.startsWith("builtin:") ? kv("fabric:type", EBEUtil.id("dynamic").toString()) + "," : "";
-        //?}
-        //? if neoforge && >= 1.21.5 {
+        //?} else {
         /*return model.startsWith("builtin:") ? kv("type", EBEUtil.id("dynamic").toString()) + "," : "";
         *///?}
     }
@@ -351,7 +351,10 @@ public enum ResourceUtil {;
 
     public static void resetBasePack() {
         BASE_PACK = new EBEPack(EBEUtil.id("base_resources"), EnhancedBlockEntities.TEMPLATE_LOADER);
-        //? if neoforge && <= 1.21.4 {
+        //? if forge {
+        /*foundationgames.enhancedblockentities.client.model.DynamicModelProvidingPlugin.emitModels(BASE_PACK);
+        foundationgames.enhancedblockentities.client.model.ModelIdentifiers.emitExtraModelBlockStates(BASE_PACK);
+        *///?} else if neoforge && <= 1.21.4 {
         /*foundationgames.enhancedblockentities.client.model.DynamicModelProvidingPlugin.emitModels(BASE_PACK);
         *///?}
     }
@@ -383,7 +386,10 @@ public enum ResourceUtil {;
         var roots = Platform.getModRootPaths(EnhancedBlockEntities.ID);
 
         for (var root : roots) {
-            var sourceAssets = Files.walk(root.resolve("assets"));
+            var assetRoot = root.resolve("assets");
+            if (!Files.isDirectory(assetRoot)) continue;
+
+            var sourceAssets = Files.walk(assetRoot);
             for (var asset : sourceAssets.collect(Collectors.toSet())) {
                 if (!Files.isDirectory(asset)) {
                     var out = dest.resolve(root.relativize(asset));
