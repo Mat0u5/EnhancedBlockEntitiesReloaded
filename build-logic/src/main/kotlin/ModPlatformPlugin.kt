@@ -284,6 +284,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			}
 
 			val dependencies = buildDependenciesBlock(isFabric, modId, extension.dependencies)
+			val atResourcePath = "aw/${stonecutter.current.version}.cfg"
 
 			val props = mapOf(
 				"version" to modVersion,
@@ -316,6 +317,9 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 				isNeoForge -> {
 					val usesLegacyToml = stonecutter.eval(stonecutter.current.version, "<=1.20.3")
+					filesMatching("aw/*.cfg") {
+						if (path == atResourcePath) path = "META-INF/accesstransformer.cfg" else exclude()
+					}
 					if (usesLegacyToml) {
 						filesMatching("META-INF/mods.toml") { expand(props) }
 						filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
@@ -328,6 +332,9 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 				isForge -> {
 					filesMatching("META-INF/mods.toml") { expand(props) }
+					filesMatching("aw/*.cfg") {
+						if (path == atResourcePath) path = "META-INF/accesstransformer.cfg" else exclude()
+					}
 					exclude("META-INF/neoforge.mods.toml", "fabric.mod.json", "*.sodium.mixins.json", "aw/*.accesswidener", "aw/*.classtweaker", ".cache")
 				}
 			}
