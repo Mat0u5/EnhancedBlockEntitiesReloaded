@@ -1,7 +1,11 @@
 package foundationgames.enhancedblockentities.config.gui.widget;
 
 import net.minecraft.client.Minecraft;
+//? if <= 1.19.4 {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///?} else {
 import net.minecraft.client.gui.GuiGraphics;
+//?}
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -86,7 +90,11 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
         }
 
         @Override
+        //? if <= 1.19.4 {
+        /*public void render(PoseStack context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        *///?} else {
         public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        //?}
             this.widget.setPosition(x - 3, y);
             this.widget.arrangeElements();
 

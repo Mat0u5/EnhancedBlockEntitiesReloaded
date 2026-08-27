@@ -33,6 +33,34 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
     /*private Map<ResourceKey<DecoratedPotPattern>, BakedModel[]> potPatternModels = null;
     *///?}
 
+    //? if <= 1.19.4 {
+    /*private static Item sherdAt(DecoratedPotBlockEntity pot, int i) {
+        return pot.getShards().get(i);
+    }
+    *///?} else if <= 1.20 {
+    private static Item sherdAt(DecoratedPotBlockEntity pot, int i) {
+        var decorations = pot.getDecorations();
+
+        return switch (i) {
+            case 0 -> decorations.back();
+            case 1 -> decorations.left();
+            case 2 -> decorations.right();
+            default -> decorations.front();
+        };
+    }
+    //?} else {
+    /*private static Optional<Item> sherdAt(DecoratedPotBlockEntity pot, int i) {
+        var decorations = pot.getDecorations();
+
+        return switch (i) {
+            case 0 -> decorations.back();
+            case 1 -> decorations.left();
+            case 2 -> decorations.right();
+            default -> decorations.front();
+        };
+    }
+    *///?}
+
     //? if <= 1.20 {
     private static ResourceKey<String> patternOf(Item sherd) {
         return DecoratedPotPatterns.getResourceKey(sherd);
@@ -108,17 +136,16 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
             }
             *///?}
 
-            var sherds = pot.getDecorations();
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, this.baseModel, light, overlay);
 
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
-                    this.potPatternModels.get(patternOf(sherds.back()))[0], light, overlay);
+                    this.potPatternModels.get(patternOf(sherdAt(pot, 0)))[0], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
-                    this.potPatternModels.get(patternOf(sherds.left()))[1], light, overlay);
+                    this.potPatternModels.get(patternOf(sherdAt(pot, 1)))[1], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
-                    this.potPatternModels.get(patternOf(sherds.right()))[2], light, overlay);
+                    this.potPatternModels.get(patternOf(sherdAt(pot, 2)))[2], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
-                    this.potPatternModels.get(patternOf(sherds.front()))[3], light, overlay);
+                    this.potPatternModels.get(patternOf(sherdAt(pot, 3)))[3], light, overlay);
 
             matrices.popPose();
         }

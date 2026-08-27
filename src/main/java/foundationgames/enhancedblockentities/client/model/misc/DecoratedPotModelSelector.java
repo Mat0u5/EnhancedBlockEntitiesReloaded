@@ -77,12 +77,22 @@ public class DecoratedPotModelSelector extends ModelSelector {
                 return;
             }
 
+            //? if <= 1.19.4 {
+            /*var sherds = pot.getShards();
+            *///?} else {
             var sherds = pot.getDecorations();
+            //?}
 
+            //? if <= 1.19.4 {
+            /*for (int i = 0; i < 4; i++) {
+                indices[1 + i] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.get(i), patternCount) + patternCount * i;
+            }
+            *///?} else {
             indices[1] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.back(), patternCount);
             indices[2] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.left(), patternCount) + patternCount;
             indices[3] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.right(), patternCount) + patternCount * 2;
             indices[4] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.front(), patternCount) + patternCount * 3;
+            //?}
 
             return;
         }

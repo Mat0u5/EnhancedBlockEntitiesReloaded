@@ -1,7 +1,11 @@
 package foundationgames.enhancedblockentities.config.gui.widget;
 
 import net.minecraft.client.gui.Font;
+//? if <= 1.19.4 {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///?} else {
 import net.minecraft.client.gui.GuiGraphics;
+//?}
 import net.minecraft.client.gui.components.AbstractStringWidget;
 import net.minecraft.network.chat.Component;
 
@@ -16,7 +20,11 @@ public class SectionTextWidget extends AbstractStringWidget {
     }
 
     @Override
+    //? if <= 1.19.4 {
+    /*public void renderWidget(PoseStack context, int mouseX, int mouseY, float delta) {
+    *///?} else {
     public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    //?}
         final int white = 0xFFFFFFFF;
         var font = this.getFont();
         var msg = this.getMessage();
@@ -36,9 +44,16 @@ public class SectionTextWidget extends AbstractStringWidget {
         l += 1;
         r -= 1;
 
+        //? if <= 1.19.4 {
+        /*fill(context, l, y, ml, y + 2, white);
+        fill(context, mr, y, r, y + 2, white);
+
+        drawCenteredString(context, font, msg, tx, ty, 0xFFFFFFFF);
+        *///?} else {
         context.fill(l, y, ml, y + 2, white);
         context.fill(mr, y, r, y + 2, white);
 
         context.drawCenteredString(font, msg, tx, ty, 0xFFFFFFFF);
+        //?}
     }
 }

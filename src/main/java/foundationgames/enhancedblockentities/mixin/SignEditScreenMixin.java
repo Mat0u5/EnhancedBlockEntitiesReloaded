@@ -6,7 +6,12 @@ import com.mojang.blaze3d.platform.Lighting;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+//? if <= 1.19.4 {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///?} else {
 import net.minecraft.client.gui.GuiGraphics;
+//?}
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +26,9 @@ public class SignEditScreenMixin {
     private static final float SIGN_SCALE = 93.75f;
 
     @Inject(method = "renderSignBackground", at = @At("HEAD"), cancellable = true)
-    //? if <= 1.21 {
+    //? if <= 1.19.4 {
+    /*private void enhanced_bes$renderBakedModelSign(PoseStack context, MultiBufferSource.BufferSource signBuffers, BlockState signState, CallbackInfo ci) {
+    *///?} else if <= 1.21 {
     private void enhanced_bes$renderBakedModelSign(GuiGraphics context, BlockState signState, CallbackInfo ci) {
     //?} else {
     /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
@@ -44,8 +51,13 @@ public class SignEditScreenMixin {
 
             var signModel = models.getBlockModel(state);
 
+            //? if <= 1.19.4 {
+            /*var buffers = Minecraft.getInstance().renderBuffers().bufferSource();
+            var matrices = context;
+            *///?} else {
             var buffers = Minecraft.getInstance().renderBuffers().bufferSource();
             var matrices = context.pose();
+            //?}
 
             matrices.pushPose();
             matrices.translate(0, 31, -50);

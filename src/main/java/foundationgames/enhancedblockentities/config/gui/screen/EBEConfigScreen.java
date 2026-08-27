@@ -11,7 +11,11 @@ import foundationgames.enhancedblockentities.config.gui.widget.WidgetRowListWidg
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.ChatFormatting;
+//? if <= 1.19.4 {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///?} else {
 import net.minecraft.client.gui.GuiGraphics;
+//?}
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
@@ -96,11 +100,19 @@ public class EBEConfigScreen extends Screen {
     *///?}
 
     @Override
+    //? if <= 1.19.4 {
+    /*public void render(PoseStack context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+
+        drawCenteredString(context, this.font, this.title, (int)(this.width * 0.5), 8, 0xFFFFFFFF);
+        drawCenteredString(context, this.font, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFFFF);
+    *///?} else {
     public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
         context.drawCenteredString(this.font, this.title, (int)(this.width * 0.5), 8, 0xFFFFFFFF);
         context.drawCenteredString(this.font, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFFFF);
+    //?}
     }
 
     @Override
