@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.client.model;
 
 //? if forge {
-import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
+/*import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
@@ -10,8 +10,8 @@ import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 //? if <= 1.21 {
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-//?}
+/^import net.minecraft.client.renderer.block.model.ItemOverrides;
+^///?}
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 
@@ -29,7 +29,7 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     }
 
     //? if <= 1.21 {
-    @Override
+    /^@Override
     public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver, IGeometryBakingContext context) {
         for (ResourceLocation modelId : models) {
             if (modelId == null) continue;
@@ -39,12 +39,12 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
 
     @Override
     //? if <= 1.20 {
-    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides, ResourceLocation location) {
-    //?} else {
-    /*public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides) {
-    *///?}
-    //?} else {
-    /*@Override
+    /^¹public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides, ResourceLocation location) {
+    ¹^///?} else {
+    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides) {
+    //?}
+    ^///?} else {
+    @Override
     public void resolveDependencies(UnbakedModel.Resolver resolver, IGeometryBakingContext context) {
         for (ResourceLocation modelId : models) {
             if (modelId == null) continue;
@@ -54,7 +54,7 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings) {
-    *///?}
+    //?}
         ModelIdentifiers.bakeExtraModels(baker);
 
         BakedModel[] baked = new BakedModel[models.length];
@@ -64,8 +64,8 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
         return new DynamicBakedModel(baked, selector, effects);
     }
 }
-//?} else {
-/*import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+*///?} else {
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
@@ -73,27 +73,27 @@ import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 //? if neoforge {
-/^//? if <= 1.21 {
+/*//? if <= 1.21 {
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 //?} else {
-/^¹import net.minecraft.client.renderer.block.model.ItemOverride;
+/^import net.minecraft.client.renderer.block.model.ItemOverride;
 
 import java.util.List;
-¹^///?}
+^///?}
 import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
-^///?}
+*///?}
 import org.jetbrains.annotations.Nullable;
 
 //? if <= 1.21 {
-import java.util.Collection;
+/*import java.util.Collection;
 import java.util.Collections;
-//?}
+*///?}
 import java.util.function.Function;
 
 //? if neoforge {
-/^public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel> {
-^///?} else {
+/*public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel> {
+*///?} else {
 public class DynamicUnbakedModel implements UnbakedModel {
 //?}
     private final ResourceLocation[] models;
@@ -107,7 +107,7 @@ public class DynamicUnbakedModel implements UnbakedModel {
     }
 
     //? if neoforge {
-    /^//? if <= 1.21 {
+    /*//? if <= 1.21 {
     @Override
     public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver, IGeometryBakingContext context) {
         for (ResourceLocation modelId : models) {
@@ -116,16 +116,16 @@ public class DynamicUnbakedModel implements UnbakedModel {
         }
     }
     //?} else {
-    /^¹@Override
+    /^@Override
     public void resolveDependencies(UnbakedModel.Resolver resolver, IGeometryBakingContext context) {
         for (ResourceLocation modelId : models) {
             if (modelId == null) continue;
             resolver.resolve(modelId);
         }
     }
-    ¹^///?}
-    ^///?} else if <= 1.21 {
-    @Override
+    ^///?}
+    *///?} else if <= 1.21 {
+    /*@Override
     public Collection<ResourceLocation> getDependencies() {
         return Collections.emptyList();
     }
@@ -133,32 +133,32 @@ public class DynamicUnbakedModel implements UnbakedModel {
     @Override
     public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver) {
     }
-    //?} else {
-    /^@Override
+    *///?} else {
+    @Override
     public void resolveDependencies(Resolver resolver) {
         for (ResourceLocation modelId : models) {
             if (modelId == null) continue;
             resolver.resolve(modelId);
         }
     }
-    ^///?}
+    //?}
 
     //? if neoforge {
-    /^//? if <= 1.21 {
+    /*//? if <= 1.21 {
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides) {
     //?} else {
-    /^¹@Override
-    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, List<ItemOverride> overrides) {
-    ¹^///?}
-    ^///?} else {
-    //? if <= 1.20 {
-    @Override
-    public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ResourceLocation location) {
-    //?} else {
     /^@Override
-    public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings) {
+    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, List<ItemOverride> overrides) {
     ^///?}
+    *///?} else {
+    //? if <= 1.20 {
+    /*@Override
+    public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ResourceLocation location) {
+    *///?} else {
+    @Override
+    public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings) {
+    //?}
     //?}
         BakedModel[] baked = new BakedModel[models.length];
         for (int i = 0; i < models.length; i++) {
@@ -167,4 +167,4 @@ public class DynamicUnbakedModel implements UnbakedModel {
         return new DynamicBakedModel(baked, selector, effects);
     }
 }
-*///?}
+//?}

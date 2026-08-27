@@ -16,8 +16,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 //? if >= 1.21 {
-/*import net.minecraft.world.level.block.entity.DecoratedPotPattern;
-*///?}
+import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+//?}
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 
 import java.util.Map;
@@ -28,17 +28,17 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
 
     private BakedModel baseModel = null;
     //? if <= 1.20 {
-    private Map<ResourceKey<String>, BakedModel[]> potPatternModels = null;
-    //?} else {
-    /*private Map<ResourceKey<DecoratedPotPattern>, BakedModel[]> potPatternModels = null;
-    *///?}
+    /*private Map<ResourceKey<String>, BakedModel[]> potPatternModels = null;
+    *///?} else {
+    private Map<ResourceKey<DecoratedPotPattern>, BakedModel[]> potPatternModels = null;
+    //?}
 
     //? if <= 1.19.4 {
     /*private static Item sherdAt(DecoratedPotBlockEntity pot, int i) {
         return pot.getShards().get(i);
     }
     *///?} else if <= 1.20 {
-    private static Item sherdAt(DecoratedPotBlockEntity pot, int i) {
+    /*private static Item sherdAt(DecoratedPotBlockEntity pot, int i) {
         var decorations = pot.getDecorations();
 
         return switch (i) {
@@ -48,8 +48,8 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
             default -> decorations.front();
         };
     }
-    //?} else {
-    /*private static Optional<Item> sherdAt(DecoratedPotBlockEntity pot, int i) {
+    *///?} else {
+    private static Optional<Item> sherdAt(DecoratedPotBlockEntity pot, int i) {
         var decorations = pot.getDecorations();
 
         return switch (i) {
@@ -59,17 +59,17 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
             default -> decorations.front();
         };
     }
-    *///?}
+    //?}
 
     //? if <= 1.20 {
-    private static ResourceKey<String> patternOf(Item sherd) {
+    /*private static ResourceKey<String> patternOf(Item sherd) {
         return DecoratedPotPatterns.getResourceKey(sherd);
     }
-    //?} else {
-    /*private static ResourceKey<DecoratedPotPattern> patternOf(Optional<Item> sherd) {
+    *///?} else {
+    private static ResourceKey<DecoratedPotPattern> patternOf(Optional<Item> sherd) {
         return sherd.map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK);
     }
-    *///?}
+    //?}
 
     private void tryGetModels() {
         if (this.baseModel == null) {
@@ -78,16 +78,16 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
 
         if (this.potPatternModels == null) {
             //? if <= 1.20 {
-            var builder = ImmutableMap.<ResourceKey<String>, BakedModel[]>builder();
-            //?} else {
-            /*var builder = ImmutableMap.<ResourceKey<DecoratedPotPattern>, BakedModel[]>builder();
-            *///?}
+            /*var builder = ImmutableMap.<ResourceKey<String>, BakedModel[]>builder();
+            *///?} else {
+            var builder = ImmutableMap.<ResourceKey<DecoratedPotPattern>, BakedModel[]>builder();
+            //?}
 
             //? if <= 1.20 {
-            BuiltInRegistries.DECORATED_POT_PATTERNS.registryKeySet().forEach(k -> {
-            //?} else {
-            /*BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet().forEach(k -> {
-            *///?}
+            /*BuiltInRegistries.DECORATED_POT_PATTERNS.registryKeySet().forEach(k -> {
+            *///?} else {
+            BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet().forEach(k -> {
+            //?}
                 var patternModelIDs = ModelIdentifiers.POTTERY_PATTERNS.get(k);
                 BakedModel[] patternPerFaceModels = new BakedModel[patternModelIDs.length];
 
@@ -116,7 +116,7 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
             matrices.translate(-0.5f, 0, -0.5f);
 
             //? if >= 1.21 {
-            /*var wobbleType = pot.lastWobbleStyle;
+            var wobbleType = pot.lastWobbleStyle;
             if (wobbleType != null && pot.getLevel() != null) {
                 float tilt = ((float)(pot.getLevel().getGameTime() - pot.wobbleStartedAtTick) + tickDelta) / (float)wobbleType.duration;
                 if (tilt >= 0.0F && tilt <= 1.0F) {
@@ -134,7 +134,7 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
                     }
                 }
             }
-            *///?}
+            //?}
 
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, this.baseModel, light, overlay);
 

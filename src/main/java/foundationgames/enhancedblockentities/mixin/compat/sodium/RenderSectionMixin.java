@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.mixin.compat.sodium;
 
 //? if fabric && >= 1.21 {
-/*import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
+import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSection;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +23,7 @@ public class RenderSectionMixin implements ChunkRebuildTaskAccess {
         enhanced_bes$taskAfterRebuild = task;
     }
 }
-*///?} else if fabric {
+//?} else if fabric {
 /*import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 

@@ -29,10 +29,10 @@ public class SignEditScreenMixin {
     //? if <= 1.19.4 {
     /*private void enhanced_bes$renderBakedModelSign(PoseStack context, MultiBufferSource.BufferSource signBuffers, BlockState signState, CallbackInfo ci) {
     *///?} else if <= 1.21 {
-    private void enhanced_bes$renderBakedModelSign(GuiGraphics context, BlockState signState, CallbackInfo ci) {
-    //?} else {
-    /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
-    *///?}
+    /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, BlockState signState, CallbackInfo ci) {
+    *///?} else {
+    private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
+    //?}
         BlockState state = ((SignEditScreen) (Object) this).sign.getBlockState();
 
         boolean enhanceSigns = EnhancedBlockEntities.CONFIG.renderEnhancedSigns;

@@ -23,10 +23,10 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
 
     public WidgetRowListWidget(Minecraft mc, int w, int h, int y, int rowWidth, int rowHeight) {
         //? if <= 1.20 {
-        super(mc, w, h, y, y + h, rowHeight + SPACING);
-        //?} else {
-        /*super(mc, w, h, y, rowHeight + SPACING);
-        *///?}
+        /*super(mc, w, h, y, y + h, rowHeight + SPACING);
+        *///?} else {
+        super(mc, w, h, y, rowHeight + SPACING);
+        //?}
         this.rowWidth = rowWidth;
         this.rowHeight = rowHeight;
     }
@@ -42,10 +42,10 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
 
         for (var widget : widgets) {
             //? if <= 1.20 {
-            widget.setWidth(width);
-            //?} else {
-            /*widget.setSize(width, this.rowHeight);
-            *///?}
+            /*widget.setWidth(width);
+            *///?} else {
+            widget.setSize(width, this.rowHeight);
+            //?}
             adder.addChild(widget);
         }
 
@@ -65,10 +65,10 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
     }
 
     //? if >= 1.21 {
-    /*@Override
+    @Override
     protected void renderListBackground(GuiGraphics context) {
     }
-    *///?}
+    //?}
 
     public static class Entry extends ContainerObjectSelectionList.Entry<Entry> {
         private final GridLayout widget;

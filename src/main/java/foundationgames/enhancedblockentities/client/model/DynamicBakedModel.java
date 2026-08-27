@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.client.model;
 
 //? if fabric {
-/*import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
@@ -9,8 +9,8 @@ import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 //? if <= 1.21 {
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-//?}
+/*import net.minecraft.client.renderer.block.model.ItemOverrides;
+*///?}
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -112,11 +112,11 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     }
 
     //? if <= 1.21 {
-    @Override
+    /*@Override
     public ItemOverrides getOverrides() {
         return ItemOverrides.EMPTY;
     }
-    //?}
+    *///?}
 
     @Override
     public TextureAtlasSprite getParticleIcon() {
@@ -140,7 +140,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
         return effects;
     }
 }
-*///?}
+//?}
 //? if neoforge {
 /*import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -253,11 +253,11 @@ public class DynamicBakedModel implements IDynamicBakedModel {
 }
 *///?}
 //? if forge {
-import net.minecraft.client.renderer.RenderType;
+/*import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 //? if <= 1.21 {
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-//?}
+/^import net.minecraft.client.renderer.block.model.ItemOverrides;
+^///?}
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -334,11 +334,11 @@ public class DynamicBakedModel implements IDynamicBakedModel {
     }
 
     //? if <= 1.21 {
-    @Override
+    /^@Override
     public ItemOverrides getOverrides() {
         return ItemOverrides.EMPTY;
     }
-    //?}
+    ^///?}
 
     @Override
     public TextureAtlasSprite getParticleIcon() {
@@ -362,4 +362,4 @@ public class DynamicBakedModel implements IDynamicBakedModel {
         return effects;
     }
 }
-//?}
+*///?}

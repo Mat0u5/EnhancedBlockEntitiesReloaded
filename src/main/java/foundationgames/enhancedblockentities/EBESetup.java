@@ -10,10 +10,10 @@ import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 //? if fabric {
-/*import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-*///?} else {
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-//?}
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+//?} else {
+/*import net.minecraft.client.renderer.ItemBlockRenderTypes;
+*///?}
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -143,10 +143,10 @@ public enum EBESetup {;
 
         ResourceUtil.addDecoratedPotBlockState(pCompat);
         //? if <= 1.20 {
-        for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERNS.registryKeySet()) {
-        //?} else {
-        /*for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
-        *///?}
+        /*for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERNS.registryKeySet()) {
+        *///?} else {
+        for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
+        //?}
             ResourceUtil.addDecoratedPotPatternModels(patternKey, p);
         }
 
@@ -318,20 +318,20 @@ public enum EBESetup {;
         if (!RENDER_LAYERS.add(block)) return;
 
         //? if fabric {
-        /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
-        *///?} else {
-        ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped());
-        //?}
+        BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
+        //?} else {
+        /*ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped());
+        *///?}
     }
 
     private static void putCutout(Block block) {
         if (!RENDER_LAYERS.add(block)) return;
 
         //? if fabric {
-        /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout());
-        *///?} else {
-        ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
-        //?}
+        BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout());
+        //?} else {
+        /*ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
+        *///?}
     }
 
     public static void setupChests() {

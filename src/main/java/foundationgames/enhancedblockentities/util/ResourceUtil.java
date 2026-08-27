@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 //? if >= 1.21 {
-/*import net.minecraft.world.level.block.entity.DecoratedPotPattern;
-*///?}
+import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+//?}
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -62,10 +62,10 @@ public enum ResourceUtil {;
 
     private static String dynamicTypeKey(String model) {
         //? if forge {
-        return "";
-        //?} else {
         /*return "";
-        *///?}
+        *///?} else {
+        return "";
+        //?}
     }
 
     private static String variant(TemplateProvider t, String state, String model) throws IOException {
@@ -330,10 +330,10 @@ public enum ResourceUtil {;
     }
 
     //? if <= 1.20 {
-    public static void addDecoratedPotPatternModels(ResourceKey<String> patternKey, EBEPack pack) {
-    //?} else {
-    /*public static void addDecoratedPotPatternModels(ResourceKey<DecoratedPotPattern> patternKey, EBEPack pack) {
-    *///?}
+    /*public static void addDecoratedPotPatternModels(ResourceKey<String> patternKey, EBEPack pack) {
+    *///?} else {
+    public static void addDecoratedPotPatternModels(ResourceKey<DecoratedPotPattern> patternKey, EBEPack pack) {
+    //?}
         for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
             addParentTexModel("block/template_pottery_pattern_" + dir.getName(),
                     kv("pattern", Sheets.getDecoratedPotMaterial(patternKey).texture().toString()),
@@ -345,9 +345,9 @@ public enum ResourceUtil {;
     public static void resetBasePack() {
         BASE_PACK = new EBEPack(EBEUtil.id("base_resources"), EnhancedBlockEntities.TEMPLATE_LOADER);
         //? if forge {
-        foundationgames.enhancedblockentities.client.model.DynamicModelProvidingPlugin.emitModels(BASE_PACK);
+        /*foundationgames.enhancedblockentities.client.model.DynamicModelProvidingPlugin.emitModels(BASE_PACK);
         foundationgames.enhancedblockentities.client.model.ModelIdentifiers.emitExtraModelBlockStates(BASE_PACK);
-        //?} else if neoforge {
+        *///?} else if neoforge {
         /*foundationgames.enhancedblockentities.client.model.DynamicModelProvidingPlugin.emitModels(BASE_PACK);
         *///?}
     }

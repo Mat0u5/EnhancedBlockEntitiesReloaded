@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.mixin.compat.sodium;
 
 //? if fabric && >= 1.21 {
-/*import foundationgames.enhancedblockentities.util.WorldUtil;
+import foundationgames.enhancedblockentities.util.WorldUtil;
 import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSection;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSectionManager;
@@ -48,7 +48,7 @@ public class RenderSectionManagerMixin {
         }
     }
 }
-*///?} else if fabric {
+//?} else if fabric {
 /*import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 

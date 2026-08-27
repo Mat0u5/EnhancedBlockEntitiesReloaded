@@ -2,7 +2,7 @@ package foundationgames.enhancedblockentities.platform.forge;
 
 //? if forge {
 
-import foundationgames.enhancedblockentities.Main;
+/*import foundationgames.enhancedblockentities.Main;
 import foundationgames.enhancedblockentities.client.model.DynamicModelProvidingPlugin;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,4 +26,4 @@ public final class ForgeLegacyModelEvents {
 		ModelIdentifiers.captureExtraModels(event);
 	}
 }
-//?}
+*///?}

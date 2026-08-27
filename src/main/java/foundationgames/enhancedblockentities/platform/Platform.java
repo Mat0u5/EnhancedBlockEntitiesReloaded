@@ -1,15 +1,15 @@
 package foundationgames.enhancedblockentities.platform;
 
 //? if fabric {
-/*import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-*///?} else if neoforge {
+//?} else if neoforge {
 /*import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLPaths;
 *///?} else {
-import net.minecraftforge.fml.ModList;
+/*import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLPaths;
-//?}
+*///?}
 
 import java.nio.file.Path;
 import java.util.List;
@@ -18,50 +18,50 @@ import java.util.function.BiConsumer;
 public enum Platform {;
     public static Path getGameDir() {
         //? if fabric {
-        /*return FabricLoader.getInstance().getGameDir();
-        *///?} else {
-        return FMLPaths.GAMEDIR.get();
-        //?}
+        return FabricLoader.getInstance().getGameDir();
+        //?} else {
+        /*return FMLPaths.GAMEDIR.get();
+        *///?}
     }
 
     public static Path getConfigDir() {
         //? if fabric {
-        /*return FabricLoader.getInstance().getConfigDir();
-        *///?} else {
-        return FMLPaths.CONFIGDIR.get();
-        //?}
+        return FabricLoader.getInstance().getConfigDir();
+        //?} else {
+        /*return FMLPaths.CONFIGDIR.get();
+        *///?}
     }
 
     public static List<Path> getModRootPaths(String modId) {
         //? if fabric {
-        /*return FabricLoader.getInstance().getModContainer(modId)
+        return FabricLoader.getInstance().getModContainer(modId)
                 .map(ModContainer::getRootPaths).orElse(List.of());
-        *///?} else if neoforge {
+        //?} else if neoforge {
         /*var info = ModList.get().getModFileById(modId);
         if (info == null) return List.of();
         return List.of(info.getFile().getSecureJar().getRootPath());
         *///?} else {
-        var info = ModList.get().getModFileById(modId);
+        /*var info = ModList.get().getModFileById(modId);
         if (info == null) return List.of();
         return List.of(info.getFile().getSecureJar().getRootPath());
-        //?}
+        *///?}
     }
 
     public static boolean isModLoaded(String modId) {
         //? if fabric {
-        /*return FabricLoader.getInstance().isModLoaded(modId);
-        *///?} else {
-        return ModList.get().isLoaded(modId);
-        //?}
+        return FabricLoader.getInstance().isModLoaded(modId);
+        //?} else {
+        /*return ModList.get().isLoaded(modId);
+        *///?}
     }
 
     @SuppressWarnings("unchecked")
     public static <T> void forEachApiEntrypoint(String key, Class<T> type, BiConsumer<String, T> action) {
         //? if fabric {
-        /*for (var container : FabricLoader.getInstance().getEntrypointContainers(key, type)) {
+        for (var container : FabricLoader.getInstance().getEntrypointContainers(key, type)) {
             action.accept(container.getProvider().getMetadata().getId(), container.getEntrypoint());
         }
-        *///?} else {
+        //?} else {
         
         //?}
     }

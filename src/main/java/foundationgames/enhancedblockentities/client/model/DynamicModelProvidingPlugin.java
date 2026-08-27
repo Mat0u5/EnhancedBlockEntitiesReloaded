@@ -30,7 +30,7 @@ public class DynamicModelProvidingPlugin implements ModelResourceProvider {
     }
 }
 *///?} else if fabric {
-/*import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelResolver;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -52,16 +52,16 @@ public class DynamicModelProvidingPlugin implements ModelLoadingPlugin, ModelRes
     }
 
     //? if <= 1.21 {
-    @Override
+    /*@Override
     public void onInitializeModelLoader(ModelLoadingPlugin.Context ctx) {
         ctx.resolveModel().register(this);
     }
-    //?} else {
-    /^@Override
+    *///?} else {
+    @Override
     public void initialize(ModelLoadingPlugin.Context ctx) {
         ctx.resolveModel().register(this);
     }
-    ^///?}
+    //?}
 
     @Override
     public @Nullable UnbakedModel resolveModel(ModelResolver.Context ctx) {
@@ -69,7 +69,7 @@ public class DynamicModelProvidingPlugin implements ModelLoadingPlugin, ModelRes
         return null;
     }
 }
-*///?}
+//?}
 //? if neoforge {
 /*import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
@@ -126,7 +126,7 @@ public final class DynamicModelProvidingPlugin {
 }
 *///?}
 //? if forge {
-import com.google.gson.JsonDeserializationContext;
+/*import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import foundationgames.enhancedblockentities.Main;
@@ -184,4 +184,4 @@ public final class DynamicModelProvidingPlugin {
         return model;
     }
 }
-//?}
+*///?}

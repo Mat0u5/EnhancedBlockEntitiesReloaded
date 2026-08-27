@@ -2,7 +2,7 @@ package foundationgames.enhancedblockentities.platform.forge;
 
 //? if forge {
 
-import foundationgames.enhancedblockentities.Main;
+/*import foundationgames.enhancedblockentities.Main;
 import foundationgames.enhancedblockentities.util.WorldUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,20 +17,20 @@ public final class ForgeGameEvents {
 	}
 
 	//? if <= 1.20 {
-	@SubscribeEvent
+	/^@SubscribeEvent
 	public static void onLevelTickPost(TickEvent.LevelTickEvent event) {
 		if (event.phase != TickEvent.Phase.END) return;
 
 		var level = event.level;
-	//?} else {
-	/*@SubscribeEvent
+	^///?} else {
+	@SubscribeEvent
 	public static void onLevelTickPost(TickEvent.LevelTickEvent.Post event) {
 		var level = event.level;
-	*///?}
+	//?}
 
 		if (level instanceof ClientLevel clientLevel) {
 			WorldUtil.EVENT_LISTENER.onEndTick(clientLevel);
 		}
 	}
 }
-//?}
+*///?}

@@ -8,12 +8,12 @@ import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.WorldUtil;
 //? if fabric {
-/*import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-*///?}
+//?}
 //? if fabric {
-/*import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-*///?}
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+//?}
 import foundationgames.enhancedblockentities.platform.Platform;
 import net.minecraft.client.Minecraft;
 import foundationgames.enhancedblockentities.util.DateUtil;
@@ -24,10 +24,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.function.Consumer;
 
 //? if fabric {
-/*public final class EnhancedBlockEntities implements ClientModInitializer {
-*///?} else {
-public final class EnhancedBlockEntities {
-//?}
+public final class EnhancedBlockEntities implements ClientModInitializer {
+//?} else {
+/*public final class EnhancedBlockEntities {
+*///?}
     public static final String ID = "enhancedblockentities";
     public static final String NAMESPACE = "ebe";
     public static final Logger LOG = LogManager.getLogger("Enhanced Block Entities");
@@ -38,12 +38,12 @@ public final class EnhancedBlockEntities {
     public static final String API_V1 = "ebe_v1";
 
     //? if fabric {
-    /*@Override
+    @Override
     public void onInitializeClient() {
         initClient();
         registerLoaderEvents();
     }
-    *///?}
+    //?}
 
     @SuppressWarnings("unchecked")
     public static void initClient() {
@@ -62,11 +62,11 @@ public final class EnhancedBlockEntities {
 
     private static void registerLoaderEvents() {
         //? if fabric {
-        /*WorldRenderEvents.END.register(ctx -> SignRenderManager.endFrame());
-        *///?}
+        WorldRenderEvents.END.register(ctx -> SignRenderManager.endFrame());
+        //?}
         //? if fabric {
-        /*ClientTickEvents.END_WORLD_TICK.register(WorldUtil.EVENT_LISTENER::onEndTick);
-        *///?}
+        ClientTickEvents.END_WORLD_TICK.register(WorldUtil.EVENT_LISTENER::onEndTick);
+        //?}
     }
 
     public static void reload(ReloadType type) {

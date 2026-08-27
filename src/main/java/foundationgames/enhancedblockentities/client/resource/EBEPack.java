@@ -11,8 +11,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.BuiltInMetadata;
 //? if >= 1.21 {
-/*import net.minecraft.server.packs.PackLocationInfo;
-*///?}
+import net.minecraft.server.packs.PackLocationInfo;
+//?}
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
@@ -40,28 +40,28 @@ public class EBEPack implements PackResources {
 
     private final PackMetadataSection packMeta;
     //? if <= 1.20 {
-    private final String packInfo;
-    //?} else {
-    /*private final PackLocationInfo packInfo;
-    *///?}
+    /*private final String packInfo;
+    *///?} else {
+    private final PackLocationInfo packInfo;
+    //?}
 
     public EBEPack(ResourceLocation id, TemplateLoader templates) {
         this.templates = templates;
 
         //? if <= 1.20 {
-        this.packMeta = new PackMetadataSection(
+        /*this.packMeta = new PackMetadataSection(
                 Component.literal("Enhanced Block Entities Resources"),
                 SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES));
 
         this.packInfo = id.toString();
-        //?} else {
-        /*this.packMeta = new PackMetadataSection(
+        *///?} else {
+        this.packMeta = new PackMetadataSection(
                 Component.literal("Enhanced Block Entities Resources"),
                 SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
                 Optional.empty());
 
         this.packInfo = new PackLocationInfo(id.toString(), Component.literal(id.toString()), PackSource.BUILT_IN, Optional.empty());
-        *///?}
+        //?}
     }
 
     public void addAtlasSprite(ResourceLocation atlas, SpriteSource source) {
@@ -142,16 +142,16 @@ public class EBEPack implements PackResources {
     }
 
     //? if <= 1.20 {
-    @Override
+    /*@Override
     public String packId() {
         return this.packInfo;
     }
-    //?} else {
-    /*@Override
+    *///?} else {
+    @Override
     public PackLocationInfo location() {
         return this.packInfo;
     }
-    *///?}
+    //?}
 
     @Override
     public void close() {
