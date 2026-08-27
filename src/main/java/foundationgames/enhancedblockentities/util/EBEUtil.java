@@ -1,6 +1,13 @@
 package foundationgames.enhancedblockentities.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+//? if <= 1.19.2 {
+/*import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+*///?} else {
+import com.mojang.math.Axis;
+import org.joml.Quaternionf;
+//?}
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.platform.Platform;
@@ -9,6 +16,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+//? if <= 1.18 {
+/*import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+*///?}
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.VanillaPackResources;
@@ -100,5 +113,71 @@ public enum EBEUtil {;
         }
 
         ResourceUtil.dumpAllPacks(path);
+    }
+
+    //? if <= 1.19.2 {
+    /*public static Quaternion rotXRad(float radians) {
+        return Vector3f.XP.rotation(radians);
+    }
+
+    public static Quaternion rotYRad(float radians) {
+        return Vector3f.YP.rotation(radians);
+    }
+
+    public static Quaternion rotZRad(float radians) {
+        return Vector3f.ZP.rotation(radians);
+    }
+
+    public static Quaternion rotXDeg(float degrees) {
+        return Vector3f.XP.rotationDegrees(degrees);
+    }
+
+    public static Quaternion rotYDeg(float degrees) {
+        return Vector3f.YP.rotationDegrees(degrees);
+    }
+
+    public static Quaternion rotYNDeg(float degrees) {
+        return Vector3f.YN.rotationDegrees(degrees);
+    }
+    *///?} else {
+    public static Quaternionf rotXRad(float radians) {
+        return Axis.XP.rotation(radians);
+    }
+
+    public static Quaternionf rotYRad(float radians) {
+        return Axis.YP.rotation(radians);
+    }
+
+    public static Quaternionf rotZRad(float radians) {
+        return Axis.ZP.rotation(radians);
+    }
+
+    public static Quaternionf rotXDeg(float degrees) {
+        return Axis.XP.rotationDegrees(degrees);
+    }
+
+    public static Quaternionf rotYDeg(float degrees) {
+        return Axis.YP.rotationDegrees(degrees);
+    }
+
+    public static Quaternionf rotYNDeg(float degrees) {
+        return Axis.YN.rotationDegrees(degrees);
+    }
+    //?}
+
+    public static MutableComponent text(String literal) {
+        //? if <= 1.18 {
+        /*return new TextComponent(literal);
+        *///?} else {
+        return Component.literal(literal);
+        //?}
+    }
+
+    public static MutableComponent translate(String key, Object... args) {
+        //? if <= 1.18 {
+        /*return new TranslatableComponent(key, args);
+        *///?} else {
+        return Component.translatable(key, args);
+        //?}
     }
 }

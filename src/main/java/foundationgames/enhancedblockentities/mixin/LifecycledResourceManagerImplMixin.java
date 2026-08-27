@@ -47,7 +47,11 @@ public abstract class LifecycledResourceManagerImplMixin {
 
     private void addPack(PackType type, PackResources pack) {
         for (var namespace : pack.getNamespaces(type)) {
+            //? if <= 1.18 {
+            /*this.namespacedManagers.computeIfAbsent(namespace, n -> new FallbackResourceManager(type, n)).add(pack);
+            *///?} else {
             this.namespacedManagers.computeIfAbsent(namespace, n -> new FallbackResourceManager(type, n)).push(pack);
+            //?}
         }
     }
 }

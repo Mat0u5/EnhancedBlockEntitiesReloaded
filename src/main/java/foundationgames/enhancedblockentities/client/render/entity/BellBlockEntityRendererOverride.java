@@ -1,7 +1,6 @@
 package foundationgames.enhancedblockentities.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
@@ -37,8 +36,8 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
             }
             matrices.pushPose();
             matrices.translate(8f/16, 12f/16, 8f/16);
-            matrices.mulPose(Axis.XP.rotation(bellPitch));
-            matrices.mulPose(Axis.ZP.rotation(bellRoll));
+            matrices.mulPose(EBEUtil.rotXRad(bellPitch));
+            matrices.mulPose(EBEUtil.rotZRad(bellRoll));
             matrices.translate(-8f/16, -12f/16, -8f/16);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, bellModel, light, overlay);
 

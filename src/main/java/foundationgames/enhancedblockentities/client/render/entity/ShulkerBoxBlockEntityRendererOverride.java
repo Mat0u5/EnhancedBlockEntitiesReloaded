@@ -1,7 +1,6 @@
 package foundationgames.enhancedblockentities.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -41,7 +40,7 @@ public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOv
 
             matrices.translate(0.5, 0.5, 0.5);
             matrices.mulPose(dir.getRotation());
-            matrices.mulPose(Axis.YP.rotationDegrees(270 * animation));
+            matrices.mulPose(EBEUtil.rotYDeg(270 * animation));
             matrices.translate(-0.5, -0.5, -0.5);
 
             matrices.translate(0, animation * 0.5f, 0);

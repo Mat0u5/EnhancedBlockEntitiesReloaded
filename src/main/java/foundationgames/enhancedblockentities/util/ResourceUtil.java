@@ -334,12 +334,14 @@ public enum ResourceUtil {;
     *///?} else {
     public static void addDecoratedPotPatternModels(ResourceKey<DecoratedPotPattern> patternKey, EBEPack pack) {
     //?}
+        //? if >= 1.19.4 {
         for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
             addParentTexModel("block/template_pottery_pattern_" + dir.getName(),
                     kv("pattern", Sheets.getDecoratedPotMaterial(patternKey).texture().toString()),
                     EBEUtil.rl("block/" + patternKey.location().getPath() + "_" + dir.getName()),
                     pack);
         }
+        //?}
     }
 
     public static void resetBasePack() {

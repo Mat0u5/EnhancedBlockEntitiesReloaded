@@ -1,7 +1,9 @@
 package foundationgames.enhancedblockentities;
 
 import foundationgames.enhancedblockentities.client.model.*;
+//? if >= 1.19.4 {
 import foundationgames.enhancedblockentities.client.model.misc.DecoratedPotModelSelector;
+//?}
 import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCondition;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.*;
@@ -16,7 +18,9 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 *///?}
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
+//? if >= 1.19.4 {
 import net.minecraft.core.registries.BuiltInRegistries;
+//?}
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -138,6 +142,7 @@ public enum EBESetup {;
     }
 
     public static void setupRRPDecoratedPots() {
+        //? if >= 1.19.4 {
         EBEPack p = ResourceUtil.getBasePack();
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
@@ -151,6 +156,7 @@ public enum EBESetup {;
         }
 
         p.addDirBlockSprites("entity/decorated_pot", "entity/decorated_pot/");
+        //?}
     }
 
     public static void setupResourceProviders() {
@@ -303,6 +309,7 @@ public enum EBESetup {;
             );
         }
 
+        //? if >= 1.19.4 {
         DecoratedPotModelSelector decoratedPotSelector = new DecoratedPotModelSelector();
         DynamicModelProvidingPlugin.register(
                 EBEUtil.rl("builtin", "decorated_pot"),
@@ -312,6 +319,7 @@ public enum EBESetup {;
                         DynamicModelEffects.DECORATED_POT
                 )
         );
+        //?}
     }
 
     private static void putCutoutMipped(Block block) {
@@ -383,17 +391,24 @@ public enum EBESetup {;
                 Blocks.JUNGLE_SIGN, Blocks.JUNGLE_WALL_SIGN,
                 Blocks.ACACIA_SIGN, Blocks.ACACIA_WALL_SIGN,
                 Blocks.DARK_OAK_SIGN, Blocks.DARK_OAK_WALL_SIGN,
+                //? if >= 1.19.2 {
                 Blocks.MANGROVE_SIGN, Blocks.MANGROVE_WALL_SIGN,
+                //?}
+                //? if >= 1.19.4 {
                 Blocks.CHERRY_SIGN, Blocks.CHERRY_WALL_SIGN,
+                //?}
                 Blocks.CRIMSON_SIGN, Blocks.CRIMSON_WALL_SIGN,
                 Blocks.WARPED_SIGN, Blocks.WARPED_WALL_SIGN,
+                //? if >= 1.19.4 {
                 Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN,
+                //?}
         }) {
             EnhancedBlockEntityRegistry.register(sign, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
             );
         }
 
+        //? if >= 1.19.4 {
         for (var sign : new Block[] {
                 Blocks.OAK_HANGING_SIGN, Blocks.OAK_WALL_HANGING_SIGN,
                 Blocks.BIRCH_HANGING_SIGN, Blocks.BIRCH_WALL_HANGING_SIGN,
@@ -412,6 +427,7 @@ public enum EBESetup {;
             );
             putCutout(sign);
         }
+        //?}
     }
 
     public static void setupBells() {
@@ -454,7 +470,9 @@ public enum EBESetup {;
     }
 
     public static void setupDecoratedPots() {
+        //? if >= 1.19.4 {
         EnhancedBlockEntityRegistry.register(Blocks.DECORATED_POT, BlockEntityType.DECORATED_POT,
                 BlockEntityRenderCondition.DECORATED_POT, new DecoratedPotBlockEntityRendererOverride());
+        //?}
     }
 }

@@ -9,7 +9,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+//? if >= 1.19.4 {
 import net.minecraft.client.gui.layouts.GridLayout;
+//?}
 import net.minecraft.client.gui.narration.NarratableEntry;
 
 import java.util.ArrayList;
@@ -34,11 +36,18 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
     public void add(AbstractWidget ... widgets) {
         if (widgets.length == 0) return;
 
+        int width = (this.rowWidth - ((widgets.length - 1) * SPACING)) / widgets.length;
+
+        //? if <= 1.19.2 {
+        /*for (var widget : widgets) {
+            widget.setWidth(width);
+        }
+
+        this.addEntry(new Entry(List.of(widgets)));
+        *///?} else {
         var grid = new GridLayout();
         grid.columnSpacing(SPACING);
         var adder = grid.createRowHelper(widgets.length);
-
-        int width = (this.rowWidth - ((widgets.length - 1) * SPACING)) / widgets.length;
 
         for (var widget : widgets) {
             //? if <= 1.20 {
@@ -52,6 +61,7 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
         grid.arrangeElements();
 
         this.addEntry(new Entry(grid));
+        //?}
     }
 
     @Override
@@ -71,6 +81,13 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
     //?}
 
     public static class Entry extends ContainerObjectSelectionList.Entry<Entry> {
+        //? if <= 1.19.2 {
+        /*private final List<AbstractWidget> children;
+
+        public Entry(List<AbstractWidget> widgets) {
+            this.children = widgets;
+        }
+        *///?} else {
         private final GridLayout widget;
         private final List<AbstractWidget> children = new ArrayList<>();
 
@@ -78,6 +95,7 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
             this.widget = widget;
             widget.visitWidgets(children::add);
         }
+        //?}
 
         @Override
         public List<? extends GuiEventListener> children() {
@@ -95,10 +113,22 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
         *///?} else {
         public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         //?}
+            //? if <= 1.19.2 {
+            /*int left = x - 3;
+
+            for (var child : this.children) {
+                child.x = left;
+                child.y = y;
+                child.render(context, mouseX, mouseY, tickDelta);
+
+                left += child.getWidth() + SPACING;
+            }
+            *///?} else {
             this.widget.setPosition(x - 3, y);
             this.widget.arrangeElements();
 
             this.widget.visitWidgets(c -> c.render(context, mouseX, mouseY, tickDelta));
+            //?}
         }
     }
 }

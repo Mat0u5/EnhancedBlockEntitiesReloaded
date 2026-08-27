@@ -1,7 +1,6 @@
 package foundationgames.enhancedblockentities.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -37,7 +36,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             LidBlockEntity chest = getLidAnimationHolder(blockEntity, tickDelta);
             matrices.translate(0.5f, 0, 0.5f);
             Direction dir = blockEntity.getBlockState().getValue(ChestBlock.FACING);
-            matrices.mulPose(Axis.YP.rotationDegrees(180 - EBEUtil.angle(dir)));
+            matrices.mulPose(EBEUtil.rotYDeg(180 - EBEUtil.angle(dir)));
             matrices.translate(-0.5f, 0, -0.5f);
             float yPiv = 9f / 16;
             float zPiv = 15f / 16;
@@ -45,7 +44,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             float rot = chest.getOpenNess(tickDelta);
             rot = 1f - rot;
             rot = 1f - (rot * rot * rot);
-            matrices.mulPose(Axis.XP.rotationDegrees(rot * 90));
+            matrices.mulPose(EBEUtil.rotXDeg(rot * 90));
             matrices.translate(0, -yPiv, -zPiv);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
 

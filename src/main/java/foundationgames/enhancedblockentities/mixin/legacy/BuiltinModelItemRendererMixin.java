@@ -9,7 +9,11 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
+//? if <= 1.19.2 {
+/*import net.minecraft.client.renderer.block.model.ItemTransforms;
+*///?} else {
 import net.minecraft.world.item.ItemDisplayContext;
+//?}
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -22,7 +26,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BlockEntityWithoutLevelRenderer.class)
 public class BuiltinModelItemRendererMixin {
     @Inject(method = "renderByItem", at = @At("HEAD"), cancellable = true)
+    //? if <= 1.19.2 {
+    /*private void enhanced_bes$renderBeds(ItemStack stack, ItemTransforms.TransformType mode, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, CallbackInfo ci) {
+    *///?} else {
     private void enhanced_bes$renderBeds(ItemStack stack, ItemDisplayContext mode, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, CallbackInfo ci) {
+    //?}
         if (EnhancedBlockEntities.CONFIG.renderEnhancedBeds &&
                 stack.getItem() instanceof BlockItem item &&
                 item.getBlock() instanceof BedBlock bed &&

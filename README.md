@@ -1,10 +1,10 @@
 # UNOFFICIAL PORT
 
-This is an unofficial port of the original [Enhanced Block Entities mod](https://modrinth.com/mod/ebe), adding support for newer minecraft versions and perhaps Forge and NeoForge in the future.
+This is an unofficial port of the original [Enhanced Block Entities mod](https://modrinth.com/mod/ebe), adding support for newer minecraft versions (1.21.5+) as well as Forge and NeoForge!
 
 ## Enhanced Block Entities
 
-EBE is a **100% client side** Minecraft mod for the **[Fabric](https://fabricmc.net/use/)** mod loader which aims to increase the performance of block entity rendering, as well as offer customizability via resource packs. <br/><br/>
+EBE is a **100% client side** Minecraft mod which aims to increase the performance of block entity rendering, as well as offer customizability via resource packs. <br/><br/>
 **How does it work?** EBE Makes some block entities use baked block models rather than laggy entity models. <br/><br/>
 **Is it just an optimization mod?** EBE isn't *just* an optimization mod, some side effects of its optimizations are many visual improvements. <br/>
 These may include:
@@ -19,21 +19,10 @@ These may include:
 - EBE 0.10.2 and above are **fully compatible with Sodium 0.6+**
 - Earlier EBE versions require installing [Indium](https://modrinth.com/mod/indium) along with Sodium 0.5.11 or below.
 
-## Downloading the mod
-
-For stable releases, you can check out the [CurseForge](https://www.curseforge.com/minecraft/mc-mods/enhanced-block-entities) or [Modrinth](https://modrinth.com/mod/OVuFYfre) page. If you want the newest bleeding edge build, you can use GitHub Actions (or alternatively, you can build yourself). This mod requires [Fabric API](https://modrinth.com/mod/fabric-api) <br/><br/>
-
 ## FAQ and Help
 
 **Q: I need help with the mod/need to report a bug!** <br/>
-**A:** If you're having trouble setting up the mod or using it alongside other mods, I'd recommend you join our [Discord Server](https://discord.gg/7Aw3y4RtY9) and ask for help there. *If the issue is a BUG* please report it on our issue tracker ("Issues" tab at the top of the page)<br/><br/>
-
-**Q: Does this mod glitch the chest animation or turn chests invisible?**
-**A:** This bug has been completely eradicated in EBE versions 0.5 and above. If the issue still persists (it shouldn't), leave an issue on GitHub or join the [Discord Server](https://discord.gg/7Aw3y4RtY9). The chest lid may flash when using with Sodium. <br/><br/>
-
-**Q: My chests are still invisible!** <br/>
-**A:** You're likely using a Sodium version lower than 0.4, which doesn't support certain Fabric Rendering features by default. If you need to use a Sodium version lower than 0.4 with EBE, you should install [Indium](https://modrinth.com/mod/indium). <br/><br/>
-<br/><br/>
+**A:**  *If the issue is a BUG* please report it on our issue tracker ("Issues" tab at the top of the page)<br/><br/>
 
 ## FPS Boost
 Rendering 1700 chests:

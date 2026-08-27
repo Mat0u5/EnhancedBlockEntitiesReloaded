@@ -266,8 +266,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+//? if <= 1.18 {
+/^import net.minecraftforge.client.model.data.IDynamicBakedModel;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
+^///?} else {
 import net.minecraftforge.client.model.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.ModelData;
+//?}
 import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.Nullable;
 
@@ -289,6 +295,31 @@ public class DynamicBakedModel implements IDynamicBakedModel {
         this.effects = effects;
     }
 
+    //? if <= 1.18 {
+    /^@Override
+    public IModelData getModelData(BlockAndTintGetter view, BlockPos pos, BlockState state, IModelData modelData) {
+        var indices = new int[this.selector.displayedModelCount];
+        this.selector.writeModelIndices(view, state, pos, RANDOM::get, indices);
+
+        return new ModelDataMap.Builder().withInitial(MODEL_INDICES, indices).build();
+    }
+
+    @Override
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, RandomSource random, IModelData data) {
+        var indices = data.getData(MODEL_INDICES);
+        if (indices == null) return this.models[0].getQuads(state, face, random);
+
+        var quads = new ArrayList<BakedQuad>();
+        for (int modelIndex : indices) {
+            if (modelIndex < 0 || modelIndex >= this.models.length) continue;
+
+            var model = this.models[modelIndex];
+            if (model != null) quads.addAll(model.getQuads(state, face, random, data));
+        }
+
+        return quads;
+    }
+    ^///?} else {
     @Override
     public ModelData getModelData(BlockAndTintGetter view, BlockPos pos, BlockState state, ModelData modelData) {
         var indices = new int[this.selector.displayedModelCount];
@@ -312,6 +343,7 @@ public class DynamicBakedModel implements IDynamicBakedModel {
 
         return quads;
     }
+    //?}
 
     @Override
     public boolean useAmbientOcclusion() {

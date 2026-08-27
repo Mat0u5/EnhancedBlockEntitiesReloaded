@@ -1,5 +1,11 @@
 package foundationgames.enhancedblockentities.client.resource;
 
+//? if <= 1.19.2 {
+/*public final class AtlasResourceBuilder {
+    private AtlasResourceBuilder() {
+    }
+}
+*///?} else {
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
@@ -24,3 +30,4 @@ public class AtlasResourceBuilder {
                 .getBytes(StandardCharsets.UTF_8);
     }
 }
+//?}

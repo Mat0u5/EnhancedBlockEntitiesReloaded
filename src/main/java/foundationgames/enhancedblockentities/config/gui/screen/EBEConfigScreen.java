@@ -17,8 +17,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 //?}
 import net.minecraft.client.gui.components.Button;
+//? if >= 1.19.4 {
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
+//?}
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.CommonComponents;
@@ -39,21 +41,21 @@ public class EBEConfigScreen extends Screen {
     private static final ImmutableList<String> ALLOWED_FORCED_DISABLED = ImmutableList.of("allowed", "forced", "disabled");
     private static final ImmutableList<String> SIGN_TEXT_OPTIONS = ImmutableList.of("smart", "all", "most", "some", "few");
 
-    private static final Component HOLD_SHIFT = Component.translatable("text.ebe.descriptions").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC);
-    private static final Component CHEST_OPTIONS_TITLE = Component.translatable("text.ebe.chest_options");
-    private static final Component SIGN_OPTIONS_TITLE = Component.translatable("text.ebe.sign_options");
-    private static final Component BELL_OPTIONS_TITLE = Component.translatable("text.ebe.bell_options");
-    private static final Component BED_OPTIONS_TITLE = Component.translatable("text.ebe.bed_options");
-    private static final Component SHULKER_BOX_OPTIONS_TITLE = Component.translatable("text.ebe.shulker_box_options");
-    private static final Component DECORATED_POT_OPTIONS_TITLE = Component.translatable("text.ebe.decorated_pot_options");
-    private static final Component ADVANCED_TITLE = Component.translatable("text.ebe.advanced");
+    private static final Component HOLD_SHIFT = EBEUtil.translate("text.ebe.descriptions").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC);
+    private static final Component CHEST_OPTIONS_TITLE = EBEUtil.translate("text.ebe.chest_options");
+    private static final Component SIGN_OPTIONS_TITLE = EBEUtil.translate("text.ebe.sign_options");
+    private static final Component BELL_OPTIONS_TITLE = EBEUtil.translate("text.ebe.bell_options");
+    private static final Component BED_OPTIONS_TITLE = EBEUtil.translate("text.ebe.bed_options");
+    private static final Component SHULKER_BOX_OPTIONS_TITLE = EBEUtil.translate("text.ebe.shulker_box_options");
+    private static final Component DECORATED_POT_OPTIONS_TITLE = EBEUtil.translate("text.ebe.decorated_pot_options");
+    private static final Component ADVANCED_TITLE = EBEUtil.translate("text.ebe.advanced");
 
-    private static final Component DUMP_LABEL = Component.translatable("option.ebe.dump");
+    private static final Component DUMP_LABEL = EBEUtil.translate("option.ebe.dump");
 
     private final Component dumpTooltip = GuiUtil.shorten(I18n.get("option.ebe.dump.comment"), 20);
 
     public EBEConfigScreen(Screen screen) {
-        super(Component.translatable("screen.ebe.config"));
+        super(EBEUtil.translate("screen.ebe.config"));
         parent = screen;
     }
 
@@ -67,6 +69,21 @@ public class EBEConfigScreen extends Screen {
         addOptions();
         this.addRenderableWidget(optionsWidget);
 
+        //? if <= 1.19.2 {
+        /*int menuButtonY = this.height - 27;
+        int menuButtonsLeft = (this.width - ((3 * 100) + (2 * 4))) / 2;
+
+        this.addRenderableWidget(new Button(menuButtonsLeft, menuButtonY, 100, 20,
+                CommonComponents.GUI_CANCEL, button -> this.onClose()));
+        this.addRenderableWidget(new Button(menuButtonsLeft + 104, menuButtonY, 100, 20,
+                EBEUtil.translate("text.ebe.apply"), button -> this.applyChanges()));
+        this.addRenderableWidget(new Button(menuButtonsLeft + 208, menuButtonY, 100, 20,
+                CommonComponents.GUI_DONE,
+                button -> {
+                    applyChanges();
+                    onClose();
+                }));
+        *///?} else {
         var menuButtons = new GridLayout();
         menuButtons.columnSpacing(4);
 
@@ -74,7 +91,7 @@ public class EBEConfigScreen extends Screen {
 
         menuButtonAdder.addChild(Button.builder(CommonComponents.GUI_CANCEL, button -> this.onClose())
                 .size(100, 20).build());
-        menuButtonAdder.addChild(Button.builder(Component.translatable("text.ebe.apply"), button -> this.applyChanges())
+        menuButtonAdder.addChild(Button.builder(EBEUtil.translate("text.ebe.apply"), button -> this.applyChanges())
                 .size(100, 20).build());
         menuButtonAdder.addChild(Button.builder(CommonComponents.GUI_DONE,
                 button -> {
@@ -89,6 +106,7 @@ public class EBEConfigScreen extends Screen {
             child.setTabOrderGroup(1);
             this.addRenderableWidget(child);
         });
+        //?}
     }
 
     //? if >= 1.21 {
@@ -206,6 +224,15 @@ public class EBEConfigScreen extends Screen {
         optionsWidget.add(option(
                 new EBEOption(EBEConfig.FORCE_RESOURCE_PACK_COMPAT_KEY, BOOLEAN_OPTIONS, configView, false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
+        //? if <= 1.19.2 {
+        /*optionsWidget.add(new Button(0, 0, 200, 20, DUMP_LABEL, b -> {
+            try {
+                EBEUtil.dumpResources();
+            } catch (IOException e) {
+                EnhancedBlockEntities.LOG.error(e);
+            }
+        }, (b, context, mouseX, mouseY) -> this.renderTooltip(context, this.font.split(dumpTooltip, 200), mouseX, mouseY)));
+        *///?} else {
         optionsWidget.add(Button.builder(DUMP_LABEL, b -> {
             try {
                 EBEUtil.dumpResources();
@@ -213,16 +240,24 @@ public class EBEConfigScreen extends Screen {
                 EnhancedBlockEntities.LOG.error(e);
             }
         }).tooltip(Tooltip.create(dumpTooltip)).build());
+        //?}
     }
 
     private Button option(EBEOption option) {
         options.add(option);
 
+        //? if <= 1.19.2 {
+        /*var button = new Button(0, 0, 200, 20, option.getText(), b -> {
+            option.next();
+            b.setMessage(option.getText());
+        }, (b, context, mouseX, mouseY) -> this.renderTooltip(context, this.font.split(option.getTooltipText(), 200), mouseX, mouseY));
+        *///?} else {
         var button = Button.builder(option.getText(), b -> {
             option.next();
             b.setMessage(option.getText());
             b.setTooltip(option.getTooltip());
         }).tooltip(option.getTooltip()).build();
+        //?}
 
         if (option.override != null) {
             button.active = false;

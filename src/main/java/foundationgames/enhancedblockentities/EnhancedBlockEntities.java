@@ -110,9 +110,11 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
             EBESetup.setupRRPShulkerBoxes();
         }
 
+        //? if >= 1.19.4 {
         if (CONFIG.renderEnhancedDecoratedPots) {
             EBESetup.setupDecoratedPots();
             EBESetup.setupRRPDecoratedPots();
         }
+        //?}
     }
 }

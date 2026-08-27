@@ -170,8 +170,9 @@ stonecutter {
 			match("1.20", "fabric", "forge")
 
 			match("1.19.4", "fabric", "forge")
-			// 1.19.2 predates atlas sources, GridLayout and BuiltInRegistries - needs its own pass
-			//match("1.19.2", "fabric", "forge")
+			match("1.19.2", "fabric", "forge")
+
+			match("1.18", "fabric", "forge")
 		}
 
 		if (env("GRADLE_MULTILOADER") == "true") {

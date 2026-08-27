@@ -10,7 +10,10 @@ import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 //?}
 import net.minecraft.client.resources.model.BakedModel;
-//? if forge {
+//? if forge && <= 1.19.2 {
+/*import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.BlockModelRotation;
+*///?} else if forge {
 /*import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.BlockModelRotation;
 *///?}
@@ -29,11 +32,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+//? if <= 1.18 {
+/^import net.minecraftforge.client.event.ModelBakeEvent;
+^///?} else {
 import net.minecraftforge.client.event.ModelEvent;
+//?}
 *///?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
+//? if >= 1.19.4 {
 import net.minecraft.core.registries.BuiltInRegistries;
+//?}
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
@@ -110,8 +119,10 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
     public static final ResourceLocation BELL_WALL_WITH_BELL = of("block/bell_wall_with_bell", BELL_PREDICATE);
     public static final ResourceLocation BELL_BODY = of("block/bell_body", BELL_PREDICATE);
 
+    //? if >= 1.19.4 {
     public static final ResourceLocation DECORATED_POT_BASE = of("block/decorated_pot_base", DECORATED_POT_PREDICATE);
     public static final ResourceLocation DECORATED_POT_SHAKING = of("block/decorated_pot_shaking", DECORATED_POT_PREDICATE);
+    //?}
 
     public static final Map<DyeColor, ResourceLocation> SHULKER_BOXES = new HashMap<>();
     public static final Map<DyeColor, ResourceLocation> SHULKER_BOX_BOTTOMS = new HashMap<>();
@@ -143,6 +154,7 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
     public static void refreshPotteryPatterns() {
         POTTERY_PATTERNS.clear();
 
+        //? if >= 1.19.4 {
         // The order decorated pots store patterns per face
         Direction[] orderedHorizontalDirs = new Direction[] {Direction.NORTH, Direction.WEST, Direction.EAST, Direction.SOUTH};
 
@@ -161,6 +173,7 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
 
             POTTERY_PATTERNS.put(patternKey, ids);
         }
+        //?}
     }
 
     private static ResourceLocation of(String id, Predicate<EBEConfig> condition) {
@@ -253,7 +266,11 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
 
     private static boolean extraModelsDirty = true;
 
+    //? if <= 1.19.2 {
+    /^public static void bakeExtraModels(ModelBakery baker) {
+    ^///?} else {
     public static void bakeExtraModels(ModelBaker baker) {
+    //?}
         if (!extraModelsDirty) return;
 
         extraModelsDirty = false;
@@ -271,7 +288,13 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
         }
     }
 
+    //? if <= 1.18 {
+    /^public static void captureExtraModels(ModelBakeEvent event) {
+    ^///?} else if <= 1.19.2 {
+    /^public static void captureExtraModels(ModelEvent.BakingCompleted event) {
+    ^///?} else {
     public static void captureExtraModels(ModelEvent.ModifyBakingResult event) {
+    //?}
         extraModelsDirty = true;
     }
     *///?}

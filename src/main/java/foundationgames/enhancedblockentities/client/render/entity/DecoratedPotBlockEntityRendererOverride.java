@@ -1,8 +1,13 @@
 package foundationgames.enhancedblockentities.client.render.entity;
 
+//? if <= 1.19.2 {
+/*public final class DecoratedPotBlockEntityRendererOverride {
+    private DecoratedPotBlockEntityRendererOverride() {
+    }
+}
+*///?} else {
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
@@ -112,7 +117,7 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
             var dir = pot.getDirection();
 
             matrices.translate(0.5f, 0, 0.5f);
-            matrices.mulPose(Axis.YP.rotationDegrees(180 - EBEUtil.angle(dir)));
+            matrices.mulPose(EBEUtil.rotYDeg(180 - EBEUtil.angle(dir)));
             matrices.translate(-0.5f, 0, -0.5f);
 
             //? if >= 1.21 {
@@ -124,13 +129,13 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
                         float animPeriod = tilt * Mth.TWO_PI;
 
                         float tiltX = -1.5f * (Mth.cos(animPeriod) + 0.5f) * Mth.sin(animPeriod * 0.5f);
-                        matrices.rotateAround(Axis.XP.rotation(tiltX * WOBBLE_STRENGTH), 0.5f, 0f, 0.5f);
+                        matrices.rotateAround(EBEUtil.rotXRad(tiltX * WOBBLE_STRENGTH), 0.5f, 0f, 0.5f);
 
                         float tiltZ = Mth.sin(animPeriod);
-                        matrices.rotateAround(Axis.ZP.rotation(tiltZ * WOBBLE_STRENGTH), 0.5f, 0f, 0.5f);
+                        matrices.rotateAround(EBEUtil.rotZRad(tiltZ * WOBBLE_STRENGTH), 0.5f, 0f, 0.5f);
                     } else {
                         float yaw = (1f - tilt) * Mth.sin(-tilt * 3 * Mth.PI) * 0.125f;
-                        matrices.rotateAround(Axis.YP.rotation(yaw), 0.5f, 0f, 0.5f);
+                        matrices.rotateAround(EBEUtil.rotYRad(yaw), 0.5f, 0f, 0.5f);
                     }
                 }
             }
@@ -157,3 +162,4 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
         this.potPatternModels = null;
     }
 }
+//?}

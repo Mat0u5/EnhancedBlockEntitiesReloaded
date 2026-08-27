@@ -16,7 +16,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(SignRenderer.class)
 public interface AbstractSignBlockEntityRenderAccessor {
-    //? if <= 1.19.4 {
+    //? if <= 1.19.2 {
+    /*@Invoker("getDarkColor")
+    static int enhanced_bes$getDarkColor(SignBlockEntity sign) {
+        throw new AssertionError();
+    }
+    *///?} else if <= 1.19.4 {
     /*@Invoker("renderSignText")
     void enhanced_bes$renderText(SignBlockEntity entity, PoseStack matrices, MultiBufferSource output, int light, float scale);
     *///?} else {

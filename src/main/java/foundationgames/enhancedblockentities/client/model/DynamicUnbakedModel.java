@@ -5,19 +5,37 @@ package foundationgames.enhancedblockentities.client.model;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
+//? if <= 1.19.2 {
+/^import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.resources.model.ModelBakery;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+^///?} else {
 import net.minecraft.client.resources.model.ModelBaker;
+//?}
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 //? if <= 1.21 {
 /^import net.minecraft.client.renderer.block.model.ItemOverrides;
 ^///?}
+//? if <= 1.18 {
+/^import net.minecraftforge.client.model.IModelConfiguration;
+import net.minecraftforge.client.model.geometry.IModelGeometry;
+^///?} else {
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
+//?}
 
 import java.util.function.Function;
 
+//? if <= 1.18 {
+/^public class DynamicUnbakedModel implements IModelGeometry<DynamicUnbakedModel> {
+^///?} else {
 public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel> {
+//?}
     private final ResourceLocation[] models;
     private final ModelSelector selector;
     private final DynamicModelEffects effects;
@@ -28,7 +46,23 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
         this.effects = effects;
     }
 
-    //? if <= 1.21 {
+    //? if <= 1.18 {
+    /^@Override
+    public Collection<Material> getTextures(IModelConfiguration context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public BakedModel bake(IModelConfiguration context, ModelBakery baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides, ResourceLocation location) {
+    ^///?} else if <= 1.19.2 {
+    /^@Override
+    public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public BakedModel bake(IGeometryBakingContext context, ModelBakery baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides, ResourceLocation location) {
+    ^///?} else if <= 1.21 {
     /^@Override
     public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver, IGeometryBakingContext context) {
         for (ResourceLocation modelId : models) {
@@ -41,8 +75,8 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     //? if <= 1.20 {
     /^¹public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides, ResourceLocation location) {
     ¹^///?} else {
-    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides) {
-    //?}
+    /^¹public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides) {
+    ¹^///?}
     ^///?} else {
     @Override
     public void resolveDependencies(UnbakedModel.Resolver resolver, IGeometryBakingContext context) {
@@ -68,7 +102,14 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
+//? if <= 1.19.2 {
+/*import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.resources.model.ModelBakery;
+
+import java.util.Set;
+*///?} else {
 import net.minecraft.client.resources.model.ModelBaker;
+//?}
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -124,6 +165,16 @@ public class DynamicUnbakedModel implements UnbakedModel {
         }
     }
     ^///?}
+    *///?} else if <= 1.19.2 {
+    /*@Override
+    public Collection<ResourceLocation> getDependencies() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<Material> getMaterials(Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+        return Collections.emptyList();
+    }
     *///?} else if <= 1.21 {
     /*@Override
     public Collection<ResourceLocation> getDependencies() {
@@ -152,7 +203,10 @@ public class DynamicUnbakedModel implements UnbakedModel {
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, List<ItemOverride> overrides) {
     ^///?}
     *///?} else {
-    //? if <= 1.20 {
+    //? if <= 1.19.2 {
+    /*@Override
+    public @Nullable BakedModel bake(ModelBakery baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ResourceLocation location) {
+    *///?} else if <= 1.20 {
     /*@Override
     public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ResourceLocation location) {
     *///?} else {

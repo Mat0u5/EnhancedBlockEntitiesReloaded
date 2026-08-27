@@ -133,8 +133,15 @@ import foundationgames.enhancedblockentities.Main;
 import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.resources.ResourceLocation;
+//? if <= 1.18 {
+/^import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.IModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+^///?} else {
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
+//?}
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -156,10 +163,25 @@ public final class DynamicModelProvidingPlugin {
         return provider != null ? provider.get() : null;
     }
 
+    //? if <= 1.18 {
+    /^public static void registerGeometryLoader(ModelRegistryEvent event) {
+        ModelLoaderRegistry.registerLoader(EBEUtil.rl(loaderId()), new IModelLoader<DynamicUnbakedModel>() {
+            @Override
+            public DynamicUnbakedModel read(JsonDeserializationContext context, JsonObject json) {
+                return readGeometry(json, context);
+            }
+
+            @Override
+            public void onResourceManagerReload(ResourceManager manager) {
+            }
+        });
+    }
+    ^///?} else {
     public static void registerGeometryLoader(ModelEvent.RegisterGeometryLoaders event) {
         IGeometryLoader<DynamicUnbakedModel> loader = DynamicModelProvidingPlugin::readGeometry;
         event.register("dynamic", loader);
     }
+    //?}
 
     private static String loaderId() {
         return Main.MOD_ID + ":dynamic";

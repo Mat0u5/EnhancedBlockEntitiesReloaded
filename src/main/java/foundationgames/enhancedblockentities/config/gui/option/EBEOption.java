@@ -1,10 +1,13 @@
 package foundationgames.enhancedblockentities.config.gui.option;
 
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.ReloadType;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.ChatFormatting;
+//? if >= 1.19.4 {
 import net.minecraft.client.gui.components.Tooltip;
+//?}
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -31,7 +34,7 @@ public final class EBEOption {
     private final int defaultValue;
 
     private int selected;
-    private Tooltip tooltip = null;
+    private Component tooltip = null;
     private Component text = null;
 
     public EBEOption(String key, List<String> values, ConfigView config, boolean hasValueComments, TextPalette palette, ReloadType reloadType) {
@@ -61,29 +64,35 @@ public final class EBEOption {
     }
 
     public Component getText() {
-        var option = Component.translatable(this.getOptionKey()).withStyle(style -> style.withColor(isDefault() ? 0xFFFFFF : 0xFFDA5E));
-        var value = Component.translatable(this.getValueKey()).withStyle(style -> style.withColor(this.palette.getColor((float)this.selected / this.values.size())));
+        var option = EBEUtil.translate(this.getOptionKey()).withStyle(style -> style.withColor(isDefault() ? 0xFFFFFF : 0xFFDA5E));
+        var value = EBEUtil.translate(this.getValueKey()).withStyle(style -> style.withColor(this.palette.getColor((float)this.selected / this.values.size())));
 
-        if (text == null) text = option.append(Component.translatable(DIVIDER).append(value));
+        if (text == null) text = option.append(EBEUtil.translate(DIVIDER).append(value));
         return text;
     }
 
-    public Tooltip getTooltip() {
+    public Component getTooltipText() {
         if (tooltip == null) {
             if (override != null) {
-                var text = Component.translatable(OVERRIDDEN, override.modResponsible())
+                var text = EBEUtil.translate(OVERRIDDEN, override.modResponsible())
                         .withStyle(ChatFormatting.RED, ChatFormatting.UNDERLINE);
                 if (override.reason() != null) {
                     text.append(NEWLINE).append(override.reason());
                 }
 
-                tooltip = Tooltip.create(text);
+                tooltip = text;
             }
-            else if (hasValueComments) tooltip = Tooltip.create(Component.translatable(String.format("option.ebe.%s.valueComment.%s", key, getValue())).append(NEWLINE).append(comment.plainCopy()));
-            else tooltip = Tooltip.create(comment.plainCopy());
+            else if (hasValueComments) tooltip = EBEUtil.translate(String.format("option.ebe.%s.valueComment.%s", key, getValue())).append(NEWLINE).append(comment.plainCopy());
+            else tooltip = comment.plainCopy();
         }
         return tooltip;
     }
+
+    //? if >= 1.19.4 {
+    public Tooltip getTooltip() {
+        return Tooltip.create(getTooltipText());
+    }
+    //?}
 
     public void next() {
         selected++;

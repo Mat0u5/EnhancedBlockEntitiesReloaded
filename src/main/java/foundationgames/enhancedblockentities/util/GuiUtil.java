@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.util;
 
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
@@ -20,6 +21,6 @@ public enum GuiUtil {;
             }
         }
         if (line.length() > 0) result.append(line);
-        return Component.literal(result.toString()).withStyle(formats);
+        return EBEUtil.text(result.toString()).withStyle(formats);
     }
 }

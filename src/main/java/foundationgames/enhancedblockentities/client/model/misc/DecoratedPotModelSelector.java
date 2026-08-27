@@ -1,5 +1,11 @@
 package foundationgames.enhancedblockentities.client.model.misc;
 
+//? if <= 1.19.2 {
+/*public final class DecoratedPotModelSelector {
+    private DecoratedPotModelSelector() {
+    }
+}
+*///?} else {
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.model.ModelSelector;
 import foundationgames.enhancedblockentities.util.EBEUtil;
@@ -112,3 +118,4 @@ public class DecoratedPotModelSelector extends ModelSelector {
     }
     //?}
 }
+//?}

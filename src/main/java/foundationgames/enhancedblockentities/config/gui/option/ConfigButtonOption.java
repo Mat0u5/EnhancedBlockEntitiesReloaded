@@ -1,5 +1,29 @@
 package foundationgames.enhancedblockentities.config.gui.option;
 
+//? if <= 1.18 {
+/*import foundationgames.enhancedblockentities.config.gui.screen.EBEConfigScreen;
+import foundationgames.enhancedblockentities.util.EBEUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Option;
+import net.minecraft.client.Options;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+
+public class ConfigButtonOption {
+    public static Option getOption(Screen parent) {
+        return new Option("option.ebe.config") {
+            @Override
+            public AbstractWidget createButton(Options gameOptions, int x, int y, int width) {
+                return new Button(x, y, width, 20, EBEUtil.translate("option.ebe.config"), b -> {
+                    Minecraft.getInstance().setScreen(new EBEConfigScreen(parent));
+                });
+            }
+        };
+    }
+}
+*///?} else {
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import com.mojang.serialization.Codec;
 import foundationgames.enhancedblockentities.config.gui.screen.EBEConfigScreen;
 import net.minecraft.client.Minecraft;
@@ -28,12 +52,21 @@ public class ConfigButtonOption {
     }
 
     private record ConfigButtonCallbacks<T>(Screen parent) implements OptionInstance.ValueSet<T> {
+        //? if <= 1.19.2 {
+        /*@Override
+        public Function<OptionInstance<T>, AbstractWidget> createButton(OptionInstance.TooltipSupplier<T> tooltipFactory, Options gameOptions, int x, int y, int width) {
+            return (option) -> new Button(x, y, width, 20, EBEUtil.translate("option.ebe.config"), b -> {
+                Minecraft.getInstance().setScreen(new EBEConfigScreen(parent));
+            });
+        }
+        *///?} else {
         @Override
         public Function<OptionInstance<T>, AbstractWidget> createButton(OptionInstance.TooltipSupplier<T> tooltipFactory, Options gameOptions, int x, int y, int width, Consumer<T> changed) {
-            return (option) -> Button.builder(Component.translatable("option.ebe.config"), b -> {
+            return (option) -> Button.builder(EBEUtil.translate("option.ebe.config"), b -> {
                 Minecraft.getInstance().setScreen(new EBEConfigScreen(parent));
             }).bounds(x, y, width, 20).build();
         }
+        //?}
 
         @Override
         public Optional<T> validateValue(T value) {
@@ -46,3 +79,4 @@ public class ConfigButtonOption {
         }
     }
 }
+//?}

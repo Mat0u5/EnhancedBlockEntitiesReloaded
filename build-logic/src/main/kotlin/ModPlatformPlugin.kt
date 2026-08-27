@@ -552,6 +552,14 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	}
 
 	private fun configureStonecutterReplacements(stonecutter: StonecutterBuildExtension) {
+		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, "<=1.18"), "!renames_1_18") {
+			replace("import net.minecraft.util.RandomSource;", "import java.util.Random;")
+			replace("RandomSource::create", "Random::new")
+			replace("RandomSource.create()", "new Random()")
+			replace("Supplier<RandomSource>", "Supplier<Random>")
+			replace("ThreadLocal<RandomSource>", "ThreadLocal<Random>")
+			replace("RandomSource ", "Random ")
+		}
 		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, ">=1.21.11"), "!renames_1_21_11") {
 			replace("ModelIdentifiers", "ModelIdentifiers")
 			replace("ResourceLocation", "Identifier")

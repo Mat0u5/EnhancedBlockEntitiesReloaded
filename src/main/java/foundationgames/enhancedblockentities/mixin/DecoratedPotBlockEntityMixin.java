@@ -1,5 +1,13 @@
 package foundationgames.enhancedblockentities.mixin;
 
+//? if <= 1.19.2 {
+/*import net.minecraft.world.level.block.entity.BlockEntity;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin(BlockEntity.class)
+public class DecoratedPotBlockEntityMixin {
+}
+*///?} else {
 import foundationgames.enhancedblockentities.util.WorldUtil;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 //? if >= 1.21 {
@@ -74,3 +82,4 @@ public class DecoratedPotBlockEntityMixin implements AppearanceStateHolder {
         this.enhanced_bes$renderState = state;
     }
 }
+//?}
