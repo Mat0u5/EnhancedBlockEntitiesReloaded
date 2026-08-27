@@ -10,8 +10,8 @@ import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 //? if <= 1.21 {
-/*import net.minecraft.client.renderer.block.model.ItemOverrides;
-*///?}
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+//?}
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 
@@ -29,7 +29,7 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     }
 
     //? if <= 1.21 {
-    /*@Override
+    @Override
     public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver, IGeometryBakingContext context) {
         for (ResourceLocation modelId : models) {
             if (modelId == null) continue;
@@ -38,9 +38,13 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     }
 
     @Override
-    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides) {
-    *///?} else {
-    @Override
+    //? if <= 1.20 {
+    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides, ResourceLocation location) {
+    //?} else {
+    /*public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ItemOverrides overrides) {
+    *///?}
+    //?} else {
+    /*@Override
     public void resolveDependencies(UnbakedModel.Resolver resolver, IGeometryBakingContext context) {
         for (ResourceLocation modelId : models) {
             if (modelId == null) continue;
@@ -50,7 +54,7 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings) {
-    //?}
+    *///?}
         ModelIdentifiers.bakeExtraModels(baker);
 
         BakedModel[] baked = new BakedModel[models.length];
@@ -82,9 +86,9 @@ import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 import org.jetbrains.annotations.Nullable;
 
 //? if <= 1.21 {
-/^import java.util.Collection;
+import java.util.Collection;
 import java.util.Collections;
-^///?}
+//?}
 import java.util.function.Function;
 
 //? if neoforge {
@@ -121,7 +125,7 @@ public class DynamicUnbakedModel implements UnbakedModel {
     }
     ¹^///?}
     ^///?} else if <= 1.21 {
-    /^@Override
+    @Override
     public Collection<ResourceLocation> getDependencies() {
         return Collections.emptyList();
     }
@@ -129,15 +133,15 @@ public class DynamicUnbakedModel implements UnbakedModel {
     @Override
     public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver) {
     }
-    ^///?} else {
-    @Override
+    //?} else {
+    /^@Override
     public void resolveDependencies(Resolver resolver) {
         for (ResourceLocation modelId : models) {
             if (modelId == null) continue;
             resolver.resolve(modelId);
         }
     }
-    //?}
+    ^///?}
 
     //? if neoforge {
     /^//? if <= 1.21 {
@@ -148,8 +152,13 @@ public class DynamicUnbakedModel implements UnbakedModel {
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, List<ItemOverride> overrides) {
     ¹^///?}
     ^///?} else {
+    //? if <= 1.20 {
     @Override
+    public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings, ResourceLocation location) {
+    //?} else {
+    /^@Override
     public @Nullable BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> textureGetter, ModelState settings) {
+    ^///?}
     //?}
         BakedModel[] baked = new BakedModel[models.length];
         for (int i = 0; i < models.length; i++) {

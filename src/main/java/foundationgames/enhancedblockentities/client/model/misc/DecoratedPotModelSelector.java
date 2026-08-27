@@ -13,7 +13,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
-import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+//? if >= 1.21 {
+/*import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+*///?}
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -29,12 +31,20 @@ public class DecoratedPotModelSelector extends ModelSelector {
     public static final int IDX_EMPTY = 0;
     public static final int IDX_BASE_POT = 1;
 
-    private final List<ResourceKey<DecoratedPotPattern>> potteryPatterns;
+    //? if <= 1.20 {
+    private final List<ResourceKey<String>> potteryPatterns;
+    //?} else {
+    /*private final List<ResourceKey<DecoratedPotPattern>> potteryPatterns;
+    *///?}
 
     public DecoratedPotModelSelector() {
         super(5);
 
-        this.potteryPatterns = new ArrayList<>(BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet());
+        //? if <= 1.20 {
+        this.potteryPatterns = new ArrayList<>(BuiltInRegistries.DECORATED_POT_PATTERNS.registryKeySet());
+        //?} else {
+        /*this.potteryPatterns = new ArrayList<>(BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet());
+        *///?}
     }
 
     public ResourceLocation[] createModelIDs() {
@@ -82,7 +92,13 @@ public class DecoratedPotModelSelector extends ModelSelector {
         }
     }
 
-    private int getPatternIndex(Optional<Item> sherd, int max) {
+    //? if <= 1.20 {
+    private int getPatternIndex(Item sherd, int max) {
+        return Mth.clamp(this.potteryPatterns.indexOf(DecoratedPotPatterns.getResourceKey(sherd)), 0, max - 1);
+    }
+    //?} else {
+    /*private int getPatternIndex(Optional<Item> sherd, int max) {
         return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
     }
+    *///?}
 }

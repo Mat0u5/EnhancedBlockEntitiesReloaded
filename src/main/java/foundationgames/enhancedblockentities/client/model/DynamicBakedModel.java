@@ -9,8 +9,8 @@ import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 //? if <= 1.21 {
-/^import net.minecraft.client.renderer.block.model.ItemOverrides;
-^///?}
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+//?}
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -112,11 +112,11 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     }
 
     //? if <= 1.21 {
-    /^@Override
+    @Override
     public ItemOverrides getOverrides() {
         return ItemOverrides.EMPTY;
     }
-    ^///?}
+    //?}
 
     @Override
     public TextureAtlasSprite getParticleIcon() {
@@ -256,8 +256,8 @@ public class DynamicBakedModel implements IDynamicBakedModel {
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 //? if <= 1.21 {
-/*import net.minecraft.client.renderer.block.model.ItemOverrides;
-*///?}
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+//?}
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -334,11 +334,11 @@ public class DynamicBakedModel implements IDynamicBakedModel {
     }
 
     //? if <= 1.21 {
-    /*@Override
+    @Override
     public ItemOverrides getOverrides() {
         return ItemOverrides.EMPTY;
     }
-    *///?}
+    //?}
 
     @Override
     public TextureAtlasSprite getParticleIcon() {

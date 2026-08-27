@@ -108,7 +108,7 @@ public enum EBESetup {;
     public static void setupRRPBells() {
         ResourceUtil.addBellBlockState(ResourceUtil.getPackForCompat());
 
-        ResourceUtil.getBasePack().addSingleBlockSprite(ResourceLocation.parse("entity/bell/bell_body"));
+        ResourceUtil.getBasePack().addSingleBlockSprite(EBEUtil.rl("entity/bell/bell_body"));
     }
 
     public static void setupRRPBeds() {
@@ -131,7 +131,7 @@ public enum EBESetup {;
             var id = color != null ? color.getName()+"_shulker_box" : "shulker_box";
             ResourceUtil.addShulkerBoxBlockStates(color, pCompat);
             ResourceUtil.addShulkerBoxModels(color, p);
-            ResourceUtil.addParentModel("block/"+id, ResourceLocation.parse("item/"+id), p);
+            ResourceUtil.addParentModel("block/"+id, EBEUtil.rl("item/"+id), p);
         }
 
         p.addDirBlockSprites("entity/shulker", "entity/shulker/");
@@ -142,7 +142,11 @@ public enum EBESetup {;
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         ResourceUtil.addDecoratedPotBlockState(pCompat);
-        for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
+        //? if <= 1.20 {
+        for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERNS.registryKeySet()) {
+        //?} else {
+        /*for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
+        *///?}
             ResourceUtil.addDecoratedPotPatternModels(patternKey, p);
         }
 
@@ -151,7 +155,7 @@ public enum EBESetup {;
 
     public static void setupResourceProviders() {
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "chest_center"),
+                EBEUtil.rl("builtin", "chest_center"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.CHEST_CENTER,
@@ -164,7 +168,7 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "chest_left"),
+                EBEUtil.rl("builtin", "chest_left"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.CHEST_LEFT,
@@ -178,7 +182,7 @@ public enum EBESetup {;
         );
 
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "chest_right"),
+                EBEUtil.rl("builtin", "chest_right"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.CHEST_RIGHT,
@@ -191,7 +195,7 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "trapped_chest_center"),
+                EBEUtil.rl("builtin", "trapped_chest_center"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.TRAPPED_CHEST_CENTER,
@@ -204,7 +208,7 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "trapped_chest_left"),
+                EBEUtil.rl("builtin", "trapped_chest_left"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.TRAPPED_CHEST_LEFT,
@@ -217,7 +221,7 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "trapped_chest_right"),
+                EBEUtil.rl("builtin", "trapped_chest_right"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.TRAPPED_CHEST_RIGHT,
@@ -230,7 +234,7 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "ender_chest_center"),
+                EBEUtil.rl("builtin", "ender_chest_center"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.ENDER_CHEST_CENTER,
@@ -242,7 +246,7 @@ public enum EBESetup {;
         );
 
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "bell_between_walls"),
+                EBEUtil.rl("builtin", "bell_between_walls"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.BELL_BETWEEN_WALLS_WITH_BELL,
@@ -253,7 +257,7 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "bell_ceiling"),
+                EBEUtil.rl("builtin", "bell_ceiling"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.BELL_CEILING_WITH_BELL,
@@ -264,7 +268,7 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "bell_floor"),
+                EBEUtil.rl("builtin", "bell_floor"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.BELL_FLOOR_WITH_BELL,
@@ -275,7 +279,7 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "bell_wall"),
+                EBEUtil.rl("builtin", "bell_wall"),
                 () -> new DynamicUnbakedModel(
                         new ResourceLocation[] {
                                 ModelIdentifiers.BELL_WALL_WITH_BELL,
@@ -287,7 +291,7 @@ public enum EBESetup {;
         );
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
             DynamicModelProvidingPlugin.register(
-                    ResourceLocation.fromNamespaceAndPath("builtin", color != null ? color.getName()+"_shulker_box" : "shulker_box"),
+                    EBEUtil.rl("builtin", color != null ? color.getName()+"_shulker_box" : "shulker_box"),
                     () -> new DynamicUnbakedModel(
                             new ResourceLocation[] {
                                     ModelIdentifiers.SHULKER_BOXES.get(color),
@@ -301,7 +305,7 @@ public enum EBESetup {;
 
         DecoratedPotModelSelector decoratedPotSelector = new DecoratedPotModelSelector();
         DynamicModelProvidingPlugin.register(
-                ResourceLocation.fromNamespaceAndPath("builtin", "decorated_pot"),
+                EBEUtil.rl("builtin", "decorated_pot"),
                 () -> new DynamicUnbakedModel(
                         decoratedPotSelector.createModelIDs(),
                         decoratedPotSelector,

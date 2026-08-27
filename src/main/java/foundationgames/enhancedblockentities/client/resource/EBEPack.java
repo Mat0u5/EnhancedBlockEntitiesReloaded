@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.client.resource;
 
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.client.resource.template.TemplateLoader;
 import foundationgames.enhancedblockentities.client.resource.template.TemplateProvider;
 import net.minecraft.SharedConstants;
@@ -9,7 +10,9 @@ import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.BuiltInMetadata;
-import net.minecraft.server.packs.PackLocationInfo;
+//? if >= 1.21 {
+/*import net.minecraft.server.packs.PackLocationInfo;
+*///?}
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
@@ -27,7 +30,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class EBEPack implements PackResources {
-    public static final ResourceLocation BLOCK_ATLAS = ResourceLocation.parse("blocks");
+    public static final ResourceLocation BLOCK_ATLAS = EBEUtil.rl("blocks");
 
     private final Map<ResourceLocation, AtlasResourceBuilder> atlases = new HashMap<>();
     private final Map<ResourceLocation, IoSupplier<InputStream>> resources = new HashMap<>();
@@ -36,24 +39,36 @@ public class EBEPack implements PackResources {
     private final TemplateLoader templates;
 
     private final PackMetadataSection packMeta;
-    private final PackLocationInfo packInfo;
+    //? if <= 1.20 {
+    private final String packInfo;
+    //?} else {
+    /*private final PackLocationInfo packInfo;
+    *///?}
 
     public EBEPack(ResourceLocation id, TemplateLoader templates) {
         this.templates = templates;
 
+        //? if <= 1.20 {
         this.packMeta = new PackMetadataSection(
+                Component.literal("Enhanced Block Entities Resources"),
+                SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES));
+
+        this.packInfo = id.toString();
+        //?} else {
+        /*this.packMeta = new PackMetadataSection(
                 Component.literal("Enhanced Block Entities Resources"),
                 SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
                 Optional.empty());
 
         this.packInfo = new PackLocationInfo(id.toString(), Component.literal(id.toString()), PackSource.BUILT_IN, Optional.empty());
+        *///?}
     }
 
     public void addAtlasSprite(ResourceLocation atlas, SpriteSource source) {
         var resource = this.atlases.computeIfAbsent(atlas, id -> new AtlasResourceBuilder());
         resource.put(source);
 
-        this.addResource(ResourceLocation.fromNamespaceAndPath(atlas.getNamespace(), "atlases/" + atlas.getPath() + ".json"), resource::toBytes);
+        this.addResource(EBEUtil.rl(atlas.getNamespace(), "atlases/" + atlas.getPath() + ".json"), resource::toBytes);
     }
 
     public void addSingleBlockSprite(ResourceLocation path) {
@@ -126,10 +141,17 @@ public class EBEPack implements PackResources {
         return BuiltInMetadata.of(PackMetadataSection.TYPE, this.packMeta).get(meta);
     }
 
+    //? if <= 1.20 {
     @Override
+    public String packId() {
+        return this.packInfo;
+    }
+    //?} else {
+    /*@Override
     public PackLocationInfo location() {
         return this.packInfo;
     }
+    *///?}
 
     @Override
     public void close() {

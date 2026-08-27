@@ -49,13 +49,17 @@ public enum EBEUtil {;
     public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BakedModel model, int light, int overlay) {
         if (model == null) return;
         //? if <= 1.21 {
-        /*VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state, false));
-        *///?} else {
-        VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));
-        //?}
+        VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state, false));
+        //?} else {
+        /*VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));
+        *///?}
         for (int i = 0; i <= 6; i++) {
             for (BakedQuad q : model.getQuads(null, faceFromIndex(i), dummy)) {
-                vertices.putBulkData(matrices.last(), q, 1, 1, 1, 1, light, overlay);
+                //? if <= 1.20 {
+                vertices.putBulkData(matrices.last(), q, 1, 1, 1, light, overlay);
+                //?} else {
+                /*vertices.putBulkData(matrices.last(), q, 1, 1, 1, 1, light, overlay);
+                *///?}
             }
         }
     }
@@ -67,7 +71,23 @@ public enum EBEUtil {;
     }
 
     public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(EnhancedBlockEntities.NAMESPACE, path);
+        return rl(EnhancedBlockEntities.NAMESPACE, path);
+    }
+
+    public static ResourceLocation rl(String id) {
+        //? if <= 1.20 {
+        return new ResourceLocation(id);
+        //?} else {
+        /*return ResourceLocation.parse(id);
+        *///?}
+    }
+
+    public static ResourceLocation rl(String namespace, String path) {
+        //? if <= 1.20 {
+        return new ResourceLocation(namespace, path);
+        //?} else {
+        /*return ResourceLocation.fromNamespaceAndPath(namespace, path);
+        *///?}
     }
 
     public static final String DUMP_FOLDER_NAME = "enhanced_bes_dump";

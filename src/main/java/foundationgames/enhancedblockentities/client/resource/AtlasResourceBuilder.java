@@ -20,7 +20,7 @@ public class AtlasResourceBuilder {
 
     public byte[] toBytes() {
         return GSON.toJson(SpriteSources.FILE_CODEC.encode(this.sources, JsonOps.INSTANCE, new JsonObject())
-                .getOrThrow())
+                .result().orElseThrow())
                 .getBytes(StandardCharsets.UTF_8);
     }
 }

@@ -3,9 +3,18 @@ package foundationgames.enhancedblockentities.mixin;
 import foundationgames.enhancedblockentities.config.gui.option.ConfigButtonOption;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.options.OptionsSubScreen;
+//? if <= 1.20 {
+import net.minecraft.client.gui.screens.OptionsSubScreen;
+import net.minecraft.client.gui.screens.VideoSettingsScreen;
+//?} else {
+/*import net.minecraft.client.gui.screens.options.OptionsSubScreen;
 import net.minecraft.client.gui.screens.options.VideoSettingsScreen;
+*///?}
 import net.minecraft.network.chat.Component;
+//? if <= 1.20 {
+import net.minecraft.client.gui.components.OptionsList;
+import org.spongepowered.asm.mixin.Shadow;
+//?}
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,8 +26,17 @@ public abstract class VideoOptionsScreenMixin extends OptionsSubScreen {
         super(lastScreen, options, title);
     }
 
-    @Inject(method = "addOptions", at = @At("TAIL"))
+    //? if <= 1.20 {
+    @Shadow private OptionsList list;
+
+    @Inject(method = "init", at = @At("TAIL"))
+    private void enhanced_bes$addEBEOptionButton(CallbackInfo ci) {
+        this.list.addBig(ConfigButtonOption.getOption(this));
+    }
+    //?} else {
+    /*@Inject(method = "addOptions", at = @At("TAIL"))
     private void enhanced_bes$addEBEOptionButton(CallbackInfo ci) {
         this.list.addSmall(ConfigButtonOption.getOption(this));
     }
+    *///?}
 }

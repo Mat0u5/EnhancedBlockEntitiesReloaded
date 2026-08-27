@@ -27,10 +27,10 @@ public enum TextureHacks {;
                 for (int u = 0; u < sw; u++) {
                     for (int v = 0; v < sh; v++) {
                         //? if <= 1.21 {
-                        /*prod.setPixelRGBA(u, v, src.getPixelRGBA(x + u, y + v));
-                        *///?} else {
-                        prod.setPixel(u, v, src.getPixel(x + u, y + v));
-                        //?}
+                        prod.setPixelRGBA(u, v, src.getPixelRGBA(x + u, y + v));
+                        //?} else {
+                        /*prod.setPixel(u, v, src.getPixel(x + u, y + v));
+                        *///?}
                     }
                 }
                 src.close();

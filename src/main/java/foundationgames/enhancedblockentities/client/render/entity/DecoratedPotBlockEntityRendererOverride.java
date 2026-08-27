@@ -12,18 +12,36 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
-import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+//? if >= 1.21 {
+/*import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+*///?}
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRendererOverride {
     public static final float WOBBLE_STRENGTH = 1f / 64;
 
     private BakedModel baseModel = null;
-    private Map<ResourceKey<DecoratedPotPattern>, BakedModel[]> potPatternModels = null;
+    //? if <= 1.20 {
+    private Map<ResourceKey<String>, BakedModel[]> potPatternModels = null;
+    //?} else {
+    /*private Map<ResourceKey<DecoratedPotPattern>, BakedModel[]> potPatternModels = null;
+    *///?}
+
+    //? if <= 1.20 {
+    private static ResourceKey<String> patternOf(Item sherd) {
+        return DecoratedPotPatterns.getResourceKey(sherd);
+    }
+    //?} else {
+    /*private static ResourceKey<DecoratedPotPattern> patternOf(Optional<Item> sherd) {
+        return sherd.map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK);
+    }
+    *///?}
 
     private void tryGetModels() {
         if (this.baseModel == null) {
@@ -31,9 +49,17 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
         }
 
         if (this.potPatternModels == null) {
-            var builder = ImmutableMap.<ResourceKey<DecoratedPotPattern>, BakedModel[]>builder();
+            //? if <= 1.20 {
+            var builder = ImmutableMap.<ResourceKey<String>, BakedModel[]>builder();
+            //?} else {
+            /*var builder = ImmutableMap.<ResourceKey<DecoratedPotPattern>, BakedModel[]>builder();
+            *///?}
 
-            BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet().forEach(k -> {
+            //? if <= 1.20 {
+            BuiltInRegistries.DECORATED_POT_PATTERNS.registryKeySet().forEach(k -> {
+            //?} else {
+            /*BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet().forEach(k -> {
+            *///?}
                 var patternModelIDs = ModelIdentifiers.POTTERY_PATTERNS.get(k);
                 BakedModel[] patternPerFaceModels = new BakedModel[patternModelIDs.length];
 
@@ -61,7 +87,8 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
             matrices.mulPose(Axis.YP.rotationDegrees(180 - EBEUtil.angle(dir)));
             matrices.translate(-0.5f, 0, -0.5f);
 
-            var wobbleType = pot.lastWobbleStyle;
+            //? if >= 1.21 {
+            /*var wobbleType = pot.lastWobbleStyle;
             if (wobbleType != null && pot.getLevel() != null) {
                 float tilt = ((float)(pot.getLevel().getGameTime() - pot.wobbleStartedAtTick) + tickDelta) / (float)wobbleType.duration;
                 if (tilt >= 0.0F && tilt <= 1.0F) {
@@ -79,26 +106,19 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
                     }
                 }
             }
+            *///?}
 
             var sherds = pot.getDecorations();
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, this.baseModel, light, overlay);
 
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
-                    this.potPatternModels.get(
-                            sherds.back().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                    )[0], light, overlay);
+                    this.potPatternModels.get(patternOf(sherds.back()))[0], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
-                    this.potPatternModels.get(
-                            sherds.left().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                    )[1], light, overlay);
+                    this.potPatternModels.get(patternOf(sherds.left()))[1], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
-                    this.potPatternModels.get(
-                            sherds.right().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                    )[2], light, overlay);
+                    this.potPatternModels.get(patternOf(sherds.right()))[2], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
-                    this.potPatternModels.get(
-                            sherds.front().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                    )[3], light, overlay);
+                    this.potPatternModels.get(patternOf(sherds.front()))[3], light, overlay);
 
             matrices.popPose();
         }

@@ -16,9 +16,17 @@ public final class ForgeGameEvents {
 	private ForgeGameEvents() {
 	}
 
+	//? if <= 1.20 {
 	@SubscribeEvent
+	public static void onLevelTickPost(TickEvent.LevelTickEvent event) {
+		if (event.phase != TickEvent.Phase.END) return;
+
+		var level = event.level;
+	//?} else {
+	/*@SubscribeEvent
 	public static void onLevelTickPost(TickEvent.LevelTickEvent.Post event) {
 		var level = event.level;
+	*///?}
 
 		if (level instanceof ClientLevel clientLevel) {
 			WorldUtil.EVENT_LISTENER.onEndTick(clientLevel);

@@ -87,11 +87,13 @@ public class EBEConfigScreen extends Screen {
         });
     }
 
-    @Override
+    //? if >= 1.21 {
+    /*@Override
     protected void renderMenuBackground(GuiGraphics context) {
         renderMenuBackground(context, 0, 0, this.width, 34);
         renderMenuBackground(context, 0, this.height - 35, this.width, 35);
     }
+    *///?}
 
     @Override
     public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {

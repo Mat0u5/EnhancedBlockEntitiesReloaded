@@ -2,7 +2,9 @@ package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.util.WorldUtil;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
-import net.minecraft.core.HolderLookup;
+//? if >= 1.21 {
+/*import net.minecraft.core.HolderLookup;
+*///?}
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,8 +19,13 @@ public class DecoratedPotBlockEntityMixin implements AppearanceStateHolder {
     @Unique private int enhanced_bes$modelState = 0;
     @Unique private int enhanced_bes$renderState = 0;
 
-    @Inject(method = "loadAdditional", at = @At("TAIL"))
+    //? if <= 1.20 {
+    @Inject(method = "load", at = @At("TAIL"))
+    private void enhanced_bes$updateChunkOnPatternsLoaded(CompoundTag nbt, CallbackInfo ci) {
+    //?} else {
+    /*@Inject(method = "loadAdditional", at = @At("TAIL"))
     private void enhanced_bes$updateChunkOnPatternsLoaded(CompoundTag nbt, HolderLookup.Provider rwl, CallbackInfo ci) {
+    *///?}
         var self = (DecoratedPotBlockEntity)(Object)this;
 
         if (self.getLevel() != null && self.getLevel().isClientSide()) {
@@ -26,7 +33,8 @@ public class DecoratedPotBlockEntityMixin implements AppearanceStateHolder {
         }
     }
 
-    @Inject(method = "triggerEvent", at = @At(value = "RETURN", shift = At.Shift.BEFORE, ordinal = 0))
+    //? if >= 1.21 {
+    /*@Inject(method = "triggerEvent", at = @At(value = "RETURN", shift = At.Shift.BEFORE, ordinal = 0))
     private void enhanced_bes$updateOnWobble(int type, int data, CallbackInfoReturnable<Boolean> cir) {
         var self = (DecoratedPotBlockEntity)(Object)this;
         var world = self.getLevel();
@@ -44,6 +52,7 @@ public class DecoratedPotBlockEntityMixin implements AppearanceStateHolder {
                     }
                 });
     }
+    *///?}
 
     @Override
     public int getModelState() {

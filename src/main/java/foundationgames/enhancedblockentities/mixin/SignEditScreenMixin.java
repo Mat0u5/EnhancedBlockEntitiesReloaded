@@ -22,10 +22,10 @@ public class SignEditScreenMixin {
 
     @Inject(method = "renderSignBackground", at = @At("HEAD"), cancellable = true)
     //? if <= 1.21 {
-    /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, BlockState signState, CallbackInfo ci) {
-    *///?} else {
-    private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
-    //?}
+    private void enhanced_bes$renderBakedModelSign(GuiGraphics context, BlockState signState, CallbackInfo ci) {
+    //?} else {
+    /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
+    *///?}
         BlockState state = ((SignEditScreen) (Object) this).sign.getBlockState();
 
         boolean enhanceSigns = EnhancedBlockEntities.CONFIG.renderEnhancedSigns;

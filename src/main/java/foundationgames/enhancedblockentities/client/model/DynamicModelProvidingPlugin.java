@@ -1,6 +1,35 @@
 package foundationgames.enhancedblockentities.client.model;
 
-//? if fabric {
+//? if fabric && <= 1.20 {
+/*import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.client.model.ModelProviderContext;
+import net.fabricmc.fabric.api.client.model.ModelResourceProvider;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
+
+public class DynamicModelProvidingPlugin implements ModelResourceProvider {
+    private final Supplier<DynamicUnbakedModel> model;
+    private final ResourceLocation id;
+
+    public DynamicModelProvidingPlugin(ResourceLocation id, Supplier<DynamicUnbakedModel> model) {
+        this.model = model;
+        this.id = id;
+    }
+
+    public static void register(ResourceLocation id, Supplier<DynamicUnbakedModel> model) {
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvidingPlugin(id, model));
+    }
+
+    @Override
+    public @Nullable UnbakedModel loadModelResource(ResourceLocation resourceId, ModelProviderContext context) {
+        if (resourceId.equals(this.id)) return this.model.get();
+        return null;
+    }
+}
+*///?} else if fabric {
 /*import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelResolver;
 import net.minecraft.client.resources.model.UnbakedModel;
@@ -23,16 +52,16 @@ public class DynamicModelProvidingPlugin implements ModelLoadingPlugin, ModelRes
     }
 
     //? if <= 1.21 {
-    /^@Override
+    @Override
     public void onInitializeModelLoader(ModelLoadingPlugin.Context ctx) {
         ctx.resolveModel().register(this);
     }
-    ^///?} else {
-    @Override
+    //?} else {
+    /^@Override
     public void initialize(ModelLoadingPlugin.Context ctx) {
         ctx.resolveModel().register(this);
     }
-    //?}
+    ^///?}
 
     @Override
     public @Nullable UnbakedModel resolveModel(ModelResolver.Context ctx) {
@@ -79,13 +108,13 @@ public final class DynamicModelProvidingPlugin {
     public static void emitModels(EBEPack pack) {
         for (var id : PROVIDERS.keySet()) {
             pack.addPlainTextResource(
-                    ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "models/" + id.getPath() + ".json"),
+                    EBEUtil.rl(id.getNamespace(), "models/" + id.getPath() + ".json"),
                     "{\"elements\":[],\"loader\":\"" + EBEUtil.id("dynamic") + "\",\"key\":\"" + id + "\"}");
         }
     }
 
     private static DynamicUnbakedModel read(JsonObject json, JsonDeserializationContext context) {
-        var key = ResourceLocation.parse(json.get("key").getAsString());
+        var key = EBEUtil.rl(json.get("key").getAsString());
         var model = get(key);
 
         if (model == null) {
@@ -139,13 +168,13 @@ public final class DynamicModelProvidingPlugin {
     public static void emitModels(EBEPack pack) {
         for (var id : PROVIDERS.keySet()) {
             pack.addPlainTextResource(
-                    ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "models/" + id.getPath() + ".json"),
+                    EBEUtil.rl(id.getNamespace(), "models/" + id.getPath() + ".json"),
                     "{\"elements\":[],\"loader\":\"" + loaderId() + "\",\"key\":\"" + id + "\"}");
         }
     }
 
     private static DynamicUnbakedModel readGeometry(JsonObject json, JsonDeserializationContext context) {
-        var key = ResourceLocation.parse(json.get("key").getAsString());
+        var key = EBEUtil.rl(json.get("key").getAsString());
         var model = get(key);
 
         if (model == null) {

@@ -3,7 +3,10 @@ package foundationgames.enhancedblockentities.client.model;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-//? if fabric {
+//? if fabric && <= 1.20 {
+/*import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+*///?} else if fabric {
 /*import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 *///?}
 import net.minecraft.client.resources.model.BakedModel;
@@ -34,7 +37,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+//? if >= 1.21 {
+/*import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+*///?}
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -43,7 +48,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-//? if fabric {
+//? if fabric && >= 1.21 {
 /*public final class ModelIdentifiers implements ModelLoadingPlugin {
 *///?} else {
 public final class ModelIdentifiers {
@@ -112,7 +117,11 @@ public final class ModelIdentifiers {
     public static final Map<DyeColor, ResourceLocation> SHULKER_BOX_BOTTOMS = new HashMap<>();
     public static final Map<DyeColor, ResourceLocation> SHULKER_BOX_LIDS = new HashMap<>();
 
-    public static final Map<ResourceKey<DecoratedPotPattern>, ResourceLocation[]> POTTERY_PATTERNS = new HashMap<>();
+    //? if <= 1.20 {
+    public static final Map<ResourceKey<String>, ResourceLocation[]> POTTERY_PATTERNS = new HashMap<>();
+    //?} else {
+    /*public static final Map<ResourceKey<DecoratedPotPattern>, ResourceLocation[]> POTTERY_PATTERNS = new HashMap<>();
+    *///?}
 
     static {
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
@@ -126,7 +135,7 @@ public final class ModelIdentifiers {
     }
 
     public static void init() {
-        //? if fabric {
+        //? if fabric && >= 1.21 {
         /*ModelLoadingPlugin.register(new ModelIdentifiers());
         *///?}
     }
@@ -137,7 +146,11 @@ public final class ModelIdentifiers {
         // The order decorated pots store patterns per face
         Direction[] orderedHorizontalDirs = new Direction[] {Direction.NORTH, Direction.WEST, Direction.EAST, Direction.SOUTH};
 
-        for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
+        //? if <= 1.20 {
+        for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERNS.registryKeySet()) {
+        //?} else {
+        /*for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
+        *///?}
             var pattern = patternKey.location().getPath();
             var ids = new ResourceLocation[orderedHorizontalDirs.length];;
 
@@ -151,8 +164,13 @@ public final class ModelIdentifiers {
     }
 
     private static ResourceLocation of(String id, Predicate<EBEConfig> condition) {
-        ResourceLocation idf = ResourceLocation.parse(id);
+        ResourceLocation idf = EBEUtil.rl(id);
         modelLoaders.computeIfAbsent(condition, k -> new HashSet<>()).add(idf);
+        //? if fabric && <= 1.20 {
+        /*ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> {
+            if (condition.test(EnhancedBlockEntities.CONFIG)) consumer.accept(idf);
+        });
+        *///?}
         return idf;
     }
 
@@ -167,7 +185,11 @@ public final class ModelIdentifiers {
         return ids;
     }
 
-    //? if fabric {
+    //? if fabric && <= 1.20 {
+    /*public static @Nullable BakedModel getBakedModel(ResourceLocation id) {
+        return ((BakedModelManagerAccess) Minecraft.getInstance().getModelManager()).enhanced_bes$getModel(id);
+    }
+    *///?} else if fabric {
     /*public static @Nullable BakedModel getBakedModel(ResourceLocation id) {
         return Minecraft.getInstance().getModelManager().getModel(id);
     }
@@ -223,7 +245,7 @@ public final class ModelIdentifiers {
                 var stateId = extraModelStateId(id);
 
                 pack.addPlainTextResource(
-                        ResourceLocation.fromNamespaceAndPath(stateId.getNamespace(), "blockstates/" + stateId.getPath() + ".json"),
+                        EBEUtil.rl(stateId.getNamespace(), "blockstates/" + stateId.getPath() + ".json"),
                         "{\"variants\":{\"\":{\"model\":\"" + id + "\"}}}");
             }
         }
@@ -254,14 +276,20 @@ public final class ModelIdentifiers {
     }
     //?}
 
-    //? if fabric {
-    /*//? if <= 1.21 {
-    /^@Override
+    //? if fabric && >= 1.21 && <= 1.21 {
+    /*@Override
     public void onInitializeModelLoader(Context ctx) {
-    ^///?} else {
-    @Override
+        var config = EnhancedBlockEntities.CONFIG;
+
+        for (var entry : modelLoaders.entrySet()) {
+            if (entry.getKey().test(config)) {
+                ctx.addModels(entry.getValue());
+            }
+        }
+    }
+    *///?} else if fabric && >= 1.21.2 {
+    /*@Override
     public void initialize(Context ctx) {
-    //?}
         var config = EnhancedBlockEntities.CONFIG;
 
         for (var entry : modelLoaders.entrySet()) {
