@@ -1,15 +1,8 @@
 package foundationgames.enhancedblockentities.config.gui.widget;
 
 import net.minecraft.client.gui.Font;
-//? if <= 1.21.11 {
-/*import net.minecraft.client.gui.GuiGraphics;
-*///?} else {
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-//?}
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractStringWidget;
-//? if >= 1.21.11 {
-import net.minecraft.client.gui.ActiveTextCollector;
-//?}
 import net.minecraft.network.chat.Component;
 
 public class SectionTextWidget extends AbstractStringWidget {
@@ -22,18 +15,8 @@ public class SectionTextWidget extends AbstractStringWidget {
         this.active = false;
     }
 
-    //? if >= 1.21.11 {
     @Override
-    public void visitLines(ActiveTextCollector collector) {
-    }
-    //?}
-
-    @Override
-    //? if <= 1.21.11 {
-    /*public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
-    *///?} else {
-    public void extractWidgetRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-    //?}
+    public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
         final int white = 0xFFFFFFFF;
         var font = this.getFont();
         var msg = this.getMessage();
@@ -56,10 +39,6 @@ public class SectionTextWidget extends AbstractStringWidget {
         context.fill(l, y, ml, y + 2, white);
         context.fill(mr, y, r, y + 2, white);
 
-        //? if <= 1.21.11 {
-        /*context.drawCenteredString(font, msg, tx, ty, 0xFFFFFFFF);
-        *///?} else {
-        context.centeredText(font, msg, tx, ty, 0xFFFFFFFF);
-        //?}
+        context.drawCenteredString(font, msg, tx, ty, 0xFFFFFFFF);
     }
 }

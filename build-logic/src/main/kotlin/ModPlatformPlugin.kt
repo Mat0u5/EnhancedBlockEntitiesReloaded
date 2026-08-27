@@ -232,7 +232,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			archiveBaseName.set(modId)
 			if (isForge) {
 				manifest.attributes(
-					"MixinConfigs" to "${modId}.mixins.json"
+					"MixinConfigs" to "${modId}.mixins.json,${modId}.legacy.mixins.json"
 				)
 			}
 		}

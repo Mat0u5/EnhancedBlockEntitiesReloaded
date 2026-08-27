@@ -7,15 +7,11 @@ import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
-//? if <= 1.21.11 {
-/*import net.minecraft.world.level.BlockAndTintGetter;
-*///?} else {
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
-//?}
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
@@ -41,10 +37,10 @@ public class DecoratedPotModelSelector extends ModelSelector {
         this.potteryPatterns = new ArrayList<>(BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet());
     }
 
-    public Identifier[] createModelIDs() {
+    public ResourceLocation[] createModelIDs() {
         ModelIdentifiers.refreshPotteryPatterns();
 
-        var ids = new Identifier[BUILTIN_MODEL_COUNT + potteryPatterns.size() * 4];
+        var ids = new ResourceLocation[BUILTIN_MODEL_COUNT + potteryPatterns.size() * 4];
         ids[IDX_EMPTY] = ModelIdentifiers.DECORATED_POT_SHAKING;
         ids[IDX_BASE_POT] = ModelIdentifiers.DECORATED_POT_BASE;
 
@@ -87,10 +83,6 @@ public class DecoratedPotModelSelector extends ModelSelector {
     }
 
     private int getPatternIndex(Optional<Item> sherd, int max) {
-        //? if <= 26.1 {
-        /*return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
-        *///?} else {
-        return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(EBEUtil::potPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
-        //?}
+        return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
     }
 }

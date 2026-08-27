@@ -113,8 +113,10 @@ dependencies {
 	implementation(minecraft.dependency("net.minecraftforge:forge:${prop("deps.forge")}"))
 
 	if (!unobfuscated && hasMixins) {
-		annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
-		annotationProcessor("io.github.llamalad7:mixinextras-common:${libs.versions.mixinextras.get()}")
+		if (legacyForge) {
+			annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
+			annotationProcessor("io.github.llamalad7:mixinextras-common:${libs.versions.mixinextras.get()}")
+		}
 
 		compileOnly("io.github.llamalad7:mixinextras-common:${libs.versions.mixinextras.get()}")
 		if (modernRuntimeLibs) {
@@ -234,7 +236,7 @@ if (legacyForge) {
 tasks.named<Jar>("jar") {
 	destinationDirectory.set(layout.buildDirectory.dir("intermediates/jar"))
 	manifest {
-		attributes["MixinConfigs"] = "${prop("mod.id")}.mixins.json"
+		attributes["MixinConfigs"] = "${prop("mod.id")}.mixins.json,${prop("mod.id")}.legacy.mixins.json"
 	}
 	from(layout.buildDirectory.file("sourcesSets/main/${prop("mod.id")}.mixins.refmap.json")) {
 		into("/")

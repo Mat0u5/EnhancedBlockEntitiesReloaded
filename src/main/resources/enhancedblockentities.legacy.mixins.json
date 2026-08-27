@@ -1,0 +1,16 @@
+{
+  "package": "foundationgames.enhancedblockentities.mixin.legacy",
+  "required": false,
+  "minVersion": "0.8",
+  "refmap": "${id}.mixins.refmap.json",
+  "compatibilityLevel": "${java}",
+  "injectors": {
+    "defaultRequire": 0
+  },
+  "mixins": [
+  ],
+  "client": [
+    "BuiltinModelItemRendererMixin",
+    "ModelDiscoveryMixin"
+  ]
+}

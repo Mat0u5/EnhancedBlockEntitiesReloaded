@@ -4,11 +4,7 @@ import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
-//? if <= 1.21.11 {
-/*import net.minecraft.world.level.BlockAndTintGetter;
-*///?} else {
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
-//?}
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;

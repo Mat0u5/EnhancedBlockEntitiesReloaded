@@ -2,19 +2,11 @@ package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.EnhancedBlockEntityRegistry;
-//? if <= 1.21.5 {
-/*import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.platform.Lighting;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-*///?} else {
-import foundationgames.enhancedblockentities.client.render.gui.SignGuiElementRenderer;
-//?}
 import net.minecraft.client.Minecraft;
-//? if <= 1.21.11 {
-/*import net.minecraft.client.gui.GuiGraphics;
-*///?} else {
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-//?}
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,15 +20,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SignEditScreenMixin {
     private static final float SIGN_SCALE = 93.75f;
 
-    //? if <= 1.21.11 {
-    /*@Inject(method = "renderSignBackground", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderSignBackground", at = @At("HEAD"), cancellable = true)
+    //? if <= 1.21 {
+    /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, BlockState signState, CallbackInfo ci) {
     *///?} else {
-    @Inject(method = "extractSignBackground", at = @At("HEAD"), cancellable = true)
-    //?}
-    //? if <= 1.21.11 {
-    /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
-    *///?} else {
-    private void enhanced_bes$renderBakedModelSign(GuiGraphicsExtractor context, CallbackInfo ci) {
+    private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
     //?}
         BlockState state = ((SignEditScreen) (Object) this).sign.getBlockState();
 
@@ -45,11 +33,7 @@ public class SignEditScreenMixin {
         if (!EnhancedBlockEntityRegistry.BLOCKS.contains(state.getBlock())) return;
 
         if (enhanceSigns) {
-            //? if <= 1.21.11 {
-            /*var models = Minecraft.getInstance().getModelManager().getBlockModelShaper();
-            *///?} else {
-            var models = Minecraft.getInstance().getModelManager().getBlockStateModelSet();
-            //?}
+            var models = Minecraft.getInstance().getModelManager().getBlockModelShaper();
             float up = 0;
             if (state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
                 state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH);
@@ -58,14 +42,9 @@ public class SignEditScreenMixin {
                 state = state.setValue(BlockStateProperties.ROTATION_16, 0);
             }
 
-            //? if <= 1.21.11 {
-            /*var signModel = models.getBlockModel(state);
-            *///?} else {
-            var signModel = models.get(state);
-            //?}
+            var signModel = models.getBlockModel(state);
 
-            //? if <= 1.21.5 {
-            /*var buffers = Minecraft.getInstance().renderBuffers().bufferSource();
+            var buffers = Minecraft.getInstance().renderBuffers().bufferSource();
             var matrices = context.pose();
 
             matrices.pushPose();
@@ -79,17 +58,6 @@ public class SignEditScreenMixin {
             Lighting.setupForFlatItems();
 
             matrices.popPose();
-            *///?} else {
-            int centerX = ((SignEditScreen) (Object) this).width / 2;
-
-            //? if <= 1.21.11 {
-            /*context.guiRenderState.submitPicturesInPictureState(new SignGuiElementRenderer.State(
-                    signModel, state, up, centerX - 48, 66, centerX + 48, 168, SIGN_SCALE, null));
-            *///?} else {
-            context.guiRenderState.addPicturesInPictureState(new SignGuiElementRenderer.State(
-                    signModel, state, up, centerX - 48, 66, centerX + 48, 168, SIGN_SCALE, null));
-            //?}
-            //?}
 
             ci.cancel();
         }

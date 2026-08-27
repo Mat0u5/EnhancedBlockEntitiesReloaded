@@ -20,11 +20,7 @@ public enum WorldUtil {
 
     public static void rebuildChunk(Level world, BlockPos pos) {
         var state = world.getBlockState(pos);
-        //? if <= 26.1 {
-        /*Minecraft.getInstance().levelRenderer.blockChanged(world, pos, state, state, 8);
-        *///?} else {
-        world.setBlocksDirty(pos, state, state);
-        //?}
+        Minecraft.getInstance().levelRenderer.blockChanged(world, pos, state, state, 8);
     }
 
     public static void rebuildChunkAndThen(Level world, BlockPos pos, Runnable action) {

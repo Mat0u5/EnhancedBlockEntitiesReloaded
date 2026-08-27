@@ -1,8 +1,8 @@
 package foundationgames.enhancedblockentities.platform.fabric;
 
-//? fabric {
+//? if fabric {
 
-import foundationgames.enhancedblockentities.Main;
+/*import foundationgames.enhancedblockentities.Main;
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.api.ModInitializer;
 
@@ -14,4 +14,4 @@ public class FabricEntrypoint implements ModInitializer {
 		Main.onInitialize();
 	}
 }
-//?}
+*///?}

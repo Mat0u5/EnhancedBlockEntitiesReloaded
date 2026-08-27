@@ -9,39 +9,21 @@ import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
-//? if fabric && <= 1.21.5 {
+//? if fabric {
 /*import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-*///?} else if fabric && >= 1.21.6 && <= 1.21.11 {
-/*import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-*///?} else if <= 1.21.11 {
-/*import net.minecraft.client.renderer.ItemBlockRenderTypes;
-*///?}
-//? if <= 1.21.5 {
-/*import net.minecraft.client.renderer.RenderType;
-*///?}
-//? if >= 1.21.6 && <= 1.21.11 {
-/*import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-*///?}
-//? if <= 1.21.4 {
-/*import net.minecraft.client.resources.model.BakedModel;
 *///?} else {
-//? if <= 1.21.11 {
-/*import net.minecraft.client.renderer.block.model.BlockStateModel;
-*///?} else {
-import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 //?}
-//?}
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-//? if >= 26.2 {
-import net.minecraft.world.level.block.entity.BlockEntityTypes;
-//?}
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
@@ -78,8 +60,7 @@ public enum EBESetup {;
     }
 
     public static void setupRRPSigns() {
-        //? if <= 26.1 {
-        /*EBEPack p = ResourceUtil.getPackForCompat();
+        EBEPack p = ResourceUtil.getPackForCompat();
 
         ResourceUtil.addSignBlockStates("oak_sign", "oak_wall_sign", p);
         ResourceUtil.addSignBlockStates("birch_sign", "birch_wall_sign", p);
@@ -92,7 +73,6 @@ public enum EBESetup {;
         ResourceUtil.addSignBlockStates("crimson_sign", "crimson_wall_sign", p);
         ResourceUtil.addSignBlockStates("warped_sign", "warped_wall_sign", p);
         ResourceUtil.addSignBlockStates("bamboo_sign", "bamboo_wall_sign", p);
-        ResourceUtil.addSignBlockStates("pale_oak_sign", "pale_oak_wall_sign", p);
 
         ResourceUtil.addHangingSignBlockStates("oak_hanging_sign", "oak_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("birch_hanging_sign", "birch_wall_hanging_sign", p);
@@ -105,7 +85,6 @@ public enum EBESetup {;
         ResourceUtil.addHangingSignBlockStates("crimson_hanging_sign", "crimson_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("warped_hanging_sign", "warped_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("bamboo_hanging_sign", "bamboo_wall_hanging_sign", p);
-        ResourceUtil.addHangingSignBlockStates("pale_oak_hanging_sign", "pale_oak_wall_hanging_sign", p);
 
         p = ResourceUtil.getBasePack();
 
@@ -120,23 +99,20 @@ public enum EBESetup {;
         ResourceUtil.addSignTypeModels("crimson", p);
         ResourceUtil.addSignTypeModels("warped", p);
         ResourceUtil.addSignTypeModels("bamboo", p);
-        ResourceUtil.addSignTypeModels("pale_oak", p);
 
         p.addDirBlockSprites("entity/signs", "entity/signs/");
         p.addDirBlockSprites("entity/signs/hanging", "entity/signs/hanging/");
         p.addDirBlockSprites("gui/hanging_signs", "block/particle_hanging_sign_");
-        *///?}
     }
 
     public static void setupRRPBells() {
         ResourceUtil.addBellBlockState(ResourceUtil.getPackForCompat());
 
-        ResourceUtil.getBasePack().addSingleBlockSprite(Identifier.parse("entity/bell/bell_body"));
+        ResourceUtil.getBasePack().addSingleBlockSprite(ResourceLocation.parse("entity/bell/bell_body"));
     }
 
     public static void setupRRPBeds() {
-        //? if <= 26.1 {
-        /*EBEPack p = ResourceUtil.getBasePack();
+        EBEPack p = ResourceUtil.getBasePack();
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         for (DyeColor color : DyeColor.values()) {
@@ -145,7 +121,6 @@ public enum EBESetup {;
         }
 
         p.addDirBlockSprites("entity/bed", "entity/bed/");
-        *///?}
     }
 
     public static void setupRRPShulkerBoxes() {
@@ -156,7 +131,7 @@ public enum EBESetup {;
             var id = color != null ? color.getName()+"_shulker_box" : "shulker_box";
             ResourceUtil.addShulkerBoxBlockStates(color, pCompat);
             ResourceUtil.addShulkerBoxModels(color, p);
-            ResourceUtil.addParentModel("block/"+id, Identifier.parse("item/"+id), p);
+            ResourceUtil.addParentModel("block/"+id, ResourceLocation.parse("item/"+id), p);
         }
 
         p.addDirBlockSprites("entity/shulker", "entity/shulker/");
@@ -176,9 +151,9 @@ public enum EBESetup {;
 
     public static void setupResourceProviders() {
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "chest_center"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "chest_center"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.CHEST_CENTER,
                                 ModelIdentifiers.CHEST_CENTER_TRUNK,
                                 ModelIdentifiers.CHRISTMAS_CHEST_CENTER,
@@ -189,9 +164,9 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "chest_left"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "chest_left"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.CHEST_LEFT,
                                 ModelIdentifiers.CHEST_LEFT_TRUNK,
                                 ModelIdentifiers.CHRISTMAS_CHEST_LEFT,
@@ -203,9 +178,9 @@ public enum EBESetup {;
         );
 
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "chest_right"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "chest_right"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.CHEST_RIGHT,
                                 ModelIdentifiers.CHEST_RIGHT_TRUNK,
                                 ModelIdentifiers.CHRISTMAS_CHEST_RIGHT,
@@ -216,9 +191,9 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "trapped_chest_center"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "trapped_chest_center"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.TRAPPED_CHEST_CENTER,
                                 ModelIdentifiers.TRAPPED_CHEST_CENTER_TRUNK,
                                 ModelIdentifiers.CHRISTMAS_CHEST_CENTER,
@@ -229,9 +204,9 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "trapped_chest_left"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "trapped_chest_left"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.TRAPPED_CHEST_LEFT,
                                 ModelIdentifiers.TRAPPED_CHEST_LEFT_TRUNK,
                                 ModelIdentifiers.CHRISTMAS_CHEST_LEFT,
@@ -242,9 +217,9 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "trapped_chest_right"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "trapped_chest_right"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.TRAPPED_CHEST_RIGHT,
                                 ModelIdentifiers.TRAPPED_CHEST_RIGHT_TRUNK,
                                 ModelIdentifiers.CHRISTMAS_CHEST_RIGHT,
@@ -255,9 +230,9 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "ender_chest_center"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "ender_chest_center"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.ENDER_CHEST_CENTER,
                                 ModelIdentifiers.ENDER_CHEST_CENTER_TRUNK
                         },
@@ -267,9 +242,9 @@ public enum EBESetup {;
         );
 
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "bell_between_walls"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "bell_between_walls"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.BELL_BETWEEN_WALLS_WITH_BELL,
                                 ModelIdentifiers.BELL_BETWEEN_WALLS
                         },
@@ -278,9 +253,9 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "bell_ceiling"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "bell_ceiling"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.BELL_CEILING_WITH_BELL,
                                 ModelIdentifiers.BELL_CEILING
                         },
@@ -289,9 +264,9 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "bell_floor"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "bell_floor"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.BELL_FLOOR_WITH_BELL,
                                 ModelIdentifiers.BELL_FLOOR
                         },
@@ -300,9 +275,9 @@ public enum EBESetup {;
                 )
         );
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "bell_wall"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "bell_wall"),
                 () -> new DynamicUnbakedModel(
-                        new Identifier[] {
+                        new ResourceLocation[] {
                                 ModelIdentifiers.BELL_WALL_WITH_BELL,
                                 ModelIdentifiers.BELL_WALL
                         },
@@ -312,9 +287,9 @@ public enum EBESetup {;
         );
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
             DynamicModelProvidingPlugin.register(
-                    Identifier.fromNamespaceAndPath("builtin", color != null ? color.getName()+"_shulker_box" : "shulker_box"),
+                    ResourceLocation.fromNamespaceAndPath("builtin", color != null ? color.getName()+"_shulker_box" : "shulker_box"),
                     () -> new DynamicUnbakedModel(
-                            new Identifier[] {
+                            new ResourceLocation[] {
                                     ModelIdentifiers.SHULKER_BOXES.get(color),
                                     ModelIdentifiers.SHULKER_BOX_BOTTOMS.get(color)
                             },
@@ -326,7 +301,7 @@ public enum EBESetup {;
 
         DecoratedPotModelSelector decoratedPotSelector = new DecoratedPotModelSelector();
         DynamicModelProvidingPlugin.register(
-                Identifier.fromNamespaceAndPath("builtin", "decorated_pot"),
+                ResourceLocation.fromNamespaceAndPath("builtin", "decorated_pot"),
                 () -> new DynamicUnbakedModel(
                         decoratedPotSelector.createModelIDs(),
                         decoratedPotSelector,
@@ -338,36 +313,21 @@ public enum EBESetup {;
     private static void putCutoutMipped(Block block) {
         if (!RENDER_LAYERS.add(block)) return;
 
-        //? if fabric && <= 1.21.5 {
+        //? if fabric {
         /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutoutMipped());
-        *///?} else if <= 1.21.5 {
-        /*ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped());
-        *///?}
-        //? if fabric && >= 1.21.6 && <= 1.21.9 {
-        /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT_MIPPED);
-        *///?} else if >= 1.21.6 && <= 1.21.9 {
-        /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT_MIPPED);
-        *///?}
-        //? if fabric && >= 1.21.11 && <= 1.21.11 {
-        /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
-        *///?} else if >= 1.21.11 && <= 1.21.11 {
-        /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT);
-        *///?}
+        *///?} else {
+        ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutoutMipped());
+        //?}
     }
 
     private static void putCutout(Block block) {
         if (!RENDER_LAYERS.add(block)) return;
 
-        //? if fabric && <= 1.21.5 {
+        //? if fabric {
         /*BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout());
-        *///?} else if <= 1.21.5 {
-        /*ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
-        *///?}
-        //? if fabric && >= 1.21.6 && <= 1.21.11 {
-        /*BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
-        *///?} else if >= 1.21.6 && <= 1.21.11 {
-        /*ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT);
-        *///?}
+        *///?} else {
+        ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
+        //?}
     }
 
     public static void setupChests() {
@@ -380,13 +340,9 @@ public enum EBESetup {;
             ChestType type = entity.getBlockState().getValue(BlockStateProperties.CHEST_TYPE);
             return type == ChestType.RIGHT ? 2 + os : type == ChestType.LEFT ? 1 + os : os;
         };
-        EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityTypes.CHEST, BlockEntityRenderCondition.CHEST,
+        EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityType.CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
-                    //? if <= 1.21.4 {
-                    /*return new BakedModel[] {
-                    *///?} else {
-                    return new BlockStateModel[] {
-                    //?}
+                    return new BakedModel[] {
                             ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_CENTER_LID),
                             ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_LEFT_LID),
                             ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_RIGHT_LID),
@@ -396,13 +352,9 @@ public enum EBESetup {;
                     };
                 }, christmasChestSelector)
         );
-        EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityTypes.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
+        EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityType.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
-                    //? if <= 1.21.4 {
-                    /*return new BakedModel[] {
-                    *///?} else {
-                    return new BlockStateModel[] {
-                    //?}
+                    return new BakedModel[] {
                             ModelIdentifiers.getBakedModel(ModelIdentifiers.TRAPPED_CHEST_CENTER_LID),
                             ModelIdentifiers.getBakedModel(ModelIdentifiers.TRAPPED_CHEST_LEFT_LID),
                             ModelIdentifiers.getBakedModel(ModelIdentifiers.TRAPPED_CHEST_RIGHT_LID),
@@ -412,13 +364,9 @@ public enum EBESetup {;
                     };
                 }, christmasChestSelector)
         );
-        EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityTypes.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
+        EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
-                    //? if <= 1.21.4 {
-                    /*return new BakedModel[] { ModelIdentifiers.getBakedModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
-                    *///?} else {
-                    return new BlockStateModel[] { ModelIdentifiers.getBakedModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
-                    //?}
+                    return new BakedModel[] { ModelIdentifiers.getBakedModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
                 }, entity -> 0)
         );
     }
@@ -436,9 +384,8 @@ public enum EBESetup {;
                 Blocks.CRIMSON_SIGN, Blocks.CRIMSON_WALL_SIGN,
                 Blocks.WARPED_SIGN, Blocks.WARPED_WALL_SIGN,
                 Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN,
-                Blocks.PALE_OAK_SIGN, Blocks.PALE_OAK_WALL_SIGN
         }) {
-            EnhancedBlockEntityRegistry.register(sign, BlockEntityTypes.SIGN, BlockEntityRenderCondition.SIGN,
+            EnhancedBlockEntityRegistry.register(sign, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
             );
         }
@@ -455,9 +402,8 @@ public enum EBESetup {;
                 Blocks.CRIMSON_HANGING_SIGN, Blocks.CRIMSON_WALL_HANGING_SIGN,
                 Blocks.WARPED_HANGING_SIGN, Blocks.WARPED_WALL_HANGING_SIGN,
                 Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN,
-                Blocks.PALE_OAK_HANGING_SIGN, Blocks.PALE_OAK_WALL_HANGING_SIGN
         }) {
-            EnhancedBlockEntityRegistry.register(sign, BlockEntityTypes.HANGING_SIGN, BlockEntityRenderCondition.SIGN,
+            EnhancedBlockEntityRegistry.register(sign, BlockEntityType.HANGING_SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
             );
             putCutout(sign);
@@ -465,72 +411,35 @@ public enum EBESetup {;
     }
 
     public static void setupBells() {
-        EnhancedBlockEntityRegistry.register(Blocks.BELL, BlockEntityTypes.BELL, BlockEntityRenderCondition.BELL,
+        EnhancedBlockEntityRegistry.register(Blocks.BELL, BlockEntityType.BELL, BlockEntityRenderCondition.BELL,
                 new BellBlockEntityRendererOverride()
         );
     }
 
     public static void setupBeds() {
-        //? if <= 26.1 {
-        /*EnhancedBlockEntityRegistry.register(Blocks.BLACK_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.BLUE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.BROWN_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.CYAN_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.GRAY_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.GREEN_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.LIGHT_BLUE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.LIGHT_GRAY_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.LIME_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.MAGENTA_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.ORANGE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.PINK_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.PURPLE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.RED_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.WHITE_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        EnhancedBlockEntityRegistry.register(Blocks.YELLOW_BED, BlockEntityTypes.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
-        *///?}
+        EnhancedBlockEntityRegistry.register(Blocks.BLACK_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.BLUE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.BROWN_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.CYAN_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.GRAY_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.GREEN_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.LIGHT_BLUE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.LIGHT_GRAY_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.LIME_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.MAGENTA_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.ORANGE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.PINK_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.PURPLE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.RED_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.WHITE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+        EnhancedBlockEntityRegistry.register(Blocks.YELLOW_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
     }
-
-    //? if >= 26.1 {
-    private static Block shulkerBoxByColor(DyeColor color) {
-        if (color == null) return Blocks.SHULKER_BOX;
-
-        //? if >= 26.2 {
-        return Blocks.DYED_SHULKER_BOX.pick(color);
-        //?}
-
-        //? if <= 26.1 {
-        /*return switch (color) {
-            case WHITE -> Blocks.WHITE_SHULKER_BOX;
-            case ORANGE -> Blocks.ORANGE_SHULKER_BOX;
-            case MAGENTA -> Blocks.MAGENTA_SHULKER_BOX;
-            case LIGHT_BLUE -> Blocks.LIGHT_BLUE_SHULKER_BOX;
-            case YELLOW -> Blocks.YELLOW_SHULKER_BOX;
-            case LIME -> Blocks.LIME_SHULKER_BOX;
-            case PINK -> Blocks.PINK_SHULKER_BOX;
-            case GRAY -> Blocks.GRAY_SHULKER_BOX;
-            case LIGHT_GRAY -> Blocks.LIGHT_GRAY_SHULKER_BOX;
-            case CYAN -> Blocks.CYAN_SHULKER_BOX;
-            case PURPLE -> Blocks.PURPLE_SHULKER_BOX;
-            case BLUE -> Blocks.BLUE_SHULKER_BOX;
-            case BROWN -> Blocks.BROWN_SHULKER_BOX;
-            case GREEN -> Blocks.GREEN_SHULKER_BOX;
-            case RED -> Blocks.RED_SHULKER_BOX;
-            case BLACK -> Blocks.BLACK_SHULKER_BOX;
-        };
-        *///?}
-    }
-    //?}
 
     public static void setupShulkerBoxes() {
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
-            //? if <= 1.21.11 {
-            /*var block = ShulkerBoxBlock.getBlockByColor(color);
-            *///?} else {
-            var block = shulkerBoxByColor(color);
-            //?}
+            var block = ShulkerBoxBlock.getBlockByColor(color);
             putCutoutMipped(block);
-            EnhancedBlockEntityRegistry.register(block, BlockEntityTypes.SHULKER_BOX, BlockEntityRenderCondition.SHULKER_BOX,
+            EnhancedBlockEntityRegistry.register(block, BlockEntityType.SHULKER_BOX, BlockEntityRenderCondition.SHULKER_BOX,
                     new ShulkerBoxBlockEntityRendererOverride((map) -> {
                         for (DyeColor dc : EBEUtil.DEFAULTED_DYE_COLORS) {
                             map.put(dc, ModelIdentifiers.getBakedModel(ModelIdentifiers.SHULKER_BOX_LIDS.get(dc)));
@@ -541,7 +450,7 @@ public enum EBESetup {;
     }
 
     public static void setupDecoratedPots() {
-        EnhancedBlockEntityRegistry.register(Blocks.DECORATED_POT, BlockEntityTypes.DECORATED_POT,
+        EnhancedBlockEntityRegistry.register(Blocks.DECORATED_POT, BlockEntityType.DECORATED_POT,
                 BlockEntityRenderCondition.DECORATED_POT, new DecoratedPotBlockEntityRendererOverride());
     }
 }

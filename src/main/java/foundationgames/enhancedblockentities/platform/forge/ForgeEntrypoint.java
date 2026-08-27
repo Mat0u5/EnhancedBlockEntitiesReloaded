@@ -2,7 +2,7 @@ package foundationgames.enhancedblockentities.platform.forge;
 
 //? if forge {
 
-/*import foundationgames.enhancedblockentities.EnhancedBlockEntities;
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.Main;
 import foundationgames.enhancedblockentities.config.gui.screen.EBEConfigScreen;
 import net.minecraftforge.client.ConfigScreenHandler;
@@ -24,4 +24,4 @@ public class ForgeEntrypoint {
 		}
 	}
 }
-*///?}
+//?}

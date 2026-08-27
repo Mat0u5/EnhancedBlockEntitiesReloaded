@@ -6,22 +6,9 @@ import com.mojang.math.Axis;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-//? if <= 1.21.6 {
-/*import net.minecraft.client.renderer.MultiBufferSource;
-*///?} else {
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
-//?}
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-//? if <= 1.21.4 {
-/*import net.minecraft.client.resources.model.BakedModel;
-*///?} else {
-//? if <= 1.21.11 {
-/*import net.minecraft.client.renderer.block.model.BlockStateModel;
-*///?} else {
-import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-//?}
-//?}
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -35,8 +22,7 @@ import java.util.Map;
 public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRendererOverride {
     public static final float WOBBLE_STRENGTH = 1f / 64;
 
-    //? if <= 1.21.4 {
-    /*private BakedModel baseModel = null;
+    private BakedModel baseModel = null;
     private Map<ResourceKey<DecoratedPotPattern>, BakedModel[]> potPatternModels = null;
 
     private void tryGetModels() {
@@ -61,40 +47,9 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
             this.potPatternModels = builder.build();
         }
     }
-    *///?} else {
-    private BlockStateModel baseModel = null;
-    private Map<ResourceKey<DecoratedPotPattern>, BlockStateModel[]> potPatternModels = null;
-
-    private void tryGetModels() {
-        if (this.baseModel == null) {
-            this.baseModel = ModelIdentifiers.getBakedModel(ModelIdentifiers.DECORATED_POT_BASE);
-        }
-
-        if (this.potPatternModels == null) {
-            var builder = ImmutableMap.<ResourceKey<DecoratedPotPattern>, BlockStateModel[]>builder();
-
-            BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet().forEach(k -> {
-                var patternModelIDs = ModelIdentifiers.POTTERY_PATTERNS.get(k);
-                BlockStateModel[] patternPerFaceModels = new BlockStateModel[patternModelIDs.length];
-
-                for (int i = 0; i < patternModelIDs.length; i++) {
-                    patternPerFaceModels[i] = ModelIdentifiers.getBakedModel(patternModelIDs[i]);
-                }
-
-                builder.put(k, patternPerFaceModels);
-            });
-
-            this.potPatternModels = builder.build();
-        }
-    }
-    //?}
 
     @Override
-    //? if <= 1.21.6 {
-    /*public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, int light, int overlay) {
-    *///?} else {
-    public void render(BlockEntityRenderer<BlockEntity, ?> renderer, BlockEntityRenderState renderState, BlockEntity blockEntity, float tickDelta, PoseStack matrices, SubmitNodeCollector output, int light, int overlay) {
-    //?}
+    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, int light, int overlay) {
         tryGetModels();
 
         if (blockEntity instanceof DecoratedPotBlockEntity pot) {
@@ -130,35 +85,19 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
 
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
                     this.potPatternModels.get(
-                            //? if <= 26.1 {
-                            /*sherds.back().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                            *///?} else {
-                            sherds.back().map(EBEUtil::potPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                            //?}
+                            sherds.back().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
                     )[0], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
                     this.potPatternModels.get(
-                            //? if <= 26.1 {
-                            /*sherds.left().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                            *///?} else {
-                            sherds.left().map(EBEUtil::potPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                            //?}
+                            sherds.left().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
                     )[1], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
                     this.potPatternModels.get(
-                            //? if <= 26.1 {
-                            /*sherds.right().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                            *///?} else {
-                            sherds.right().map(EBEUtil::potPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                            //?}
+                            sherds.right().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
                     )[2], light, overlay);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices,
                     this.potPatternModels.get(
-                            //? if <= 26.1 {
-                            /*sherds.front().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                            *///?} else {
-                            sherds.front().map(EBEUtil::potPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
-                            //?}
+                            sherds.front().map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)
                     )[3], light, overlay);
 
             matrices.popPose();

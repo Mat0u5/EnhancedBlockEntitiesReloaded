@@ -25,6 +25,7 @@
   },
   "mixins": [
     "${id}.mixins.json",
+    "${id}.legacy.mixins.json",
     "${id}.sodium.mixins.json"
   ],
   "depends": {}

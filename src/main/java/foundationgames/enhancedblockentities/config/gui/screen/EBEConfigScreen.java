@@ -11,11 +11,7 @@ import foundationgames.enhancedblockentities.config.gui.widget.WidgetRowListWidg
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.ChatFormatting;
-//? if <= 1.21.11 {
-/*import net.minecraft.client.gui.GuiGraphics;
-*///?} else {
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-//?}
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
@@ -91,8 +87,7 @@ public class EBEConfigScreen extends Screen {
         });
     }
 
-    //? if <= 1.21.11 {
-    /*@Override
+    @Override
     protected void renderMenuBackground(GuiGraphics context) {
         renderMenuBackground(context, 0, 0, this.width, 34);
         renderMenuBackground(context, 0, this.height - 35, this.width, 35);
@@ -105,29 +100,10 @@ public class EBEConfigScreen extends Screen {
         context.drawCenteredString(this.font, this.title, (int)(this.width * 0.5), 8, 0xFFFFFFFF);
         context.drawCenteredString(this.font, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFFFF);
     }
-    *///?} else {
-    @Override
-    protected void extractMenuBackground(GuiGraphicsExtractor context) {
-        extractMenuBackground(context, 0, 0, this.width, 34);
-        extractMenuBackground(context, 0, this.height - 35, this.width, 35);
-    }
-
-    @Override
-    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        super.extractRenderState(context, mouseX, mouseY, delta);
-
-        context.centeredText(this.font, this.title, (int)(this.width * 0.5), 8, 0xFFFFFFFF);
-        context.centeredText(this.font, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFFFF);
-    }
-    //?}
 
     @Override
     public void onClose() {
-        //? if <= 26.1 {
-        /*this.minecraft.setScreen(parent);
-        *///?} else {
-        this.minecraft.setScreenAndShow(parent);
-        //?}
+        this.minecraft.setScreen(parent);
     }
 
     public void applyChanges() {
