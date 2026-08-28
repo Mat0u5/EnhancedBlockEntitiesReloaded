@@ -172,6 +172,75 @@ if (legacyForge) {
 		}
 	}
 
+	val remapAccessTransformer by tasks.registering {
+		dependsOn(extractMcpToSrg)
+
+		val atSource = rootProject.file("access/aw/${stonecutter.current.version}.cfg")
+		val mappingFile = layout.buildDirectory.file("mappings/map2srg.tsrg")
+		val outputFile = layout.buildDirectory.file("mappings/accesstransformer.cfg")
+
+		onlyIf { atSource.exists() }
+		inputs.file(atSource)
+		outputs.file(outputFile)
+
+		doLast {
+			val methods = HashMap<String, String>()
+			val fields = HashMap<String, String>()
+			var owner = ""
+
+			mappingFile.get().asFile.forEachLine { raw ->
+				if (raw.isBlank() || raw.startsWith("tsrg2")) return@forEachLine
+				val parts = raw.trim().split(" ")
+				if (!raw.startsWith("\t")) {
+					owner = parts[0]
+				} else when (parts.size) {
+					2 -> fields[owner + "/" + parts[0]] = parts[1]
+					3 -> methods[owner + "/" + parts[0] + parts[1]] = parts[2]
+				}
+			}
+
+			val out = StringBuilder()
+			var unmapped = 0
+
+			atSource.forEachLine { raw ->
+				val parts = raw.trim().split(" ").filter { it.isNotEmpty() }
+				if (raw.trim().startsWith("#") || parts.size < 3) {
+					out.appendLine(raw)
+					return@forEachLine
+				}
+
+				val slashed = parts[1].replace('.', '/')
+				val member = parts[2]
+				val renamed = when {
+					member.startsWith("*") -> member
+					member.contains("(") -> {
+						val descriptor = member.substring(member.indexOf("("))
+						methods[slashed + "/" + member.substringBefore("(") + descriptor]?.plus(descriptor)
+					}
+					else -> fields[slashed + "/" + member]
+				}
+
+				if (renamed == null) {
+					unmapped++
+					logger.warn("remapAccessTransformer: no SRG name for '${raw.trim()}', leaving it as written")
+					out.appendLine(raw)
+				} else {
+					out.appendLine(parts[0] + " " + parts[1] + " " + renamed)
+				}
+			}
+
+			if (unmapped > 0) throw GradleException(
+				"$unmapped access transformer entries have no SRG mapping; they would fail at runtime"
+			)
+
+			val target = outputFile.get().asFile
+			target.parentFile.mkdirs()
+			target.writeText(out.toString())
+		}
+	}
+
+	tasks.named<ProcessResources>("processResources") { dependsOn(remapAccessTransformer) }
+
 	tasks.withType<JavaCompile>().configureEach {
 		dependsOn(extractMcpToSrg)
 		val refMapFile = layout.buildDirectory.file("sourcesSets/main/${prop("mod.id")}.mixins.refmap.json")
@@ -254,9 +323,16 @@ sourceSets {
 }
 
 tasks.named<ProcessResources>("processResources") {
-	from(rootProject.file("access/aw/${stonecutter.current.version}.cfg")) {
-		into("META-INF")
-		rename { "accesstransformer.cfg" }
-		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	if (legacyForge) {
+		from(layout.buildDirectory.file("mappings/accesstransformer.cfg")) {
+			into("META-INF")
+			duplicatesStrategy = DuplicatesStrategy.INCLUDE
+		}
+	} else {
+		from(rootProject.file("access/aw/${stonecutter.current.version}.cfg")) {
+			into("META-INF")
+			rename { "accesstransformer.cfg" }
+			duplicatesStrategy = DuplicatesStrategy.INCLUDE
+		}
 	}
 }
