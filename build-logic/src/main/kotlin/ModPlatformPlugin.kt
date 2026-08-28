@@ -97,7 +97,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		}
 
 		val stonecutter = extensions.getByType<StonecutterBuildExtension>()
-		configureStonecutterReplacements(stonecutter)
+		configureStonecutterReplacements(stonecutter, isForge)
 
 		listOf(
 			"java",
@@ -551,7 +551,11 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		deps.embeds.forEach { dep -> whenNotNull(dep.curseforge) { embeds(it) } }
 	}
 
-	private fun configureStonecutterReplacements(stonecutter: StonecutterBuildExtension) {
+	private fun configureStonecutterReplacements(stonecutter: StonecutterBuildExtension, isForge: Boolean) {
+		val mcpNames = isForge && stonecutter.eval(stonecutter.current.version, "<=1.16")
+		stonecutter.replacements.regex(mcpNames, "!mcp_1_16") {
+			mcpClassNames1_16()
+		}
 		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, "<=1.18"), "!renames_1_18") {
 			replace("import net.minecraft.util.RandomSource;", "import java.util.Random;")
 			replace("RandomSource::create", "Random::new")
@@ -568,8 +572,10 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, ">=26.1"), "!renames_26_1") {
 			replace("BlockModelPart", "BlockStateModelPart")
 		}
-		stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, ">=26.2"), "!renames_26_2") {
-			replace("BlockEntityType.", "BlockEntityTypes.")
+		if (!mcpNames) {
+			stonecutter.replacements.string(stonecutter.eval(stonecutter.current.version, ">=26.2"), "!renames_26_2") {
+				replace("BlockEntityType.", "BlockEntityTypes.")
+			}
 		}
 	}
 }

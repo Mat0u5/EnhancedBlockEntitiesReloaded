@@ -10,6 +10,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 //? if <= 1.19.2 {
 /*import net.minecraft.client.Minecraft;
+//? if <= 1.16 {
+/^import com.mojang.blaze3d.platform.NativeImage;
+^///?}
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
@@ -47,6 +50,24 @@ public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride
             matrices.translate(0.0, 0.3333333333333333, 0.046666666666666666);
             matrices.scale(0.010416667f, -0.010416667f, 0.010416667f);
 
+            //? if <= 1.16 {
+            /^var lines = new FormattedCharSequence[4];
+            for (int i = 0; i < 4; i++) {
+                lines[i] = entity.getRenderMessage(i, text -> {
+                    var wrapped = font.split(text, 90);
+                    return wrapped.isEmpty() ? FormattedCharSequence.EMPTY : wrapped.get(0);
+                });
+            }
+
+            int signColor = entity.getColor().getTextColor();
+            int darkColor = NativeImage.combine(0,
+                    (int) (NativeImage.getB(signColor) * 0.4),
+                    (int) (NativeImage.getG(signColor) * 0.4),
+                    (int) (NativeImage.getR(signColor) * 0.4));
+            int textColor = darkColor;
+            boolean outlined = false;
+            int textLight = light;
+            ^///?} else {
             var lines = entity.getRenderMessages(client.isTextFilteringEnabled(), text -> {
                 var wrapped = font.split(text, 90);
                 return wrapped.isEmpty() ? FormattedCharSequence.EMPTY : wrapped.get(0);
@@ -66,17 +87,22 @@ public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride
                 outlined = false;
                 textLight = light;
             }
+            //?}
 
             for (int i = 0; i < 4; i++) {
                 var line = lines[i];
                 float x = -font.width(line) / 2f;
                 float y = (i * 10) - 20;
 
+                //? if <= 1.16 {
+                /^font.drawInBatch(line, x, y, textColor, false, matrices.last().pose(), output, false, 0, textLight);
+                ^///?} else {
                 if (outlined) {
                     font.drawInBatch8xOutline(line, x, y, textColor, darkColor, matrices.last().pose(), output, textLight);
                 } else {
                     font.drawInBatch(line, x, y, textColor, false, matrices.last().pose(), output, false, 0, textLight);
                 }
+                //?}
             }
 
             matrices.popPose();

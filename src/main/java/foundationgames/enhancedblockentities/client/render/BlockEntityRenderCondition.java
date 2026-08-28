@@ -33,7 +33,11 @@ public interface BlockEntityRenderCondition {
             SignRenderManager.renderedSigns++;
             return playerDistance < 80 + Math.max(0, 580 - (SignRenderManager.getRenderedSignAmount() * 0.7));
         }
+        //? if <= 1.16 {
+        /*double dist = 256;
+        *///?} else {
         double dist = AbstractSignBlockEntityRenderAccessor.enhanced_bes$getRenderDistance();
+        //?}
         Vec3 blockPos = Vec3.atCenterOf(entity.getBlockPos());
         Vec3 playerPos = Minecraft.getInstance().player.position();
         if (config.signTextRendering.equals("most")) {

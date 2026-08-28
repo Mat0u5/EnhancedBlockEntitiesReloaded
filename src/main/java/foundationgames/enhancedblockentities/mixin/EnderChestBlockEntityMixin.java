@@ -20,10 +20,28 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity implements 
     @Unique private int enhanced_bes$modelState = 0;
     @Unique private int enhanced_bes$renderState = 0;
 
+    //? if <= 1.16 {
+    /*private EnderChestBlockEntityMixin(BlockEntityType<?> type) {
+        super(type);
+    }
+    *///?} else {
     private EnderChestBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
+    //?}
 
+    //? if <= 1.16 {
+    /*@Inject(method = "tick", at = @At(value = "TAIL"))
+    private void enhanced_bes$listenForOpenClose(CallbackInfo ci) {
+        var blockEntity = (EnderChestBlockEntity) (Object) this;
+        var lid = ChestBlockEntityRendererOverride.getLidAnimationHolder(blockEntity, 0.5f);
+        int mState = lid.getOpenNess(0.5f) > 0 ? 1 : 0;
+
+        if (EnhancedBlockEntities.CONFIG.renderEnhancedChests && this.getModelState() != mState) {
+            this.updateAppearanceState(mState, blockEntity.getLevel(), blockEntity.getBlockPos());
+        }
+    }
+    *///?} else {
     @Inject(method = "lidAnimateTick", at = @At(value = "TAIL"))
     private static void enhanced_bes$listenForOpenClose(Level world, BlockPos pos, BlockState state, EnderChestBlockEntity blockEntity, CallbackInfo ci) {
         var lid = ChestBlockEntityRendererOverride.getLidAnimationHolder(blockEntity, 0.5f);
@@ -33,6 +51,7 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity implements 
             ((AppearanceStateHolder)blockEntity).updateAppearanceState(mState, world, pos);
         }
     }
+    //?}
 
     @Override
     public int getModelState() {

@@ -43,7 +43,11 @@ public enum Platform {;
         *///?} else {
         /*var info = ModList.get().getModFileById(modId);
         if (info == null) return List.of();
+        //? if <= 1.16 {
+        /^return List.of(info.getFile().findResource(""));
+        ^///?} else {
         return List.of(info.getFile().getSecureJar().getRootPath());
+        //?}
         *///?}
     }
 

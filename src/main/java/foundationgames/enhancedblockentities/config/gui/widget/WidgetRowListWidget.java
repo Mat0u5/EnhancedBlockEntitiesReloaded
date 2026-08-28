@@ -12,7 +12,9 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 //? if >= 1.19.4 {
 import net.minecraft.client.gui.layouts.GridLayout;
 //?}
+//? if >= 1.17 {
 import net.minecraft.client.gui.narration.NarratableEntry;
+//?}
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,10 +104,12 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
             return this.children;
         }
 
+        //? if >= 1.17 {
         @Override
         public List<? extends NarratableEntry> narratables() {
             return this.children;
         }
+        //?}
 
         @Override
         //? if <= 1.19.4 {

@@ -55,7 +55,13 @@ public class EBEPack implements PackResources {
     public EBEPack(ResourceLocation id, TemplateLoader templates) {
         this.templates = templates;
 
-        //? if <= 1.19.2 {
+        //? if <= 1.16 {
+        /*this.packMeta = new PackMetadataSection(
+                EBEUtil.text("Enhanced Block Entities Resources"),
+                SharedConstants.getCurrentVersion().getPackVersion());
+
+        this.packInfo = id.toString();
+        *///?} else if <= 1.19.2 {
         /*this.packMeta = new PackMetadataSection(
                 EBEUtil.text("Enhanced Block Entities Resources"),
                 SharedConstants.getCurrentVersion().getPackVersion(com.mojang.bridge.game.PackType.RESOURCE));

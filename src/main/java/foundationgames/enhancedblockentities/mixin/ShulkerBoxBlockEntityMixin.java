@@ -21,15 +21,29 @@ public abstract class ShulkerBoxBlockEntityMixin extends BlockEntity implements 
     @Unique private int enhanced_bes$modelState = 0;
     @Unique private int enhanced_bes$renderState = 0;
 
+    //? if <= 1.16 {
+    /*public ShulkerBoxBlockEntityMixin(BlockEntityType<?> type) {
+        super(type);
+    }
+    *///?} else {
     public ShulkerBoxBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
+    //?}
 
+    //? if <= 1.16 {
+    /*@Inject(method = "updateAnimation", at = @At("TAIL"))
+    private void enhanced_bes$updateModelState(CallbackInfo ci) {
+        int mState = this.getProgress(0) > 0 ? 1 : 0;
+        if (mState != enhanced_bes$modelState) updateAppearanceState(mState, this.getLevel(), this.getBlockPos());
+    }
+    *///?} else {
     @Inject(method = "updateAnimation", at = @At("TAIL"))
     private void enhanced_bes$updateModelState(Level world, BlockPos pos, BlockState state, CallbackInfo ci) {
         int mState = this.getProgress(0) > 0 ? 1 : 0;
         if (mState != enhanced_bes$modelState) updateAppearanceState(mState, world, pos);
     }
+    //?}
 
     @Override
     public int getModelState() {

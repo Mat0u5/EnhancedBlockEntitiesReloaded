@@ -67,12 +67,28 @@ public class EBEConfigScreen extends Screen {
         this.options.clear();
 
         addOptions();
+        //? if <= 1.16 {
+        /*this.addWidget(optionsWidget);
+        *///?} else {
         this.addRenderableWidget(optionsWidget);
+        //?}
 
         //? if <= 1.19.2 {
         /*int menuButtonY = this.height - 27;
         int menuButtonsLeft = (this.width - ((3 * 100) + (2 * 4))) / 2;
 
+        //? if <= 1.16 {
+        /^this.addButton(new Button(menuButtonsLeft, menuButtonY, 100, 20,
+                CommonComponents.GUI_CANCEL, button -> this.onClose()));
+        this.addButton(new Button(menuButtonsLeft + 104, menuButtonY, 100, 20,
+                EBEUtil.translate("text.ebe.apply"), button -> this.applyChanges()));
+        this.addButton(new Button(menuButtonsLeft + 208, menuButtonY, 100, 20,
+                CommonComponents.GUI_DONE,
+                button -> {
+                    applyChanges();
+                    onClose();
+                }));
+        ^///?} else {
         this.addRenderableWidget(new Button(menuButtonsLeft, menuButtonY, 100, 20,
                 CommonComponents.GUI_CANCEL, button -> this.onClose()));
         this.addRenderableWidget(new Button(menuButtonsLeft + 104, menuButtonY, 100, 20,
@@ -83,6 +99,7 @@ public class EBEConfigScreen extends Screen {
                     applyChanges();
                     onClose();
                 }));
+        //?}
         *///?} else {
         var menuButtons = new GridLayout();
         menuButtons.columnSpacing(4);
@@ -120,6 +137,9 @@ public class EBEConfigScreen extends Screen {
     @Override
     //? if <= 1.19.4 {
     /*public void render(PoseStack context, int mouseX, int mouseY, float delta) {
+        //? if <= 1.16 {
+        /^this.optionsWidget.render(context, mouseX, mouseY, delta);
+        ^///?}
         super.render(context, mouseX, mouseY, delta);
 
         drawCenteredString(context, this.font, this.title, (int)(this.width * 0.5), 8, 0xFFFFFFFF);

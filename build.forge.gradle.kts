@@ -35,7 +35,7 @@ minecraft {
 		mappings(prop("deps.mappings_channel"), prop("deps.mappings_version"))
 	}
 
-	val atFile = rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg")
+	val atFile = rootProject.file("access/aw/${stonecutter.current.version}.cfg")
 	if (atFile.exists()) {
 		accessTransformers = files(atFile)
 	}
@@ -72,7 +72,8 @@ tasks.withType<JavaExec>().matching { it.name.startsWith("run") }.configureEach 
 		jvmArgs("--add-opens=java.base/java.lang.invoke=ALL-UNNAMED")
 	}
 }
-if (usesOfficialMappings) {
+val mergedSourceSetOutput = stonecutter.eval(stonecutter.current.version, ">=1.17")
+if (mergedSourceSetOutput) {
 	sourceSets.configureEach {
 		val dir = layout.buildDirectory.dir("sourcesSets/$name")
 		output.setResourcesDir(dir)
@@ -249,5 +250,13 @@ sourceSets {
 		resources.srcDir(
 			"${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated"
 		)
+	}
+}
+
+tasks.named<ProcessResources>("processResources") {
+	from(rootProject.file("access/aw/${stonecutter.current.version}.cfg")) {
+		into("META-INF")
+		rename { "accesstransformer.cfg" }
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	}
 }

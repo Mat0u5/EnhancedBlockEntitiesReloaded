@@ -10,6 +10,9 @@ import net.minecraft.client.gui.components.Tooltip;
 //?}
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+//? if <= 1.16 {
+/*import net.minecraft.network.chat.TextColor;
+*///?}
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,8 +67,13 @@ public final class EBEOption {
     }
 
     public Component getText() {
+        //? if <= 1.16 {
+        /*var option = EBEUtil.translate(this.getOptionKey()).withStyle(style -> style.withColor(TextColor.fromRgb(isDefault() ? 0xFFFFFF : 0xFFDA5E)));
+        var value = EBEUtil.translate(this.getValueKey()).withStyle(style -> style.withColor(TextColor.fromRgb(this.palette.getColor((float)this.selected / this.values.size()))));
+        *///?} else {
         var option = EBEUtil.translate(this.getOptionKey()).withStyle(style -> style.withColor(isDefault() ? 0xFFFFFF : 0xFFDA5E));
         var value = EBEUtil.translate(this.getValueKey()).withStyle(style -> style.withColor(this.palette.getColor((float)this.selected / this.values.size())));
+        //?}
 
         if (text == null) text = option.append(EBEUtil.translate(DIVIDER).append(value));
         return text;

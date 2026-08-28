@@ -173,6 +173,8 @@ stonecutter {
 			match("1.19.2", "fabric", "forge")
 
 			match("1.18", "fabric", "forge")
+			match("1.17", "fabric", "forge")
+			match("1.16", "fabric", "forge")
 		}
 
 		if (env("GRADLE_MULTILOADER") == "true") {

@@ -50,7 +50,11 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         Platform.forEachApiEntrypoint(API_V1, Consumer.class,
                 (modId, init) -> init.accept((Runnable) EnhancedBlockEntities::load));
 
+        //? if <= 1.16 {
+        /*ItemProperties.registerGeneric(EBEUtil.id("is_christmas"), (stack, level, entity) -> DateUtil.isChristmas() ? 1 : 0);
+        *///?} else {
         ItemProperties.registerGeneric(EBEUtil.id("is_christmas"), (stack, level, entity, seed) -> DateUtil.isChristmas() ? 1 : 0);
+        //?}
 
         ModelIdentifiers.init();
         EBESetup.setupResourceProviders();

@@ -17,7 +17,7 @@ platform {
 
 neoForge {
 	version = property("deps.neoforge") as String
-	accessTransformers.from(rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg"))
+	accessTransformers.from(rootProject.file("access/aw/${stonecutter.current.version}.cfg"))
 	validateAccessTransformers = true
 
 	runs {
@@ -56,4 +56,12 @@ dependencies {
 
 tasks.named("createMinecraftArtifacts") {
 	dependsOn(tasks.named("stonecutterGenerate"))
+}
+
+tasks.named<ProcessResources>("processResources") {
+	from(rootProject.file("access/aw/${stonecutter.current.version}.cfg")) {
+		into("META-INF")
+		rename { "accesstransformer.cfg" }
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	}
 }

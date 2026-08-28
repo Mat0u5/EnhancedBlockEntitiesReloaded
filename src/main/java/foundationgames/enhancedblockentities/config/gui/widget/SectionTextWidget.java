@@ -1,7 +1,10 @@
 package foundationgames.enhancedblockentities.config.gui.widget;
 
 import net.minecraft.client.gui.Font;
-//? if <= 1.19.2 {
+//? if <= 1.16 {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.AbstractWidget;
+*///?} else if <= 1.19.2 {
 /*import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -38,8 +41,10 @@ public class SectionTextWidget extends AbstractStringWidget {
     /*public Font getFont() {
         return this.font;
     }
+    *///?}
 
-    @Override
+    //? if >= 1.17 && <= 1.19.2 {
+    /*@Override
     public void updateNarration(NarrationElementOutput output) {
     }
     *///?}

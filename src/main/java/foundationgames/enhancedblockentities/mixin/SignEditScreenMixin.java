@@ -43,7 +43,12 @@ public class SignEditScreenMixin {
 
         if (!EnhancedBlockEntityRegistry.BLOCKS.contains(state.getBlock())) return;
 
+        //? if <= 1.16 {
+        /^this.signModel.sign.visible = !enhanceSigns;
+        this.signModel.stick.visible = !enhanceSigns;
+        ^///?} else {
         this.signModel.root.visible = !enhanceSigns;
+        //?}
 
         if (enhanceSigns) {
             var self = (SignEditScreen) (Object) this;

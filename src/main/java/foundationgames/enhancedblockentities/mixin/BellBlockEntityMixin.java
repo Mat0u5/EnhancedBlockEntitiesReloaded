@@ -11,17 +11,35 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BellBlockEntity.class)
 public class BellBlockEntityMixin extends BlockEntity implements AppearanceStateHolder {
     @Unique private int enhanced_bes$modelState = 0;
     @Unique private int enhanced_bes$renderState = 0;
 
+    //? if <= 1.16 {
+    /*public BellBlockEntityMixin(BlockEntityType<?> type) {
+        super(type);
+    }
+    *///?} else {
     public BellBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
+    //?}
 
+    //? if <= 1.16 {
+    /*@Inject(method = "tick", at = @At("TAIL"))
+    private void enhanced_bes$listenForStopRinging(CallbackInfo ci) {
+        var blockEntity = (BellBlockEntity) (Object) this;
+        int mState = blockEntity.ticks > 0 ? 1 : 0;
+        if (EnhancedBlockEntities.CONFIG.renderEnhancedBells && this.getModelState() != mState) {
+            this.updateAppearanceState(mState, blockEntity.getLevel(), blockEntity.getBlockPos());
+        }
+    }
+    *///?} else {
     // Can't inject because one of the args' type is private (BellBlockEntity$Effect) and I don't feel like AW
     // So now you get to suffer through this
     @ModifyVariable(method = "tick", at = @At(
@@ -34,6 +52,7 @@ public class BellBlockEntityMixin extends BlockEntity implements AppearanceState
         }
         return blockEntity;
     }
+    //?}
 
     @Override
     public int getModelState() {

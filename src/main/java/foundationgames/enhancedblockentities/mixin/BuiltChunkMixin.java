@@ -2,18 +2,26 @@ package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.util.WorldUtil;
 import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
+//? if >= 1.18 {
 import net.minecraft.client.renderer.chunk.RenderRegionCache;
+//?}
 //? if <= 1.20 {
 /*import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 *///?} else {
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 //?}
 import net.minecraft.core.SectionPos;
+//? if <= 1.17 {
+/*import net.minecraft.world.level.block.entity.BlockEntity;
+
+import java.util.Set;
+*///?}
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //? if <= 1.20 {
@@ -25,7 +33,10 @@ public class BuiltChunkMixin implements ChunkRebuildTaskAccess {
     private @Unique
     @Nullable Runnable enhanced_bes$taskAfterRebuild = null;
 
-    //? if <= 1.21 {
+    //? if <= 1.17 {
+    /*@Inject(method = "createCompileTask", at = @At("HEAD"))
+    private void enhanced_bes$addPostRebuildTask(CallbackInfoReturnable<?> cir) {
+    *///?} else if <= 1.21 {
     /*@Inject(method = "createCompileTask", at = @At("HEAD"))
     private void enhanced_bes$addPostRebuildTask(RenderRegionCache cache, CallbackInfoReturnable<?> cir) {
     *///?} else {
@@ -45,6 +56,13 @@ public class BuiltChunkMixin implements ChunkRebuildTaskAccess {
             this.enhanced_bes$setTaskAfterRebuild(WorldUtil.CHUNK_UPDATE_TASKS.remove(pos));
         }
     }
+
+    //? if <= 1.17 {
+    /*@Inject(method = "updateGlobalBlockEntities", at = @At("TAIL"))
+    private void enhanced_bes$runPostRebuildTask(Set<BlockEntity> blockEntities, CallbackInfo ci) {
+        this.enhanced_bes$runAfterRebuildTask();
+    }
+    *///?}
 
     @Override
     public Runnable enhanced_bes$getTaskAfterRebuild() {

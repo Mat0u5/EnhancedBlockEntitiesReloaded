@@ -2,7 +2,6 @@ package foundationgames.enhancedblockentities.client.model;
 
 //? if fabric {
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
-import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
@@ -50,7 +49,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     @Override
     public void emitBlockQuads(BlockAndTintGetter view, BlockState state, BlockPos pos, Supplier<RandomSource> rng, RenderContext context) {
         QuadEmitter emitter = context.getEmitter();
-        RenderMaterial mat = null;
+        net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial mat = null;
 
         var indices = this.activeModelIndices.get();
         var models = this.displayedModels.get();
@@ -68,7 +67,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
         var renderer = RendererAccess.INSTANCE.getRenderer();
         if (renderer != null) {
-            mat = renderer.materialById(RenderMaterial.MATERIAL_STANDARD);
+            mat = renderer.materialById(net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial.MATERIAL_STANDARD);
         }
 
         for (int i = 0; i <= 6; i++) {
