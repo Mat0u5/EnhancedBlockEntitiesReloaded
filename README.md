@@ -24,6 +24,12 @@ These may include:
 **Q: I need help with the mod/need to report a bug!** <br/>
 **A:**  *If the issue is a BUG* please report it on our issue tracker ("Issues" tab at the top of the page)<br/><br/>
 
+**Q: My chests are invisible!** <br/>
+**A:** You may be using a resource pack that conflicts with EBE. Open the Block Entity Settings menu (through EBE's Mod Menu entry or through vanilla Video Settings) and enable "Force Resource Pack Compatibility".
+
+**Q: My chests are still invisible!** <br/>
+**A:** You're likely using a Sodium version lower than 0.4, which doesn't support certain Fabric Rendering features by default. If you need to use a Sodium version lower than 0.4 with EBE, you should install [Indium](https://modrinth.com/mod/indium). <br/><br/>
+
 ## FPS Boost
 Rendering 1700 chests:
 ### Vanilla
