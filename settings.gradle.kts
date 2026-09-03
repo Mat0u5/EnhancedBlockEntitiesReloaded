@@ -158,6 +158,7 @@ stonecutter {
 			match("1.14", "fabric")
 			*/
 
+			match("26.3", "fabric")
 			match("26.2", "fabric", "forge", "neoforge")
 			match("26.1", "fabric", "forge", "neoforge")
 
