@@ -49,6 +49,8 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     //? if <= 1.18 {
     /^@Override
     public Collection<Material> getTextures(IModelConfiguration context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+        resolveExtraModels(modelGetter, missingTextureErrors);
+
         return Collections.emptyList();
     }
 
@@ -57,6 +59,8 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     ^///?} else if <= 1.19.2 {
     /^@Override
     public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+        resolveExtraModels(modelGetter, missingTextureErrors);
+
         return Collections.emptyList();
     }
 
@@ -65,9 +69,13 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     ^///?} else if <= 1.21 {
     /^@Override
     public void resolveParents(Function<ResourceLocation, UnbakedModel> resolver, IGeometryBakingContext context) {
+        for (ResourceLocation modelId : ModelIdentifiers.enabledModelIds()) {
+            resolver.apply(modelId).resolveParents(resolver);
+        }
+
         for (ResourceLocation modelId : models) {
             if (modelId == null) continue;
-            resolver.apply(modelId);
+            resolver.apply(modelId).resolveParents(resolver);
         }
     }
 
@@ -97,6 +105,14 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
         }
         return new DynamicBakedModel(baked, selector, effects);
     }
+
+    //? if <= 1.19.2 {
+    /^private static void resolveExtraModels(Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+        for (ResourceLocation modelId : ModelIdentifiers.enabledModelIds()) {
+            modelGetter.apply(modelId).getMaterials(modelGetter, missingTextureErrors);
+        }
+    }
+    ^///?}
 }
 *///?} else {
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

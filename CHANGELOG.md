@@ -1,1 +1,2 @@
-Forge and NeoForge support.
+Fixed Forge chest rendering issues.
+Bug fixes.
