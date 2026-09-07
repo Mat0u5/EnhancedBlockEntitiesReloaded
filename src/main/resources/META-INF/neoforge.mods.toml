@@ -20,5 +20,8 @@ description = '''${description}'''
 config = "${id}.mixins.json"
 
 [[mixins]]
+config = "${id}.sodium.mixins.json"
+
+[[mixins]]
 config = "${id}.legacy.mixins.json"
 ${dependencies}
