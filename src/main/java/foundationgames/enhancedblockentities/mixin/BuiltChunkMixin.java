@@ -23,12 +23,29 @@ public class BuiltChunkMixin implements ChunkRebuildTaskAccess {
     @Nullable Runnable enhanced_bes$taskAfterRebuild = null;
 
     //? if <= 26.1 {
-    /*@Inject(method = "createCompileTask", at = @At("HEAD"))
+    /*@Inject(method = "createCompileTask", at = @At("HEAD"), require = 0)
     private void enhanced_bes$addPostRebuildTask(RenderRegionCache cache, CallbackInfoReturnable<SectionRenderDispatcher.RenderSection.CompileTask> cir) {
+        this.enhanced_bes$claimPendingTasks();
+    }
     *///?} else {
-    @Inject(method = "createCompileTask", at = @At("HEAD"))
+    @Inject(method = "createCompileTask(Lnet/minecraft/client/renderer/chunk/RenderSectionRegion;)Lnet/minecraft/client/renderer/chunk/SectionRenderDispatcher$RenderSection$SectionTask;", at = @At("HEAD"), require = 0)
     private void enhanced_bes$addPostRebuildTask(RenderSectionRegion region, CallbackInfoReturnable<?> cir) {
+        this.enhanced_bes$claimPendingTasks();
+    }
     //?}
+
+    // Neoforge adds a second createCompileTask taking its AddSectionGeometryEvent renderers, and
+    // which of the two the game calls varies between neoforge builds. Hook both, the claim is
+    // idempotent so it does not matter if one delegates to the other
+    //? if neoforge && >= 26.2 {
+    /*@Inject(method = "createCompileTask(Lnet/minecraft/client/renderer/chunk/RenderSectionRegion;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionRenderDispatcher$RenderSection$SectionTask;", at = @At("HEAD"), require = 0)
+    private void enhanced_bes$addPostRebuildTaskWithRenderers(RenderSectionRegion region, java.util.List<?> renderers, CallbackInfoReturnable<?> cir) {
+        this.enhanced_bes$claimPendingTasks();
+    }
+    *///?}
+
+    @Unique
+    private void enhanced_bes$claimPendingTasks() {
         if (WorldUtil.CHUNK_UPDATE_TASKS.isEmpty()) return;
 
         var self = (SectionRenderDispatcher.RenderSection) (Object) this;

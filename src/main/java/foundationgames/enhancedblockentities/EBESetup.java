@@ -51,6 +51,9 @@ import java.util.function.Function;
 
 public enum EBESetup {;
     private static final Set<Block> RENDER_LAYERS = new HashSet<>();
+    //? if >= 1.21.9 {
+    private static final java.util.Map<Block, Integer> COPPER_CHEST_INDICES = new java.util.HashMap<>();
+    //?}
 
     public static void setupRRPChests() {
         EBEPack p = ResourceUtil.getPackForCompat();
@@ -59,6 +62,12 @@ public enum EBESetup {;
         ResourceUtil.addChestBlockStates("trapped_chest", p);
         ResourceUtil.addChestBlockStates("christmas_chest", p);
         ResourceUtil.addSingleChestOnlyBlockStates("ender_chest", p);
+
+        //? if >= 1.21.9 {
+        for (String[] chest : ModelIdentifiers.COPPER_CHESTS) {
+            ResourceUtil.addChestBlockStates(chest[0], p);
+        }
+        //?}
 
         p = ResourceUtil.getBasePack();
 
@@ -73,6 +82,14 @@ public enum EBESetup {;
         ResourceUtil.addChestItemDefinition("chest", "chest_center", true, p);
         ResourceUtil.addChestItemDefinition("trapped_chest", "trapped_chest_center", true, p);
         ResourceUtil.addChestItemDefinition("ender_chest", "ender_chest_center", false, p);
+
+        //? if >= 1.21.9 {
+        for (String[] chest : ModelIdentifiers.COPPER_CHESTS) {
+            ResourceUtil.addSingleChestModels(chest[1], chest[0], p);
+            ResourceUtil.addDoubleChestModels(chest[1] + "_left", chest[1] + "_right", chest[0], p);
+            ResourceUtil.addChestItemDefinition(chest[0], chest[0] + "_center", false, p);
+        }
+        //?}
 
         p.addDirBlockSprites("entity/chest", "entity/chest/");
     }
@@ -266,6 +283,46 @@ public enum EBESetup {;
                 )
         );
 
+        //? if >= 1.21.9 {
+        for (String[] chest : ModelIdentifiers.COPPER_CHESTS) {
+            Identifier[] models = ModelIdentifiers.COPPER_CHEST_MODELS.get(chest[0]);
+
+            DynamicModelProvidingPlugin.register(
+                    Identifier.fromNamespaceAndPath("builtin", chest[0] + "_center"),
+                    () -> new DynamicUnbakedModel(
+                            new Identifier[] {
+                                    models[ModelIdentifiers.COPPER_CENTER],
+                                    models[ModelIdentifiers.COPPER_CENTER_TRUNK]
+                            },
+                            ModelSelector.CHEST,
+                            DynamicModelEffects.CHEST
+                    )
+            );
+            DynamicModelProvidingPlugin.register(
+                    Identifier.fromNamespaceAndPath("builtin", chest[0] + "_left"),
+                    () -> new DynamicUnbakedModel(
+                            new Identifier[] {
+                                    models[ModelIdentifiers.COPPER_LEFT],
+                                    models[ModelIdentifiers.COPPER_LEFT_TRUNK]
+                            },
+                            ModelSelector.CHEST,
+                            DynamicModelEffects.CHEST
+                    )
+            );
+            DynamicModelProvidingPlugin.register(
+                    Identifier.fromNamespaceAndPath("builtin", chest[0] + "_right"),
+                    () -> new DynamicUnbakedModel(
+                            new Identifier[] {
+                                    models[ModelIdentifiers.COPPER_RIGHT],
+                                    models[ModelIdentifiers.COPPER_RIGHT_TRUNK]
+                            },
+                            ModelSelector.CHEST,
+                            DynamicModelEffects.CHEST
+                    )
+            );
+        }
+        //?}
+
         DynamicModelProvidingPlugin.register(
                 Identifier.fromNamespaceAndPath("builtin", "bell_between_walls"),
                 () -> new DynamicUnbakedModel(
@@ -380,22 +437,64 @@ public enum EBESetup {;
             ChestType type = entity.getBlockState().getValue(BlockStateProperties.CHEST_TYPE);
             return type == ChestType.RIGHT ? 2 + os : type == ChestType.LEFT ? 1 + os : os;
         };
-        EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityTypes.CHEST, BlockEntityRenderCondition.CHEST,
-                new ChestBlockEntityRendererOverride(() -> {
+        //? if >= 1.21.9 {
+        Function<BlockEntity, Integer> chestSelector = entity -> {
+            int variant = COPPER_CHEST_INDICES.getOrDefault(entity.getBlockState().getBlock(), -1);
+            if (variant < 0) return christmasChestSelector.apply(entity);
+
+            ChestType type = entity.getBlockState().getValue(BlockStateProperties.CHEST_TYPE);
+            int half = type == ChestType.RIGHT ? 2 : type == ChestType.LEFT ? 1 : 0;
+
+            return 6 + (variant * 3) + half;
+        };
+        //?} else {
+        /*Function<BlockEntity, Integer> chestSelector = christmasChestSelector;
+        *///?}
+        var chestRenderer = new ChestBlockEntityRendererOverride(() -> {
                     //? if <= 1.21.4 {
-                    /*return new BakedModel[] {
+                    /*var lids = new java.util.ArrayList<BakedModel>();
                     *///?} else {
-                    return new BlockStateModel[] {
+                    var lids = new java.util.ArrayList<BlockStateModel>();
                     //?}
-                            ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_CENTER_LID),
-                            ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_LEFT_LID),
-                            ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_RIGHT_LID),
-                            ModelIdentifiers.getBakedModel(ModelIdentifiers.CHRISTMAS_CHEST_CENTER_LID),
-                            ModelIdentifiers.getBakedModel(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID),
-                            ModelIdentifiers.getBakedModel(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID)
-                    };
-                }, christmasChestSelector)
-        );
+
+                    lids.add(ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_CENTER_LID));
+                    lids.add(ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_LEFT_LID));
+                    lids.add(ModelIdentifiers.getBakedModel(ModelIdentifiers.CHEST_RIGHT_LID));
+                    lids.add(ModelIdentifiers.getBakedModel(ModelIdentifiers.CHRISTMAS_CHEST_CENTER_LID));
+                    lids.add(ModelIdentifiers.getBakedModel(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID));
+                    lids.add(ModelIdentifiers.getBakedModel(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID));
+
+                    //? if >= 1.21.9 {
+                    for (String[] chest : ModelIdentifiers.COPPER_CHESTS) {
+                        Identifier[] models = ModelIdentifiers.COPPER_CHEST_MODELS.get(chest[0]);
+
+                        lids.add(ModelIdentifiers.getBakedModel(models[ModelIdentifiers.COPPER_CENTER_LID]));
+                        lids.add(ModelIdentifiers.getBakedModel(models[ModelIdentifiers.COPPER_LEFT_LID]));
+                        lids.add(ModelIdentifiers.getBakedModel(models[ModelIdentifiers.COPPER_RIGHT_LID]));
+                    }
+                    //?}
+
+                    //? if <= 1.21.4 {
+                    /*return lids.toArray(new BakedModel[0]);
+                    *///?} else {
+                    return lids.toArray(new BlockStateModel[0]);
+                    //?}
+                }, chestSelector);
+
+        EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityTypes.CHEST, BlockEntityRenderCondition.CHEST, chestRenderer);
+
+        //? if >= 1.21.9 {
+        Block[] copperChests = copperChestBlocks();
+        COPPER_CHEST_INDICES.clear();
+
+        for (int i = 0; i < ModelIdentifiers.COPPER_CHESTS.length; i++) {
+            Block block = copperChests[i];
+
+            COPPER_CHEST_INDICES.put(block, i);
+            putCutoutMipped(block);
+            EnhancedBlockEntityRegistry.register(block, BlockEntityTypes.CHEST, BlockEntityRenderCondition.CHEST, chestRenderer);
+        }
+        //?}
         EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityTypes.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     //? if <= 1.21.4 {
@@ -422,6 +521,23 @@ public enum EBESetup {;
                 }, entity -> 0)
         );
     }
+
+    //? if >= 1.21.9 {
+    //? if <= 26.1 {
+    /*private static Block[] copperChestBlocks() {
+        return new Block[] {
+                Blocks.COPPER_CHEST, Blocks.EXPOSED_COPPER_CHEST,
+                Blocks.WEATHERED_COPPER_CHEST, Blocks.OXIDIZED_COPPER_CHEST,
+                Blocks.WAXED_COPPER_CHEST, Blocks.WAXED_EXPOSED_COPPER_CHEST,
+                Blocks.WAXED_WEATHERED_COPPER_CHEST, Blocks.WAXED_OXIDIZED_COPPER_CHEST
+        };
+    }
+    *///?} else {
+    private static Block[] copperChestBlocks() {
+        return Blocks.COPPER_CHEST.asList().toArray(new Block[0]);
+    }
+    //?}
+    //?}
 
     public static void setupSigns() {
         for (var sign : new Block[] {

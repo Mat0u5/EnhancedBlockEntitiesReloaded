@@ -9,21 +9,28 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public enum WorldUtil {
     EVENT_LISTENER;
 
-    public static final Map<SectionPos, ExecutableRunnableHashSet> CHUNK_UPDATE_TASKS = new HashMap<>();
-    private static final Map<ResourceKey<Level>, Long2ObjectMap<Runnable>> TIMED_TASKS = new HashMap<>();
+    public static final Map<SectionPos, ExecutableRunnableHashSet> CHUNK_UPDATE_TASKS = new ConcurrentHashMap<>();
+    private static final Map<ResourceKey<Level>, Long2ObjectMap<ExecutableRunnableHashSet>> TIMED_TASKS = new ConcurrentHashMap<>();
 
+    // 26.2 routes setBlocksDirty through ModelManager.requiresRender, which is false for two equal
+    // states, so the section is never queued for a remesh and renderState never arrives
     public static void rebuildChunk(Level world, BlockPos pos) {
-        var state = world.getBlockState(pos);
         //? if <= 26.1 {
-        /*Minecraft.getInstance().levelRenderer.blockChanged(world, pos, state, state, 8);
+        /*var state = world.getBlockState(pos);
+        Minecraft.getInstance().levelRenderer.blockChanged(world, pos, state, state, 8);
         *///?} else {
-        world.setBlocksDirty(pos, state, state);
+        if (world instanceof ClientLevel client) {
+            client.setSectionDirtyWithNeighbors(
+                    SectionPos.blockToSectionCoord(pos.getX()),
+                    SectionPos.blockToSectionCoord(pos.getY()),
+                    SectionPos.blockToSectionCoord(pos.getZ()));
+        }
         //?}
     }
 
@@ -33,7 +40,8 @@ public enum WorldUtil {
     }
 
     public static void scheduleTimed(Level world, long time, Runnable action) {
-        TIMED_TASKS.computeIfAbsent(world.dimension(), k -> new Long2ObjectOpenHashMap<>()).put(time, action);
+        TIMED_TASKS.computeIfAbsent(world.dimension(), k -> new Long2ObjectOpenHashMap<>())
+                .computeIfAbsent(time, k -> new ExecutableRunnableHashSet()).add(action);
     }
 
     public void onEndTick(ClientLevel world) {

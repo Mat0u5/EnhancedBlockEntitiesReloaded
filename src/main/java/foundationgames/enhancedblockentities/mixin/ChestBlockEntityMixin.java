@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
+import foundationgames.enhancedblockentities.EnhancedBlockEntityRegistry;
 import foundationgames.enhancedblockentities.client.render.entity.ChestBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,8 @@ public abstract class ChestBlockEntityMixin extends BlockEntity implements Appea
     private static void enhanced_bes$listenForOpenClose(Level world, BlockPos pos, BlockState state, ChestBlockEntity blockEntity, CallbackInfo ci) {
         var lid = ChestBlockEntityRendererOverride.getLidAnimationHolder(blockEntity, 0.5f);
         int mState = lid.getOpenNess(0.5f) > 0 ? 1 : 0;
+
+        if (!EnhancedBlockEntityRegistry.BLOCKS.contains(state.getBlock())) return;
 
         if (EnhancedBlockEntities.CONFIG.renderEnhancedChests && ((AppearanceStateHolder)blockEntity).getModelState() != mState) {
             ((AppearanceStateHolder)blockEntity).updateAppearanceState(mState, world, pos);

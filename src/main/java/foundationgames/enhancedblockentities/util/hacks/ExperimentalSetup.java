@@ -51,6 +51,12 @@ public enum ExperimentalSetup {;
         ResourceHacks.addChestParticleTexture("trapped_chest", "entity/chest/trapped", manager, p);
         ResourceHacks.addChestParticleTexture("ender_chest", "entity/chest/ender", manager, p);
         ResourceHacks.addChestParticleTexture("christmas_chest", "entity/chest/christmas", manager, p);
+
+        //? if >= 1.21.9 {
+        for (String[] chest : foundationgames.enhancedblockentities.client.model.ModelIdentifiers.COPPER_CHESTS) {
+            ResourceHacks.addChestParticleTexture(chest[0], "entity/chest/" + chest[1], manager, p);
+        }
+        //?}
     }
 
     public static void setupBeds(ResourceManager manager) throws IOException {
@@ -75,6 +81,7 @@ public enum ExperimentalSetup {;
         ResourceHacks.addSignParticleTexture("crimson", "entity/signs/crimson", manager, p);
         ResourceHacks.addSignParticleTexture("warped", "entity/signs/warped", manager, p);
         ResourceHacks.addSignParticleTexture("bamboo", "entity/signs/bamboo", manager, p);
+        ResourceHacks.addSignParticleTexture("pale_oak", "entity/signs/pale_oak", manager, p);
     }
 
     public static void cacheResources(ResourceManager resources) {

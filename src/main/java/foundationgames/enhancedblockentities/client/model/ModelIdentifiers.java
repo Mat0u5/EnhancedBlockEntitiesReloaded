@@ -136,6 +136,31 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
     public static final Identifier DECORATED_POT_BASE = of("block/decorated_pot_base", DECORATED_POT_PREDICATE);
     public static final Identifier DECORATED_POT_SHAKING = of("block/decorated_pot_shaking", DECORATED_POT_PREDICATE);
 
+    //? if >= 1.21.9 {
+    public static final String[][] COPPER_CHESTS = {
+            {"copper_chest", "copper"},
+            {"exposed_copper_chest", "copper_exposed"},
+            {"weathered_copper_chest", "copper_weathered"},
+            {"oxidized_copper_chest", "copper_oxidized"},
+            {"waxed_copper_chest", "copper"},
+            {"waxed_exposed_copper_chest", "copper_exposed"},
+            {"waxed_weathered_copper_chest", "copper_weathered"},
+            {"waxed_oxidized_copper_chest", "copper_oxidized"}
+    };
+
+    public static final int COPPER_CENTER = 0;
+    public static final int COPPER_CENTER_TRUNK = 1;
+    public static final int COPPER_CENTER_LID = 2;
+    public static final int COPPER_LEFT = 3;
+    public static final int COPPER_LEFT_TRUNK = 4;
+    public static final int COPPER_LEFT_LID = 5;
+    public static final int COPPER_RIGHT = 6;
+    public static final int COPPER_RIGHT_TRUNK = 7;
+    public static final int COPPER_RIGHT_LID = 8;
+
+    public static final Map<String, Identifier[]> COPPER_CHEST_MODELS = new HashMap<>();
+    //?}
+
     public static final Map<DyeColor, Identifier> SHULKER_BOXES = new HashMap<>();
     public static final Map<DyeColor, Identifier> SHULKER_BOX_BOTTOMS = new HashMap<>();
     public static final Map<DyeColor, Identifier> SHULKER_BOX_LIDS = new HashMap<>();
@@ -149,6 +174,24 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
             SHULKER_BOX_BOTTOMS.put(color, of(id+"_bottom", SHULKER_BOX_PREDICATE));
             SHULKER_BOX_LIDS.put(color, of(id+"_lid", SHULKER_BOX_PREDICATE));
         }
+
+        //? if >= 1.21.9 {
+        for (String[] chest : COPPER_CHESTS) {
+            String name = chest[0];
+
+            COPPER_CHEST_MODELS.put(name, new Identifier[] {
+                    of("block/" + name + "_center", CHEST_PREDICATE),
+                    of("block/" + name + "_center_trunk", CHEST_PREDICATE),
+                    of("block/" + name + "_center_lid", CHEST_PREDICATE),
+                    of("block/" + name + "_left", CHEST_PREDICATE),
+                    of("block/" + name + "_left_trunk", CHEST_PREDICATE),
+                    of("block/" + name + "_left_lid", CHEST_PREDICATE),
+                    of("block/" + name + "_right", CHEST_PREDICATE),
+                    of("block/" + name + "_right_trunk", CHEST_PREDICATE),
+                    of("block/" + name + "_right_lid", CHEST_PREDICATE)
+            });
+        }
+        //?}
 
         refreshPotteryPatterns();
     }

@@ -55,7 +55,9 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
     *///?} else {
     public void render(BlockEntityRenderer<BlockEntity, ?> renderer, BlockEntityRenderState renderState, BlockEntity blockEntity, float tickDelta, PoseStack matrices, SubmitNodeCollector output, int light, int overlay) {
     //?}
-        if (models == null) models = modelGetter.get();
+        var lids = resolveModels();
+        if (lids == null) return;
+
         if (blockEntity instanceof LidBlockEntity) {
             matrices.pushPose();
 
@@ -72,10 +74,28 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             rot = 1f - (rot * rot * rot);
             matrices.mulPose(Axis.XP.rotationDegrees(rot * 90));
             matrices.translate(0, -yPiv, -zPiv);
-            EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
+            EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, lids[modelSelector.apply(blockEntity)], light, overlay);
 
             matrices.popPose();
         }
+    }
+
+    //? if <= 1.21.4 {
+    /*private BakedModel[] resolveModels() {
+    *///?} else {
+    private BlockStateModel[] resolveModels() {
+    //?}
+        if (models != null) return models;
+
+        var fetched = modelGetter.get();
+        if (fetched == null) return null;
+
+        for (var model : fetched) {
+            if (model == null) return fetched;
+        }
+
+        models = fetched;
+        return fetched;
     }
 
     public static LidBlockEntity getLidAnimationHolder(BlockEntity blockEntity, float tickDelta) {
