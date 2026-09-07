@@ -10,7 +10,7 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBakery;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 ^///?} else {
 import net.minecraft.client.resources.model.ModelBaker;
@@ -49,9 +49,7 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     //? if <= 1.18 {
     /^@Override
     public Collection<Material> getTextures(IModelConfiguration context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-        resolveExtraModels(modelGetter, missingTextureErrors);
-
-        return Collections.emptyList();
+        return resolveExtraModels(modelGetter, missingTextureErrors);
     }
 
     @Override
@@ -59,9 +57,7 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     ^///?} else if <= 1.19.2 {
     /^@Override
     public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-        resolveExtraModels(modelGetter, missingTextureErrors);
-
-        return Collections.emptyList();
+        return resolveExtraModels(modelGetter, missingTextureErrors);
     }
 
     @Override
@@ -107,10 +103,14 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
     }
 
     //? if <= 1.19.2 {
-    /^private static void resolveExtraModels(Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+    /^private static Collection<Material> resolveExtraModels(Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+        var materials = new HashSet<Material>();
+
         for (ResourceLocation modelId : ModelIdentifiers.enabledModelIds()) {
-            modelGetter.apply(modelId).getMaterials(modelGetter, missingTextureErrors);
+            materials.addAll(modelGetter.apply(modelId).getMaterials(modelGetter, missingTextureErrors));
         }
+
+        return materials;
     }
     ^///?}
 }

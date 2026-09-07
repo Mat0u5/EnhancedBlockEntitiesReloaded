@@ -8,36 +8,16 @@ import net.caffeinemc.mods.sodium.client.render.chunk.RenderSectionManager;
 import net.minecraft.core.SectionPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
-import org.spongepowered.asm.mixin.Unique;
-import net.caffeinemc.mods.sodium.client.render.chunk.compile.BuilderTaskOutput;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
 @Mixin(value = RenderSectionManager.class, remap = false)
 public class RenderSectionManagerMixin {
-    @ModifyVariable(method = "submitSectionTasks(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/executor/ChunkJobCollector;Lnet/caffeinemc/mods/sodium/client/render/chunk/ChunkUpdateType;Z)V",
-            at = @At(value = "INVOKE", shift = At.Shift.BEFORE, ordinal = 0, target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/RenderSection;isDisposed()Z"),
-            index = 5, require = 0
-    )
-    private RenderSection enhanced_bes$compat_sodium$cacheUpdatingChunk(RenderSection section) {
-        enhanced_bes$compat_sodium$cacheUpdatingChunk0(section);
-
-        return section;
-    }
-
-    @ModifyVariable(method = "processChunkBuildResults",
-            at = @At(value = "INVOKE_ASSIGN", shift = At.Shift.BEFORE, ordinal = 0, target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/RenderSection;getTaskCancellationToken()Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;"),
-            index = 5, require = 0
-    )
-    private BuilderTaskOutput enhanced_bes$runPostRebuildTask(BuilderTaskOutput output) {
-        ((ChunkRebuildTaskAccess) output.render).enhanced_bes$runAfterRebuildTask();
-
-        return output;
-    }
-
-    @Unique
-    private static void enhanced_bes$compat_sodium$cacheUpdatingChunk0(RenderSection section) {
+    @Inject(method = "createRebuildTask", at = @At("HEAD"), require = 0)
+    private void enhanced_bes$compat_sodium$cacheUpdatingChunk(RenderSection section, int frame,
+            CallbackInfoReturnable<?> cir) {
         if (WorldUtil.CHUNK_UPDATE_TASKS.isEmpty()) return;
 
         var pos = SectionPos.of(section.getChunkX(), section.getChunkY(), section.getChunkZ());
