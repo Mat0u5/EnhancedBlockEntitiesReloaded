@@ -52,6 +52,10 @@ repositories {
 dependencies {
 	implementation(libs.moulberry.mixinconstraints)
 	jarJar(libs.moulberry.mixinconstraints)
+
+	if (prop("deps.sodium_version").isNotEmpty()) {
+		compileOnly("maven.modrinth:sodium:${prop("deps.sodium_version")}")
+	}
 }
 
 tasks.named("createMinecraftArtifacts") {
