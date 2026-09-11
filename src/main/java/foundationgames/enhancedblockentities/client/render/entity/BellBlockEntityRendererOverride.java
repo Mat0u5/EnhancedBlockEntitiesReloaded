@@ -58,8 +58,8 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
             }
             matrices.pushPose();
             matrices.translate(8f/16, 12f/16, 8f/16);
-            matrices.mulPose(Axis.XP.rotation(bellPitch));
-            matrices.mulPose(Axis.ZP.rotation(bellRoll));
+            EBEUtil.rotate(matrices, Axis.XP.rotation(bellPitch));
+            EBEUtil.rotate(matrices, Axis.ZP.rotation(bellRoll));
             matrices.translate(-8f/16, -12f/16, -8f/16);
             EBEUtil.renderBakedModel(output, blockEntity.getBlockState(), matrices, bellModel, light, overlay);
 

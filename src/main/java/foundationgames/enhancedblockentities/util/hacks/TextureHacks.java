@@ -15,7 +15,11 @@ public enum TextureHacks {;
         byte[] r = new byte[0];
         if (image != null) {
             try {
+                //? if <= 26.2 {
                 NativeImage src = NativeImage.read(NativeImage.Format.RGBA, image);
+                //?} else {
+                /*NativeImage src = NativeImage.read(image);
+                *///?}
 
                 int w = src.getWidth();
                 int h = src.getHeight();

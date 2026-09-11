@@ -64,8 +64,8 @@ public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOv
             float animation = entity.getProgress(tickDelta);
 
             matrices.translate(0.5, 0.5, 0.5);
-            matrices.mulPose(dir.getRotation());
-            matrices.mulPose(Axis.YP.rotationDegrees(270 * animation));
+            EBEUtil.rotate(matrices, dir.getRotation());
+            EBEUtil.rotate(matrices, Axis.YP.rotationDegrees(270 * animation));
             matrices.translate(-0.5, -0.5, -0.5);
 
             matrices.translate(0, animation * 0.5f, 0);

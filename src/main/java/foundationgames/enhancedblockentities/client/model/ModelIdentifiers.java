@@ -48,7 +48,6 @@ import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 //?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
@@ -208,7 +207,7 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
         // The order decorated pots store patterns per face
         Direction[] orderedHorizontalDirs = new Direction[] {Direction.NORTH, Direction.WEST, Direction.EAST, Direction.SOUTH};
 
-        for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
+        for (var patternKey : EBEUtil.potPatternKeys()) {
             var pattern = patternKey.identifier().getPath();
             var ids = new Identifier[orderedHorizontalDirs.length];;
 

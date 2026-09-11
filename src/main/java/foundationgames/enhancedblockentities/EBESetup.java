@@ -31,7 +31,6 @@ import foundationgames.enhancedblockentities.util.ResourceUtil;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 //?}
 //?}
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -184,7 +183,7 @@ public enum EBESetup {;
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         ResourceUtil.addDecoratedPotBlockState(pCompat);
-        for (var patternKey : BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet()) {
+        for (var patternKey : EBEUtil.potPatternKeys()) {
             ResourceUtil.addDecoratedPotPatternModels(patternKey, p);
         }
 

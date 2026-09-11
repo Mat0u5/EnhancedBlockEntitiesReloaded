@@ -1,3 +1,1 @@
-Fixed Forge chest rendering issues.
-Fixed chest opening animations.
-Bug fixes.
+Minecraft 26.3 support

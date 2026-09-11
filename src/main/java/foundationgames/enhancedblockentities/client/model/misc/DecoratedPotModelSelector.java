@@ -5,12 +5,10 @@ import foundationgames.enhancedblockentities.client.model.ModelSelector;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Item;
 //? if <= 1.21.11 {
 /*import net.minecraft.world.level.BlockAndTintGetter;
 *///?} else {
@@ -18,13 +16,11 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 //?}
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
-import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class DecoratedPotModelSelector extends ModelSelector {
@@ -38,7 +34,7 @@ public class DecoratedPotModelSelector extends ModelSelector {
     public DecoratedPotModelSelector() {
         super(5);
 
-        this.potteryPatterns = new ArrayList<>(BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet());
+        this.potteryPatterns = new ArrayList<>(EBEUtil.potPatternKeys());
     }
 
     public Identifier[] createModelIDs() {
@@ -73,10 +69,10 @@ public class DecoratedPotModelSelector extends ModelSelector {
 
             var sherds = pot.getDecorations();
 
-            indices[1] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.back(), patternCount);
-            indices[2] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.left(), patternCount) + patternCount;
-            indices[3] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.right(), patternCount) + patternCount * 2;
-            indices[4] = BUILTIN_MODEL_COUNT + getPatternIndex(sherds.front(), patternCount) + patternCount * 3;
+            indices[1] = BUILTIN_MODEL_COUNT + patternIndex(EBEUtil.potPatternFromSherd(sherds.back()), patternCount);
+            indices[2] = BUILTIN_MODEL_COUNT + patternIndex(EBEUtil.potPatternFromSherd(sherds.left()), patternCount) + patternCount;
+            indices[3] = BUILTIN_MODEL_COUNT + patternIndex(EBEUtil.potPatternFromSherd(sherds.right()), patternCount) + patternCount * 2;
+            indices[4] = BUILTIN_MODEL_COUNT + patternIndex(EBEUtil.potPatternFromSherd(sherds.front()), patternCount) + patternCount * 3;
 
             return;
         }
@@ -86,11 +82,7 @@ public class DecoratedPotModelSelector extends ModelSelector {
         }
     }
 
-    private int getPatternIndex(Optional<Item> sherd, int max) {
-        //? if <= 26.1 {
-        /*return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(DecoratedPotPatterns::getPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
-        *///?} else {
-        return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(EBEUtil::potPatternFromItem).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
-        //?}
+    private int patternIndex(ResourceKey<DecoratedPotPattern> patternKey, int max) {
+        return Mth.clamp(this.potteryPatterns.indexOf(patternKey), 0, max - 1);
     }
 }
