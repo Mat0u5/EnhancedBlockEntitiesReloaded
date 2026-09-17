@@ -64,17 +64,7 @@ stonecutter {
 			match("1.21.4", "fabric", "forge", "neoforge")
 		}
 		else if (env("GRADLE_TEST") == "true") {
-			match("26.1", "forge")
-			match("1.21", "forge")
-			match("1.20.5", "forge")
-			match("1.20", "forge")
-
-			match("1.19.4", "forge")
-			match("1.19.2", "forge")
-			match("1.18", "forge")
-			match("1.17", "forge")
-			match("1.16", "forge")
-			match("1.15", "forge")
+			match("26.3", "fabric", "neoforge")
 		}
 		else if (env("GRADLE_ONLY_IMPORTANT_FABRIC") == "true") {
 			// Main Fabric versions, this is the recommended setting for development
@@ -161,7 +151,7 @@ stonecutter {
 			match("1.14", "fabric")
 			*/
 
-			match("26.3", "fabric")
+			match("26.3", "fabric", "neoforge")
 			match("26.2", "fabric", "forge", "neoforge")
 			match("26.1", "fabric", "forge", "neoforge")
 
@@ -176,7 +166,7 @@ stonecutter {
 			vcsVersion = "1.21.4-fabric"
 		}
 		else if (env("GRADLE_TEST") == "true") {
-			vcsVersion = "1.21-forge"
+			vcsVersion = "26.3-forge"
 		}
 		else if (env("GRADLE_ONLY_FORGE") == "true") {
 			vcsVersion = "26.2-forge"
