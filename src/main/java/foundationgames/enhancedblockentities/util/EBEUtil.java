@@ -41,10 +41,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 //? if >= 26.3 {
-/*import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStackTemplate;
-*///?}
+//?}
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.VanillaPackResources;
@@ -92,7 +92,7 @@ public enum EBEUtil {;
         return BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet();
     }
     *///?} else if <= 26.2 {
-    private static final Map<ResourceKey<Item>, ResourceKey<DecoratedPotPattern>> POT_PATTERNS_BY_ITEM = new HashMap<>();
+    /*private static final Map<ResourceKey<Item>, ResourceKey<DecoratedPotPattern>> POT_PATTERNS_BY_ITEM = new HashMap<>();
 
     static {
         DecoratedPotPatterns.itemToPatternMappings(POT_PATTERNS_BY_ITEM::put);
@@ -113,8 +113,8 @@ public enum EBEUtil {;
     public static Identifier potPatternAssetId(ResourceKey<DecoratedPotPattern> patternKey) {
         return BuiltInRegistries.DECORATED_POT_PATTERN.getValueOrThrow(patternKey).assetId();
     }
-    //?} else {
-    /*private static final ResourceKey<DecoratedPotPattern> POT_PATTERN_BLANK =
+    *///?} else {
+    private static final ResourceKey<DecoratedPotPattern> POT_PATTERN_BLANK =
             ResourceKey.create(Registries.DECORATED_POT_PATTERN, Identifier.withDefaultNamespace("blank"));
 
     private static final List<ResourceKey<DecoratedPotPattern>> POT_PATTERN_KEYS = List.of(
@@ -161,7 +161,7 @@ public enum EBEUtil {;
                 ? Identifier.withDefaultNamespace("decorated_pot_side")
                 : patternKey.identifier().withSuffix("_pottery_pattern");
     }
-    *///?}
+    //?}
 
     public static int angle(Direction dir) {
         int h = dir.get2DDataValue();
@@ -170,10 +170,10 @@ public enum EBEUtil {;
 
     public static void rotate(PoseStack matrices, Quaternionf rotation) {
         //? if <= 26.2 {
-        matrices.mulPose(rotation);
-        //?} else {
-        /*matrices.rotate(rotation);
-        *///?}
+        /*matrices.mulPose(rotation);
+        *///?} else {
+        matrices.rotate(rotation);
+        //?}
     }
 
     //? if >= 1.21.9 {

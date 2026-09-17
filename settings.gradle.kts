@@ -163,7 +163,7 @@ stonecutter {
 		}
 
 		if (env("GRADLE_MULTILOADER") == "true") {
-			vcsVersion = "1.21.4-fabric"
+			vcsVersion = "26.3-fabric"
 		}
 		else if (env("GRADLE_TEST") == "true") {
 			vcsVersion = "26.3-forge"
@@ -172,10 +172,10 @@ stonecutter {
 			vcsVersion = "26.2-forge"
 		}
 		else if (env("GRADLE_ONLY_NEOFORGE") == "true") {
-			vcsVersion = "26.2-neoforge"
+			vcsVersion = "26.3-neoforge"
 		}
 		else {
-			vcsVersion = "1.21.4-fabric"
+			vcsVersion = "26.3-fabric"
 		}
 	}
 }
